@@ -1,26 +1,5 @@
-# Virtual environment
 .venv/
-venv/
-env/
-
-# Environment variables (contains secrets!)
 .env
-
-# Python cache
 __pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-
-# Distribution / packaging
-dist/
-build/
-*.egg-info/
-
-# Logs
-*.log
+*.pyc
 logs/
-
-# OS files
-.DS_Store
-Thumbs.db

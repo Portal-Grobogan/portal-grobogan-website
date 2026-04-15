@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+{% block title %}Layanan Kesehatan – Kabupaten Grobogan{% endblock %}
+{% block content %}
+
+<div class="bg-gradient-to-br from-primary-700 to-primary-600 text-white py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center gap-2 text-primary-200 text-sm mb-4">
+      <a href="{{ url_for('public.index') }}" class="hover:text-white">Beranda</a>
+      <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      <a href="{{ url_for('public.layanan') }}" class="hover:text-white">Layanan</a>
+      <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      <span>Kesehatan</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center">
+        <i data-lucide="heart-pulse" class="w-7 h-7 text-accent"></i>
+      </div>
+      <div>
+        <h1 class="font-heading font-extrabold text-4xl">Kesehatan</h1>
+        <p class="text-primary-100 mt-1">Layanan kesehatan masyarakat Kabupaten Grobogan</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2 space-y-6">
+
+      {% if items %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {% for item in items %}
+          <div class="bg-white rounded-xl shadow-card p-5 flex gap-4 hover:shadow-md transition">
+            <div class="w-10 h-10 rounded-lg bg-primary-50 flex items-center justify-center shrink-0">
+              <i data-lucide="{{ item.icon or 'heart-pulse' }}" class="w-5 h-5 text-primary"></i>
+            </div>
+            <div>
+              <h3 class="font-semibold text-gray-900 text-sm">{{ item.nama }}</h3>
+              {% if item.deskripsi %}<p class="text-xs text-gray-500 mt-1">{{ item.deskripsi }}</p>{% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="bg-white rounded-2xl shadow-card p-8">
+          <h2 class="font-heading font-bold text-xl text-gray-900 mb-6">Fasilitas Kesehatan</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {% set fakes = [
+              ('RSUD dr. R. Soedjati', 'Rumah sakit umum daerah utama', 'building-2'),
+              ('Puskesmas (30 Unit)', 'Tersebar di 19 kecamatan', 'activity'),
+              ('BPJS Kesehatan', 'Layanan jaminan kesehatan nasional', 'shield-check'),
+              ('Posyandu', 'Pos pelayanan terpadu balita & lansia', 'users'),
+              ('Ambulans Gratis', 'Layanan ambulans darurat 24 jam', 'truck'),
+              ('Vaksinasi', 'Program imunisasi dan vaksinasi rutin', 'syringe'),
+            ] %}
+            {% for nama, desk, icon in fakes %}
+            <div class="flex gap-3 p-4 bg-gray-50 rounded-xl hover:bg-primary-50 transition group">
+              <div class="w-9 h-9 rounded-lg bg-white shadow-sm flex items-center justify-center shrink-0 group-hover:bg-primary transition">
+                <i data-lucide="{{ icon }}" class="w-4 h-4 text-primary group-hover:text-white transition"></i>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-900 text-sm">{{ nama }}</div>
+                <div class="text-xs text-gray-500">{{ desk }}</div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="bg-red-50 border border-red-200 rounded-2xl p-6">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center">
+              <i data-lucide="phone" class="w-5 h-5 text-red-600"></i>
+            </div>
+            <h3 class="font-heading font-bold text-red-800">Darurat Medis</h3>
+          </div>
+          <p class="text-sm text-red-700 mb-3">Untuk keadaan darurat medis, hubungi nomor berikut:</p>
+          <div class="space-y-2">
+            <div class="flex items-center gap-2 text-sm font-semibold text-red-800"><i data-lucide="phone-call" class="w-4 h-4"></i> IGD RSUD: (0292) 421119</div>
+            <div class="flex items-center gap-2 text-sm font-semibold text-red-800"><i data-lucide="phone-call" class="w-4 h-4"></i> Ambulans: 119</div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Sidebar -->
+    <div class="space-y-5">
+      <div class="bg-primary-600 text-white rounded-2xl p-6">
+        <h3 class="font-heading font-bold mb-3">Kontak Darurat</h3>
+        <div class="space-y-3 text-sm">
+          <div><div class="text-primary-200">IGD RSUD</div><div class="font-bold">(0292) 421119</div></div>
+          <div><div class="text-primary-200">Dinas Kesehatan</div><div class="font-bold">(0292) 421033</div></div>
+          <div><div class="text-primary-200">Ambulans Darurat</div><div class="font-bold">119</div></div>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl shadow-card p-6">
+        <h3 class="font-heading font-bold text-gray-900 mb-3">Program Unggulan</h3>
+        <ul class="space-y-2 text-sm text-gray-600">
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-primary"></i> Kartu Indonesia Sehat</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-primary"></i> BPJS Ketenagakerjaan</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-primary"></i> Imunisasi Gratis</li>
+          <li class="flex items-center gap-2"><i data-lucide="check" class="w-4 h-4 text-primary"></i> KB Gratis</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

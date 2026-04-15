@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Pariwisata – Kabupaten Grobogan{% endblock %}
+{% block content %}
+
+<div class="bg-gradient-to-br from-primary-700 to-primary-600 text-white py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center gap-2 text-primary-200 text-sm mb-4">
+      <a href="{{ url_for('public.index') }}" class="hover:text-white">Beranda</a>
+      <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      <a href="{{ url_for('public.layanan') }}" class="hover:text-white">Layanan</a>
+      <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      <span>Pariwisata</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center">
+        <i data-lucide="map-pin" class="w-7 h-7 text-accent"></i>
+      </div>
+      <div>
+        <h1 class="font-heading font-extrabold text-4xl">Pariwisata</h1>
+        <p class="text-primary-100 mt-1">Destinasi wisata unggulan Kabupaten Grobogan</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+  {% if pariwisata_list %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% for item in pariwisata_list %}
+      <div class="bg-white rounded-2xl overflow-hidden shadow-card hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+        <div class="h-52 bg-gray-100 overflow-hidden relative">
+          {% if item.thumbnail %}
+            <img src="{{ item.thumbnail }}" alt="{{ item.nama }}"
+                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          {% else %}
+            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100">
+              <i data-lucide="map-pin" class="w-12 h-12 text-primary-300"></i>
+            </div>
+          {% endif %}
+          {% if item.kategori %}
+            <span class="absolute top-3 left-3 px-2.5 py-1 bg-primary text-white text-xs font-semibold rounded-full capitalize">
+              {{ item.kategori }}
+            </span>
+          {% endif %}
+        </div>
+        <div class="p-5">
+          <h3 class="font-heading font-bold text-gray-900 text-base mb-1">{{ item.nama }}</h3>
+          {% if item.lokasi %}
+            <p class="text-sm text-gray-400 flex items-center gap-1 mb-2">
+              <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> {{ item.lokasi }}
+            </p>
+          {% endif %}
+          {% if item.deskripsi %}
+            <p class="text-sm text-gray-600 line-clamp-3">{{ item.deskripsi }}</p>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <!-- Default wisata -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% set wisata = [
+        ('Waduk Kedungombo', 'Geyer, Grobogan', 'Waduk besar yang membentang indah dengan latar perbukitan hijau. Tempat wisata air, memancing, dan menikmati panorama alam.', 'alam'),
+        ('Bledug Kuwu', 'Kradenan, Grobogan', 'Fenomena alam unik berupa semburan lumpur panas yang menghasilkan gelembung gas secara periodik. Satu-satunya di Asia Tenggara.', 'alam'),
+        ('Kalibiru Grobogan', 'Gabus, Grobogan', 'Sumber mata air alami yang jernih dan menyegarkan. Cocok untuk keluarga dan rekreasi air.', 'alam'),
+        ('Gua Urang', 'Ngaringan, Grobogan', 'Gua alam dengan stalaktit dan stalagmit yang indah. Menyimpan nilai sejarah dan legenda lokal.', 'alam'),
+        ('Air Terjun Kedung Ombo', 'Gabus, Grobogan', 'Air terjun tersembunyi di tengah hutan dengan panorama alam yang asri dan memukau.', 'alam'),
+        ('Sendang Coyo', 'Tawangharjo, Grobogan', 'Destinasi wisata religi dan alam yang populer di kalangan masyarakat Grobogan.', 'religi'),
+      ] %}
+      {% for nama, lokasi, desk, kat in wisata %}
+      <div class="bg-white rounded-2xl overflow-hidden shadow-card hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+        <div class="h-52 bg-gray-100 overflow-hidden relative">
+          <img src="{{ url_for('static', filename='images/pariwisata/' ~ loop.index ~ '.jpg') }}"
+               alt="{{ nama }}"
+               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+               loading="lazy"
+               onerror="this.src=`{{ url_for('static', filename='images/placeholder.svg') }}`;" />
+          <span class="absolute top-3 left-3 px-2.5 py-1 bg-primary text-white text-xs font-semibold rounded-full capitalize">{{ kat }}</span>
+        </div>
+        <div class="p-5">
+          <h3 class="font-heading font-bold text-gray-900 text-base mb-1">{{ nama }}</h3>
+          <p class="text-sm text-gray-400 flex items-center gap-1 mb-2">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5"></i> {{ lokasi }}
+          </p>
+          <p class="text-sm text-gray-600 line-clamp-3">{{ desk }}</p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- Tips -->
+  <div class="mt-12 bg-primary-50 rounded-2xl p-8">
+    <h2 class="font-heading font-bold text-xl text-primary mb-4">Tips Berwisata di Grobogan</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {% for tip in ['Bawa sunscreen dan air minum yang cukup', 'Kunjungi pagi hari untuk suasana terbaik', 'Jaga kebersihan & jangan buang sampah sembarangan', 'Hormati budaya & adat lokal setempat'] %}
+      <div class="flex items-start gap-2 text-sm text-gray-700">
+        <i data-lucide="check-circle" class="w-4 h-4 text-primary mt-0.5 shrink-0"></i>
+        <span>{{ tip }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

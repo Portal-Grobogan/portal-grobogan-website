@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% block title %}Profil Daerah – Kabupaten Grobogan{% endblock %}
+{% block content %}
+
+<!-- Header -->
+<div class="bg-gradient-to-br from-primary-700 to-primary-600 text-white py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center gap-2 text-primary-200 text-sm mb-4">
+      <a href="{{ url_for('public.index') }}" class="hover:text-white">Beranda</a>
+      <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      <span>Profil Daerah</span>
+    </div>
+    <h1 class="font-heading font-extrabold text-4xl sm:text-5xl mb-3">Profil Daerah</h1>
+    <p class="text-primary-100 text-lg">Kabupaten Grobogan, Jawa Tengah</p>
+  </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+    <!-- Main Content -->
+    <div class="lg:col-span-2 space-y-8">
+
+      <!-- Sejarah -->
+      <div class="bg-white rounded-2xl shadow-card p-8">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-10 h-10 rounded-xl bg-primary-50 flex items-center justify-center">
+            <i data-lucide="book-open" class="w-5 h-5 text-primary"></i>
+          </div>
+          <h2 class="font-heading font-bold text-xl text-gray-900">Sejarah Singkat</h2>
+        </div>
+        <div class="prose prose-sm max-w-none text-gray-600 leading-relaxed space-y-3">
+          <p>
+            Kabupaten Grobogan merupakan salah satu kabupaten di Provinsi Jawa Tengah yang memiliki sejarah panjang. Nama Grobogan berasal dari kata "Grubug" yang berarti tempat pengungsian atau perlindungan pada masa lalu.
+          </p>
+          <p>
+            Secara historis, Grobogan dikenal sebagai daerah yang strategis sejak masa Kerajaan Mataram. Pada masa kolonial Belanda, Grobogan menjadi salah satu daerah administratif penting di Jawa Tengah bagian tengah.
+          </p>
+          <p>
+            Setelah kemerdekaan Indonesia, Grobogan resmi menjadi Kabupaten dengan ibukota di Purwodadi. Kabupaten ini terus berkembang dengan mempertahankan nilai-nilai budaya Jawa yang kental sambil terus berinovasi dalam pembangunan.
+          </p>
+        </div>
+      </div>
+
+      <!-- Visi Misi -->
+      <div class="bg-white rounded-2xl shadow-card p-8">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center">
+            <i data-lucide="target" class="w-5 h-5 text-accent-500"></i>
+          </div>
+          <h2 class="font-heading font-bold text-xl text-gray-900">Visi &amp; Misi</h2>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="font-semibold text-primary mb-2">Visi</h3>
+          <div class="p-4 bg-primary-50 rounded-xl border-l-4 border-primary text-gray-700 italic">
+            "Terwujudnya Kabupaten Grobogan yang Maju, Sejahtera, Berkeadilan, dan Berdaya Saing"
+          </div>
+        </div>
+
+        <div>
+          <h3 class="font-semibold text-primary mb-3">Misi</h3>
+          <ol class="space-y-3">
+            {% set misi = [
+              'Meningkatkan kualitas sumber daya manusia yang beriman, bertaqwa, sehat, cerdas, dan berkarakter.',
+              'Mengembangkan perekonomian daerah yang berdaya saing dan berkelanjutan berbasis potensi lokal.',
+              'Meningkatkan kualitas infrastruktur daerah yang merata dan berkelanjutan.',
+              'Mewujudkan tata kelola pemerintahan yang baik, bersih, transparan, dan akuntabel.',
+              'Meningkatkan pembangunan sosial budaya yang harmonis dan kondusif.',
+            ] %}
+            {% for item in misi %}
+            <li class="flex gap-3 text-sm text-gray-600">
+              <span class="w-6 h-6 rounded-full bg-primary text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">{{ loop.index }}</span>
+              <span>{{ item }}</span>
+            </li>
+            {% endfor %}
+          </ol>
+        </div>
+      </div>
+
+      <!-- Struktur Pemerintahan -->
+      <div class="bg-white rounded-2xl shadow-card p-8">
+        <div class="flex items-center gap-3 mb-5">
+          <div class="w-10 h-10 rounded-xl bg-green-50 flex items-center justify-center">
+            <i data-lucide="users" class="w-5 h-5 text-green-500"></i>
+          </div>
+          <h2 class="font-heading font-bold text-xl text-gray-900">Pimpinan Daerah</h2>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div class="text-center p-6 bg-gray-50 rounded-xl">
+            <div class="w-20 h-20 rounded-full bg-primary-100 flex items-center justify-center mx-auto mb-3">
+              <i data-lucide="user" class="w-10 h-10 text-primary-400"></i>
+            </div>
+            <div class="font-heading font-bold text-gray-900">Bupati Grobogan</div>
+            <div class="text-sm text-gray-500 mt-1">Periode 2021–2026</div>
+          </div>
+          <div class="text-center p-6 bg-gray-50 rounded-xl">
+            <div class="w-20 h-20 rounded-full bg-primary-100 flex items-center justify-center mx-auto mb-3">
+              <i data-lucide="user" class="w-10 h-10 text-primary-400"></i>
+            </div>
+            <div class="font-heading font-bold text-gray-900">Wakil Bupati Grobogan</div>
+            <div class="text-sm text-gray-500 mt-1">Periode 2021–2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="space-y-6">
+      <!-- Data Statistik -->
+      <div class="bg-white rounded-2xl shadow-card p-6">
+        <h3 class="font-heading font-bold text-gray-900 mb-5">Data &amp; Statistik</h3>
+        <div class="space-y-4">
+          {% set stats = [
+            ('Luas Wilayah', '1.975,86 km²', 'map'),
+            ('Jumlah Penduduk', '±1,4 Juta jiwa', 'users'),
+            ('Kecamatan', '19 Kecamatan', 'building-2'),
+            ('Desa/Kelurahan', '280', 'home'),
+            ('Ketinggian', '30–500 m dpl', 'mountain'),
+            ('Curah Hujan', '1.200–2.400 mm/thn', 'cloud-rain'),
+          ] %}
+          {% for label, value, icon in stats %}
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-lg bg-primary-50 flex items-center justify-center shrink-0">
+              <i data-lucide="{{ icon }}" class="w-4 h-4 text-primary"></i>
+            </div>
+            <div>
+              <div class="text-xs text-gray-400">{{ label }}</div>
+              <div class="text-sm font-semibold text-gray-900">{{ value }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Batas Wilayah -->
+      <div class="bg-primary-600 text-white rounded-2xl p-6">
+        <h3 class="font-heading font-bold mb-4">Batas Wilayah</h3>
+        <div class="space-y-3 text-sm">
+          <div class="flex items-center gap-2"><span class="w-8 text-accent font-bold">U</span><span class="text-primary-100">Kab. Demak, Kudus, Pati</span></div>
+          <div class="flex items-center gap-2"><span class="w-8 text-accent font-bold">T</span><span class="text-primary-100">Kab. Pati, Blora</span></div>
+          <div class="flex items-center gap-2"><span class="w-8 text-accent font-bold">S</span><span class="text-primary-100">Kab. Sragen, Ngawi (Jatim)</span></div>
+          <div class="flex items-center gap-2"><span class="w-8 text-accent font-bold">B</span><span class="text-primary-100">Kab. Semarang, Boyolali, Demak</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

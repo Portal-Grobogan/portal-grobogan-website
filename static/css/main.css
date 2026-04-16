@@ -1,0 +1,98 @@
+/* ─────────────────────────────────────────
+   Portal Kabupaten Grobogan – main.css
+───────────────────────────────────────── */
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #0E4C92;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #0B3B72;
+}
+
+/* Card shadow utility */
+.shadow-card {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 4px 16px 0 rgba(0, 0, 0, 0.05);
+}
+
+/* Hero slider transitions */
+[x-cloak] { display: none !important; }
+
+/* Smooth slide transitions */
+.slide-enter {
+  opacity: 0;
+  transform: scale(1.02);
+}
+.slide-enter-active {
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.slide-enter-to {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fadeIn 0.5s ease forwards;
+}
+.animate-fade-in-delay-1 { animation-delay: 0.1s; }
+.animate-fade-in-delay-2 { animation-delay: 0.2s; }
+.animate-fade-in-delay-3 { animation-delay: 0.3s; }
+
+/* Line clamp utilities */
+.line-clamp-1 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+}
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* Prose content styling */
+.prose img {
+  border-radius: 0.75rem;
+}
+.prose table {
+  font-size: 0.875rem;
+}
+.prose blockquote {
+  border-left: 4px solid #1A5C38;
+  background: #E8F4ED;
+  padding: 1rem 1.5rem;
+  border-radius: 0 0.5rem 0.5rem 0;
+  font-style: normal;
+}
+
+/* Focus visible */
+*:focus-visible {
+  outline: 2px solid #0E4C92;
+  outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+  nav, footer, .no-print { display: none !important; }
+}

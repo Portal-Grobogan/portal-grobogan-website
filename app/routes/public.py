@@ -34,3 +34,8 @@ def index():
 def berita_detail(slug):
     # Placeholder for news detail
     return f"Halaman berita: {slug}"
+
+
+@public_bp.route("/profil")
+def profil():
+    return render_template("profil.html")

@@ -3,42 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Portal Resmi Kabupaten Grobogan - Layanan Publik, Berita Terkini, dan Informasi Daerah.">
   <title>{% block title %}Portal Grobogan{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  
+  <!-- Font Support -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}?v=1.1">
+  
+  <!-- Alpine.js -->
   <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  
+  {% block head %}{% endblock %}
 </head>
-<body class="font-body bg-site-bg text-text-body">
-  <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-100"
-       x-data="{ open: false }">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="h-16 flex items-center justify-between">
-        <a href="{{ url_for('public.index') }}" class="font-display text-primary font-semibold">
-          Portal Kabupaten Grobogan
-        </a>
-        <div class="hidden lg:flex items-center gap-6">
-          <a href="#" class="text-sm font-display hover:text-primary">Beranda</a>
-          <a href="#" class="text-sm font-display hover:text-primary">Layanan</a>
-          <a href="#" class="text-sm font-display hover:text-primary">Berita</a>
-        </div>
-        <button class="lg:hidden p-2 rounded-md hover:bg-gray-100" @click="open = !open" type="button">
-          <i data-lucide="menu" class="w-5 h-5" x-show="!open"></i>
-          <i data-lucide="x" class="w-5 h-5" x-show="open" style="display: none;"></i>
-        </button>
-      </div>
-    </div>
-    <div class="lg:hidden border-t border-gray-100" x-show="open" x-transition style="display: none;">
-      <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col gap-2">
-        <a href="#" class="rounded-lg px-3 py-2 hover:bg-primary-tint">Beranda</a>
-        <a href="#" class="rounded-lg px-3 py-2 hover:bg-primary-tint">Layanan</a>
-        <a href="#" class="rounded-lg px-3 py-2 hover:bg-primary-tint">Berita</a>
-      </div>
-    </div>
-  </nav>
+<body class="font-body bg-site-bg text-slate-700 antialiased">
+  
+  {% include 'components/navbar.html' %}
 
-  <main>{% block content %}{% endblock %}</main>
+  <main class="min-h-screen">
+    {% block content %}{% endblock %}
+  </main>
 
+  {% include 'components/footer.html' %}
+
+  <!-- Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script>lucide.createIcons();</script>
+  <script>
+    lucide.createIcons();
+    // Re-initialize icons after Alpine.js or HTMX updates if needed
+    document.addEventListener('alpine:initialized', () => {
+      lucide.createIcons();
+    });
+  </script>
   {% block scripts %}{% endblock %}
 </body>
 </html>

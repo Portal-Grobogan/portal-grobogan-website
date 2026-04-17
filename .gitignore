@@ -4,3 +4,5 @@ __pycache__/
 *.pyc
 logs/
 node_modules/
+# File Task List Pribadi
+TASK_LIST.md

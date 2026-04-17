@@ -1,0 +1,48 @@
+{% macro render_pagination(pagination, endpoint) %}
+{% if pagination.pages > 1 %}
+<nav class="flex items-center justify-center space-x-2 mt-12" aria-label="Pagination">
+  {# Previous Page #}
+  {% if pagination.has_prev %}
+  <a href="{{ url_for(endpoint, page=pagination.prev_num, **kwargs) }}" 
+     class="inline-flex items-center justify-center w-10 h-10 rounded-xl border border-slate-200 bg-white text-slate-600 hover:border-primary hover:text-primary transition-all shadow-sm">
+    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+  </a>
+  {% else %}
+  <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl border border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed">
+    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+  </span>
+  {% endif %}
+
+  {# Page Numbers #}
+  {% set pages = pagination.iter_pages() if pagination.iter_pages is callable else pagination.iter_pages %}
+  {% for page in pages %}
+    {% if page %}
+      {% if page != pagination.page %}
+      <a href="{{ url_for(endpoint, page=page, **kwargs) }}" 
+         class="inline-flex items-center justify-center w-10 h-10 rounded-xl border border-slate-200 bg-white text-sm font-bold text-slate-600 hover:border-primary hover:text-primary transition-all shadow-sm">
+        {{ page }}
+      </a>
+      {% else %}
+      <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-sm font-bold text-white shadow-lg shadow-primary/20">
+        {{ page }}
+      </span>
+      {% endif %}
+    {% else %}
+      <span class="px-2 text-slate-400">...</span>
+    {% endif %}
+  {% endfor %}
+
+  {# Next Page #}
+  {% if pagination.has_next %}
+  <a href="{{ url_for(endpoint, page=pagination.next_num, **kwargs) }}" 
+     class="inline-flex items-center justify-center w-10 h-10 rounded-xl border border-slate-200 bg-white text-slate-600 hover:border-primary hover:text-primary transition-all shadow-sm">
+    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+  </a>
+  {% else %}
+  <span class="inline-flex items-center justify-center w-10 h-10 rounded-xl border border-slate-100 bg-slate-50 text-slate-300 cursor-not-allowed">
+    <i data-lucide="chevron-right" class="w-5 h-5"></i>
+  </span>
+  {% endif %}
+</nav>
+{% endif %}
+{% endmacro %}

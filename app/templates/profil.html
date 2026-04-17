@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% block title %}Profil Wilayah | Portal Grobogan{% endblock %}
+
+{% block content %}
+<!-- Header Section -->
+<section class="relative h-[300px] bg-primary flex items-center justify-center overflow-hidden">
+    <!-- Decorative background elements -->
+    <div class="absolute inset-0 opacity-10 pointer-events-none">
+        <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <circle cx="10" cy="10" r="30" fill="currentColor"></circle>
+            <circle cx="90" cy="80" r="40" fill="currentColor"></circle>
+        </svg>
+    </div>
+    
+    <div class="relative z-10 text-center px-4">
+        <nav class="flex justify-center mb-4 text-slate-300 text-sm font-medium" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-2">
+                <li><a href="{{ url_for('public.index') }}" class="hover:text-white transition-colors">Beranda</a></li>
+                <li class="flex items-center space-x-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    <span class="text-white">Profil</span>
+                </li>
+            </ol>
+        </nav>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight">Profil Kabupaten Grobogan</h1>
+    </div>
+</section>
+
+<!-- Main Content Section -->
+<section class="pb-24 px-4 sm:px-6 lg:px-8 bg-slate-50" x-data="{ activeSection: 'visimisi' }">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex flex-col lg:flex-row gap-12 -mt-20 relative z-20">
+            
+            <!-- Sidebar Internal Navigation -->
+            <aside class="lg:w-1/3">
+                <div class="bg-white rounded-2xl shadow-xl shadow-slate-200/60 p-4 border border-slate-100 sticky top-28">
+                    <h3 class="px-4 pt-4 pb-6 text-sm font-bold text-slate-400 uppercase tracking-widest">Navigasi Profil</h3>
+                    <nav class="space-y-2">
+                        <button @click="activeSection = 'visimisi'" 
+                                :class="activeSection === 'visimisi' ? 'bg-primary/5 text-primary border-primary' : 'text-slate-600 hover:bg-slate-50 border-transparent'"
+                                class="w-full flex items-center px-4 py-4 rounded-xl border-l-4 font-bold transition-all text-left">
+                            <i data-lucide="target" class="w-5 h-5 mr-3"></i>
+                            Visi & Misi
+                        </button>
+                        <button @click="activeSection = 'sejarah'" 
+                                :class="activeSection === 'sejarah' ? 'bg-primary/5 text-primary border-primary' : 'text-slate-600 hover:bg-slate-50 border-transparent'"
+                                class="w-full flex items-center px-4 py-4 rounded-xl border-l-4 font-bold transition-all text-left">
+                            <i data-lucide="history" class="w-5 h-5 mr-3"></i>
+                            Sejarah Singkat
+                        </button>
+                        <button @click="activeSection = 'struktur'" 
+                                :class="activeSection === 'struktur' ? 'bg-primary/5 text-primary border-primary' : 'text-slate-600 hover:bg-slate-50 border-transparent'"
+                                class="w-full flex items-center px-4 py-4 rounded-xl border-l-4 font-bold transition-all text-left">
+                            <i data-lucide="layout-grid" class="w-5 h-5 mr-3"></i>
+                            Struktur Organisasi
+                        </button>
+                        <button @click="activeSection = 'geografis'" 
+                                :class="activeSection === 'geografis' ? 'bg-primary/5 text-primary border-primary' : 'text-slate-600 hover:bg-slate-50 border-transparent'"
+                                class="w-full flex items-center px-4 py-4 rounded-xl border-l-4 font-bold transition-all text-left">
+                            <i data-lucide="map-pin" class="w-5 h-5 mr-3"></i>
+                            Letak Geografis
+                        </button>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- Content Area -->
+            <main class="lg:w-2/3">
+                <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 p-8 md:p-12 min-h-[600px]">
+                    
+                    <!-- Visi Misi Section -->
+                    <div x-show="activeSection === 'visimisi'" 
+                         x-transition:enter="transition ease-out duration-300"
+                         x-transition:enter-start="opacity-0 translate-y-4"
+                         x-transition:enter-end="opacity-100 translate-y-0">
+                        <h2 class="text-3xl font-extrabold text-slate-900 mb-8 flex items-center">
+                            <span class="w-1.5 h-8 bg-primary rounded-full mr-4"></span>
+                            Visi & Misi
+                        </h2>
+                        
+                        <div class="prose prose-slate max-w-none">
+                            <div class="bg-slate-50 border-l-4 border-accent p-6 rounded-r-2xl mb-10">
+                                <h3 class="text-accent font-bold uppercase tracking-widest text-xs mb-2">Visi Kabupaten Grobogan</h3>
+                                <p class="text-xl font-bold text-slate-800 leading-relaxed italic">
+                                    "Terwujudnya Masyarakat Grobogan yang Sejahtera, Berdaya Saing, Beriman, dan Berbudaya."
+                                </p>
+                            </div>
+
+                            <h3 class="text-xl font-bold text-slate-900 mb-6 uppercase tracking-wider text-sm">Misi Pembangunan</h3>
+                            <ul class="space-y-6">
+                                <li class="flex items-start">
+                                    <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold flex-shrink-0 mr-4">1</div>
+                                    <p class="text-slate-600 leading-relaxed">Meningkatkan kualitas sumber daya manusia yang berdaya saing dan religius.</p>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold flex-shrink-0 mr-4">2</div>
+                                    <p class="text-slate-600 leading-relaxed">Mewujudkan tata kelola pemerintahan yang bersih, transparan, dan akuntabel.</p>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold flex-shrink-0 mr-4">3</div>
+                                    <p class="text-slate-600 leading-relaxed">Meningkatkan pertumbuhan ekonomi daerah berbasis potensi lokal secara berkelanjutan.</p>
+                                </li>
+                                <li class="flex items-start">
+                                    <div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold flex-shrink-0 mr-4">4</div>
+                                    <p class="text-slate-600 leading-relaxed">Pemerataan pembangunan infrastruktur wilayah yang terintegrasi dan berkualitas.</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Sejarah Section -->
+                    <div x-show="activeSection === 'sejarah'" style="display: none;"
+                         x-transition:enter="transition ease-out duration-300"
+                         x-transition:enter-start="opacity-0 translate-y-4"
+                         x-transition:enter-end="opacity-100 translate-y-0">
+                        <h2 class="text-3xl font-extrabold text-slate-900 mb-8 flex items-center">
+                            <span class="w-1.5 h-8 bg-primary rounded-full mr-4"></span>
+                            Sejarah Singkat
+                        </h2>
+                        <div class="prose prose-slate max-w-none text-slate-600 leading-loose">
+                            <p class="mb-6">
+                                Kabupaten Grobogan merupakan kabupaten kedua terluas di Jawa Tengah setelah Kabupaten Cilacap. Nama "Grobogan" memiliki sejarah panjang yang berkaitan dengan masa Kesultanan Demak dan Kerajaan Mataram Islam.
+                            </p>
+                            <p class="mb-6">
+                                Menurut sejarah, wilayah ini merupakan tempat pusat pemerintahan Kadipaten Grobogan yang didirikan oleh Sunan Ngudung. Nama Grobogan berasal dari peristiwa diketemukannya sebuah "Grobog" (sebuah kotak besar dari kayu) yang berisi pusaka yang ditinggalkan oleh utusan Kerajaan Majapahit.
+                            </p>
+                            <div class="bg-primary/5 p-6 rounded-2xl border border-primary/10 my-8">
+                                <p class="font-semibold text-primary italic">
+                                    "Hari Jadi Kabupaten Grobogan ditetapkan jatuh pada tanggal 4 Maret 1726, yang bertepatan dengan pengangkatan RT. Martopuro sebagai Bupati Grobogan pertama."
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Struktur Section -->
+                    <div x-show="activeSection === 'struktur'" style="display: none;"
+                         x-transition:enter="transition ease-out duration-300"
+                         x-transition:enter-start="opacity-0 translate-y-4"
+                         x-transition:enter-end="opacity-100 translate-y-0">
+                        <h2 class="text-3xl font-extrabold text-slate-900 mb-8 flex items-center">
+                            <span class="w-1.5 h-8 bg-primary rounded-full mr-4"></span>
+                            Struktur Organisasi
+                        </h2>
+                        <div class="relative overflow-hidden rounded-2xl border border-slate-100 shadow-sm">
+                            <img src="https://images.unsplash.com/photo-1542362567-b07e54358753?auto=format&fit=crop&q=80&w=1200" 
+                                 alt="Struktur Organisasi" 
+                                 class="w-full h-auto">
+                            <div class="absolute inset-0 bg-slate-900/60 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity">
+                                <button class="px-6 py-3 bg-white text-slate-900 rounded-xl font-bold shadow-xl flex items-center">
+                                    <i data-lucide="maximize-2" class="w-5 h-5 mr-2"></i>
+                                    Lihat Gambar Penuh
+                                </button>
+                            </div>
+                        </div>
+                        <p class="mt-6 text-sm text-slate-500 text-center italic">Bagan Organisasi Pemerintah Kabupaten Grobogan Tahun 2024</p>
+                    </div>
+
+                    <!-- Geografis Section -->
+                    <div x-show="activeSection === 'geografis'" style="display: none;"
+                         x-transition:enter="transition ease-out duration-300"
+                         x-transition:enter-start="opacity-0 translate-y-4"
+                         x-transition:enter-end="opacity-100 translate-y-0">
+                        <h2 class="text-3xl font-extrabold text-slate-900 mb-8 flex items-center">
+                            <span class="w-1.5 h-8 bg-primary rounded-full mr-4"></span>
+                            Letak Geografis
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                                <h4 class="font-bold text-slate-800 mb-2 flex items-center">
+                                    <i data-lucide="map" class="w-5 h-5 mr-2 text-primary"></i>
+                                    Luas Wilayah
+                                </h4>
+                                <p class="text-2xl font-black text-slate-900">1.975,86 <span class="text-sm font-medium text-slate-500">km²</span></p>
+                            </div>
+                            <div class="bg-slate-50 p-6 rounded-2xl border border-slate-100">
+                                <h4 class="font-bold text-slate-800 mb-2 flex items-center">
+                                    <i data-lucide="navigation" class="w-5 h-5 mr-2 text-primary"></i>
+                                    Letak Koordinat
+                                </h4>
+                                <p class="text-lg font-bold text-slate-900">110°32' - 111°15' BT</p>
+                                <p class="text-lg font-bold text-slate-900">6°55' - 7°16' LS</p>
+                            </div>
+                        </div>
+                        <div class="prose prose-slate max-w-none text-slate-600 leading-loose">
+                            <p>
+                                Kabupaten Grobogan berbatasan langsung dengan Kabupaten Pati dan Kabupaten Kudus di sebelah Utara, Kabupaten Blora di sebelah Timur, Kabupaten Ngawi, Kabupaten Sragen, dan Kabupaten Boyolali di sebelah Selatan, serta Kabupaten Semarang dan Kabupaten Demak di sebelah Barat.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}Layanan Kependudukan | Portal Grobogan{% endblock %}
+
+{% block content %}
+<section class="bg-slate-50 py-12">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Breadcrumb -->
+        <nav class="flex mb-8 text-slate-400 text-sm font-medium" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-2">
+                <li><a href="{{ url_for('public.index') }}" class="hover:text-primary transition-colors text-slate-500">Beranda</a></li>
+                <li class="flex items-center space-x-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    <a href="{{ url_for('public.layanan') }}" class="hover:text-primary transition-colors text-slate-500">Layanan</a>
+                </li>
+                <li class="flex items-center space-x-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    <span class="text-slate-900">Kependudukan</span>
+                </li>
+            </ol>
+        </nav>
+
+        <div class="bg-white rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+            <div class="p-8 md:p-12 border-b border-slate-100 bg-slate-50/50">
+                <div class="flex items-center gap-6">
+                    <div class="w-20 h-20 bg-primary text-white rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
+                        <i data-lucide="users" class="w-10 h-10"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-3xl font-extrabold text-slate-900 mb-2">Administrasi Kependudukan</h1>
+                        <p class="text-slate-500 font-medium">Panduan persyaratan dan prosedur pengurusan dokumen kependudukan.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-8 md:p-12">
+                <h2 class="text-xl font-bold text-slate-900 mb-8 flex items-center">
+                    <span class="w-1.5 h-6 bg-primary rounded-full mr-3"></span>
+                    Daftar Persyaratan Layanan
+                </h2>
+
+                <div class="divide-y divide-slate-100">
+                    <!-- Item 1 -->
+                    <div class="py-6 first:pt-0 last:pb-0">
+                        <div class="flex items-start gap-4">
+                            <div class="mt-1 text-primary">
+                                <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-900 mb-2">Pembuatan KTP Elektronik baru</h3>
+                                <ul class="text-slate-600 text-sm space-y-2 list-disc pl-5">
+                                    <li>Berusia 17 tahun atau sudah menikah.</li>
+                                    <li>Fotokopi Kartu Keluarga (KK).</li>
+                                    <li>Surat pengantar dari Desa/Kelurahan (jika diperlukan).</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 2 -->
+                    <div class="py-6">
+                        <div class="flex items-start gap-4">
+                            <div class="mt-1 text-primary">
+                                <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-900 mb-2">Perubahan Data Kartu Keluarga (KK)</h3>
+                                <ul class="text-slate-600 text-sm space-y-2 list-disc pl-5">
+                                    <li>Kartu Keluarga asli yang lama.</li>
+                                    <li>Fotokopi Akta Kelahiran/Ijazah (untuk update nama/lahir).</li>
+                                    <li>Fotokopi Buku Nikah/Akta Cerai (untuk update status).</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Item 3 -->
+                    <div class="py-6">
+                        <div class="flex items-start gap-4">
+                            <div class="mt-1 text-primary">
+                                <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-900 mb-2">Akta Kelahiran</h3>
+                                <ul class="text-slate-600 text-sm space-y-2 list-disc pl-5">
+                                    <li>Surat Keterangan Kelahiran dari Rumah Sakit/Bidan.</li>
+                                    <li>Fotokopi Buku Nikah orang tua yang dilegalisir.</li>
+                                    <li>Fotokopi KTP kedua orang tua dan KK.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="mt-12 bg-indigo-50 rounded-2xl p-6 border border-indigo-100">
+                    <div class="flex items-center gap-4 text-indigo-700">
+                        <i data-lucide="info" class="w-6 h-6"></i>
+                        <p class="text-sm font-semibold">Layanan online tersedia setiap hari 24 jam melalui aplikasi Grobogan Terpadu.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-12 text-center">
+            <a href="{{ url_for('public.layanan') }}" class="inline-flex items-center text-slate-500 hover:text-primary font-bold transition-all">
+                <i data-lucide="arrow-left" class="mr-2 w-4 h-4"></i>
+                Kembali ke Daftar Layanan
+            </a>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

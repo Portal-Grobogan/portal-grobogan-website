@@ -2,13 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap");
-
 @layer base {
   body {
-    @apply bg-site-bg text-text-body font-body;
+    @apply bg-site-bg text-slate-600 font-body;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display text-charcoal;
+    @apply font-display text-slate-900 font-bold;
   }
 }

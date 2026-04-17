@@ -2,68 +2,99 @@
 {% block title %}Beranda | Portal Grobogan{% endblock %}
 
 {% block content %}
-<section x-data="heroSlider()" x-init="init()" class="relative bg-primary text-white">
-  <div class="max-w-7xl mx-auto px-4 py-16">
-    <template x-for="(slide, idx) in slides" :key="idx">
-      <div x-show="current === idx" x-transition>
-        <p class="text-sm uppercase tracking-wide text-accent">Program Unggulan</p>
-        <h1 class="text-4xl font-display font-extrabold mt-3" x-text="slide.title"></h1>
-        <p class="mt-3 max-w-2xl text-white/90" x-text="slide.desc"></p>
-      </div>
-    </template>
-    <div class="mt-6 flex gap-2">
-      <template x-for="(slide, idx) in slides" :key="'dot-'+idx">
-        <button class="h-2.5 rounded-full transition-all"
-                :class="current === idx ? 'w-8 bg-accent' : 'w-2.5 bg-white/40'"
-                @click="current = idx"
-                type="button"></button>
-      </template>
+{% from 'components/card_layanan.html' import render_layanan %}
+{% from 'components/card_berita.html' import render_berita %}
+
+{# 3.2 Hero Section #}
+{% include 'components/hero_slider.html' %}
+
+{# 3.2 Layanan Section #}
+<section class="py-20 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Layanan Publik Utama</h2>
+            <div class="w-20 h-1.5 bg-primary mx-auto mt-4 rounded-full"></div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+            {{ render_layanan({'nama': 'Kependudukan', 'deskripsi': 'Urus KTP, KK, Akta', 'icon_name': 'users', 'url_path': '#'}) }}
+            {{ render_layanan({'nama': 'Kesehatan', 'deskripsi': 'Info RS & Vaksin', 'icon_name': 'heart-pulse', 'url_path': '#'}) }}
+            {{ render_layanan({'nama': 'Pendidikan', 'deskripsi': 'Sekolah & Beasiswa', 'icon_name': 'graduation-cap', 'url_path': '#'}) }}
+            {{ render_layanan({'nama': 'Kebencanaan', 'deskripsi': 'Berita Darurat Realtime', 'icon_name': 'alert-triangle', 'url_path': '#'}) }}
+            {{ render_layanan({'nama': 'Pariwisata', 'deskripsi': 'Jelajah Wisata Alam', 'icon_name': 'map', 'url_path': '#'}) }}
+        </div>
     </div>
-  </div>
 </section>
 
-<section class="max-w-7xl mx-auto px-4 py-12" x-data="{ tab: 'berita' }">
-  <div class="flex items-center justify-between mb-6">
-    <h2 class="text-2xl font-display font-bold">Informasi Terkini</h2>
-    <div class="flex gap-2 p-1 bg-gray-100 rounded-lg">
-      <button @click="tab = 'berita'" type="button" class="px-4 py-1.5 rounded-md text-sm"
-              :class="tab === 'berita' ? 'bg-white text-primary' : 'text-gray-600'">Berita</button>
-      <button @click="tab = 'pengumuman'" type="button" class="px-4 py-1.5 rounded-md text-sm"
-              :class="tab === 'pengumuman' ? 'bg-white text-primary' : 'text-gray-600'">Pengumuman</button>
-    </div>
-  </div>
+{# 3.2 Berita Section #}
+<section class="py-20 bg-white" x-data="{ tab: 'berita' }">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row md:items-center justify-between mb-12 gap-8">
+            <div>
+                <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Portal Informasi</h2>
+                <p class="text-slate-500 mt-2">Update terkini perkembangan Kabupaten Grobogan.</p>
+            </div>
+            <div class="flex p-1 bg-slate-100 rounded-xl self-start md:self-center">
+                <button @click="tab = 'berita'" 
+                        :class="tab === 'berita' ? 'bg-primary text-white shadow-lg' : 'text-slate-600 hover:text-slate-900'"
+                        class="px-8 py-2.5 rounded-lg text-sm font-bold transition-all duration-300">
+                    Berita
+                </button>
+                <button @click="tab = 'pengumuman'" 
+                        :class="tab === 'pengumuman' ? 'bg-primary text-white shadow-lg' : 'text-slate-600 hover:text-slate-900'"
+                        class="px-8 py-2.5 rounded-lg text-sm font-bold transition-all duration-300">
+                    Pengumuman
+                </button>
+            </div>
+        </div>
 
-  <div x-show="tab === 'berita'" class="grid gap-4 md:grid-cols-2">
-    <div class="rounded-xl border border-gray-200 p-4 flex items-center gap-3">
-      <i data-lucide="newspaper" class="w-5 h-5 text-primary"></i>
-      <p>Contoh berita terbaru dari pemerintah daerah.</p>
+        <div x-show="tab === 'berita'" 
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 translate-y-8"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+             {{ render_berita({'judul': 'Pemerintah Kabupaten Grobogan Meraih Penghargaan...', 'slug': 'berita-1', 'kategori': 'Prestasi', 'ringkasan': 'Grobogan berhasil mempertahankan predikat WTP untuk yang ke-10 kalinya secara berturut-turut.'}) }}
+             {{ render_berita({'judul': 'Pembangunan Infrastruktur Jalan di Purwodadi...', 'slug': 'berita-2', 'kategori': 'Infrastruktur', 'ringkasan': 'Proyek perbaikan jalan di jalur utama Purwodadi ditargetkan selesai sebelum lebaran.'}) }}
+             {{ render_berita({'judul': 'Festival Kuliner Tradisional Grobogan 2026...', 'slug': 'berita-3', 'kategori': 'Budaya', 'ringkasan': 'Mari rayakan kekayaan kuliner asli Grobogan di alun-alun Purwodadi akhir pekan ini.'}) }}
+        </div>
+
+        <div x-show="tab === 'pengumuman'" 
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0 translate-y-4"
+             x-transition:enter-end="opacity-100 translate-y-0"
+             style="display: none;" class="grid gap-6">
+            <div class="bg-slate-50 p-8 rounded-2xl border border-slate-100 flex items-center gap-6 group hover:border-primary/30 transition-all">
+                <div class="w-16 h-16 bg-white text-primary rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm group-hover:shadow-md transition-all">
+                    <i data-lucide="bell" class="w-8 h-8"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-slate-900">Jadwal Pemeliharaan Sistem Layanan Online</h3>
+                    <p class="text-slate-600 mt-1">Layanan kependudukan tidak tersedia pada hari libur nasional untuk pemeliharaan rutin.</p>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-  <div x-show="tab === 'pengumuman'" style="display: none;" class="grid gap-4 md:grid-cols-2">
-    <div class="rounded-xl border border-gray-200 p-4 flex items-center gap-3">
-      <i data-lucide="bell" class="w-5 h-5 text-accent"></i>
-      <p>Contoh pengumuman resmi untuk warga Grobogan.</p>
-    </div>
-  </div>
 </section>
-{% endblock %}
 
-{% block scripts %}
-<script>
-function heroSlider() {
-  return {
-    current: 0,
-    slides: [
-      { title: "Portal Layanan Publik Terpadu", desc: "Akses layanan pemerintah dari satu tempat." },
-      { title: "Informasi Kebencanaan Realtime", desc: "Pantau update situasi penting untuk keselamatan warga." },
-      { title: "Pengaduan Warga Cepat Tanggap", desc: "Sampaikan aspirasi dan keluhan dengan mudah." },
-    ],
-    init() {
-      setInterval(() => {
-        this.current = (this.current + 1) % this.slides.length;
-      }, 5000);
-    },
-  };
-}
-</script>
+{# 3.2 CTA Banner #}
+<section class="py-16 bg-primary relative overflow-hidden">
+    <!-- Subtle SVG Pattern -->
+    <div class="absolute inset-0 opacity-10 pointer-events-none">
+        <svg class="h-full w-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M0 100 C 20 0 50 0 100 100 Z" fill="currentColor"></path>
+        </svg>
+    </div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="bg-white/10 backdrop-blur-md rounded-3xl p-8 md:p-12 border border-white/20 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="text-center md:text-left">
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4">Punya Keluhan atau Aspirasi?</h2>
+                <p class="text-slate-200 text-lg max-w-xl">Laporkan melalui portal pengaduan resmi kami. Suara Anda sangat berarti bagi kemajuan Grobogan.</p>
+            </div>
+            <a href="#" class="inline-flex items-center px-8 py-4 bg-accent hover:bg-accent-dark text-white font-bold rounded-xl shadow-lg transition-all group shrink-0">
+                Sampaikan Sekarang
+                <i data-lucide="send" class="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
+            </a>
+        </div>
+    </div>
+</section>
 {% endblock %}

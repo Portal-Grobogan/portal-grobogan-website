@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block title %}Pantauan Kebencanaan | Portal Grobogan{% endblock %}
+
+{% block content %}
+<section class="bg-slate-50 py-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <nav class="flex mb-8 text-slate-400 text-sm font-medium" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-2">
+                <li><a href="{{ url_for('public.index') }}" class="hover:text-primary transition-colors text-slate-500">Beranda</a></li>
+                <li class="flex items-center space-x-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    <a href="{{ url_for('public.layanan') }}" class="hover:text-primary transition-colors text-slate-500">Layanan</a>
+                </li>
+                <li class="flex items-center space-x-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    <span class="text-slate-900">Kebencanaan</span>
+                </li>
+            </ol>
+        </nav>
+
+        <div class="mb-12">
+            <div class="flex items-center gap-4 mb-4">
+                <span class="px-4 py-1.5 bg-emerald-100 text-emerald-800 text-xs font-bold rounded-full uppercase tracking-widest shadow-sm">
+                    Kondisi Aman
+                </span>
+                <span class="text-xs text-slate-400 font-medium">Terakhir diperbarui: Hari ini, 15:42 WIB</span>
+            </div>
+            <h1 class="text-4xl font-extrabold text-slate-900 tracking-tight">Status Kebencanaan Wilayah</h1>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <!-- Card 1: Banjir -->
+            <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-full flex items-center justify-center -mr-8 -mt-8 group-hover:scale-110 transition-transform">
+                    <i data-lucide="waves" class="w-8 h-8 text-blue-600 mr-4 mt-4"></i>
+                </div>
+                <span class="px-3 py-1 bg-emerald-100 text-emerald-700 text-[10px] font-bold rounded-lg uppercase">Normal</span>
+                <h3 class="text-xl font-bold text-slate-900 mt-6 mb-2">Potensi Banjir</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Tinggi muka air di bendungan Kedung Ombo dan wilayah aliran sungai Lusi terpantau normal.</p>
+                <div class="mt-8 pt-6 border-t border-slate-50">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Siaga</span>
+                        <span class="text-sm font-black text-slate-900">0.5m / Normal</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2: Cuaca Ekstrim -->
+            <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-yellow-50 rounded-bl-full flex items-center justify-center -mr-8 -mt-8 group-hover:scale-110 transition-transform">
+                    <i data-lucide="cloud-lightning" class="w-8 h-8 text-yellow-600 mr-4 mt-4"></i>
+                </div>
+                <span class="px-3 py-1 bg-yellow-100 text-yellow-700 text-[10px] font-bold rounded-lg uppercase">Waspada</span>
+                <h3 class="text-xl font-bold text-slate-900 mt-6 mb-2">Cuaca Ekstrim</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Potensi hujan lebat disertai angin kencang di wilayah Purwodadi dan sekitarnya pada sore hari.</p>
+                <div class="mt-8 pt-6 border-t border-slate-50">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Peringatan</span>
+                        <span class="text-sm font-black text-yellow-600">Angin Kencang</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3: Gempa Bumi -->
+            <div class="bg-white p-8 rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-red-50 rounded-bl-full flex items-center justify-center -mr-8 -mt-8 group-hover:scale-110 transition-transform">
+                    <i data-lucide="activity" class="w-8 h-8 text-red-600 mr-4 mt-4"></i>
+                </div>
+                <span class="px-3 py-1 bg-emerald-100 text-emerald-700 text-[10px] font-bold rounded-lg uppercase">Normal</span>
+                <h3 class="text-xl font-bold text-slate-900 mt-6 mb-2">Aktivitas Seismik</h3>
+                <p class="text-slate-500 text-sm leading-relaxed">Tidak terdeteksi aktivitas getaran tanah atau potensi pergerakan sesar di wilayah Grobogan sekitarnya.</p>
+                <div class="mt-8 pt-6 border-t border-slate-50">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">SR</span>
+                        <span class="text-sm font-black text-slate-900">0.0 SR</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-slate-900 rounded-3xl p-10 relative overflow-hidden">
+            <div class="absolute inset-0 opacity-20 pointer-events-none">
+                <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=2072" class="w-full h-full object-cover">
+            </div>
+            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10 text-white">
+                <div class="text-center md:text-left">
+                    <h2 class="text-2xl font-bold mb-4">Butuh Bantuan Darurat?</h2>
+                    <p class="text-slate-400 max-w-xl">Hubungi tim BPBD Kabupaten Grobogan jika terjadi situasi kritis di sekitar Anda. Layanan siaga 24 jam.</p>
+                </div>
+                <a href="tel:112" class="flex items-center px-10 py-5 bg-red-600 hover:bg-red-700 text-white font-black text-2xl rounded-2xl shadow-2xl transition-all hover:scale-105 active:scale-95">
+                    <i data-lucide="phone-call" class="mr-4 w-8 h-8 animate-bounce"></i>
+                    PANGGIL 112
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

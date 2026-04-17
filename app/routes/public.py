@@ -39,3 +39,28 @@ def berita_detail(slug):
 @public_bp.route("/profil")
 def profil():
     return render_template("profil.html")
+
+
+@public_bp.route("/layanan")
+def layanan():
+    return render_template("layanan/index.html")
+
+
+@public_bp.route("/layanan/kependudukan")
+def layanan_kependudukan():
+    return render_template("layanan/kependudukan.html")
+
+
+@public_bp.route("/layanan/kesehatan")
+def layanan_kesehatan():
+    return render_template("layanan/kesehatan.html")
+
+
+@public_bp.route("/layanan/kebencanaan")
+def layanan_kebencanaan():
+    return render_template("layanan/kebencanaan.html")
+
+
+@public_bp.route("/layanan/pariwisata")
+def layanan_pariwisata():
+    return render_template("layanan/pariwisata.html")

@@ -1,0 +1,137 @@
+{% extends "base.html" %}
+{% block title %}Cek Status Pengaduan – Kabupaten Grobogan{% endblock %}
+{% block content %}
+
+<div class="bg-gradient-to-br from-primary-700 to-primary-600 text-white py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center gap-2 text-primary-200 text-sm mb-4">
+      <a href="{{ url_for('public.index') }}" class="hover:text-white">Beranda</a>
+      <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      <a href="{{ url_for('public.pengaduan') }}" class="hover:text-white">Pengaduan</a>
+      <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      <span>Cek Status</span>
+    </div>
+    <h1 class="font-heading font-extrabold text-4xl sm:text-5xl mb-3">Cek Status Pengaduan</h1>
+    <p class="text-primary-100 text-lg">Lacak perkembangan pengaduan Anda</p>
+  </div>
+</div>
+
+<div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+  <!-- Form -->
+  <div class="bg-white rounded-2xl shadow-card p-8 mb-8">
+    <h2 class="font-heading font-bold text-lg text-gray-900 mb-5">Masukkan Data Pengaduan</h2>
+    <form method="POST" novalidate>
+      {{ form.hidden_tag() }}
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 mb-5">
+        <div>
+          {{ form.nomor_id.label(class="block text-sm font-medium text-gray-700 mb-1") }}
+          {{ form.nomor_id(class="w-full px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition " + ("border-red-400" if form.nomor_id.errors else "border-gray-300"), placeholder="xxxx-xxxx-xxxx") }}
+          {% for err in form.nomor_id.errors %}
+            <p class="text-xs text-red-600 mt-1">{{ err }}</p>
+          {% endfor %}
+        </div>
+        <div>
+          {{ form.email.label(class="block text-sm font-medium text-gray-700 mb-1") }}
+          {{ form.email(class="w-full px-4 py-2.5 border rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition " + ("border-red-400" if form.email.errors else "border-gray-300"), placeholder="email@contoh.com") }}
+          {% for err in form.email.errors %}
+            <p class="text-xs text-red-600 mt-1">{{ err }}</p>
+          {% endfor %}
+        </div>
+      </div>
+      <button type="submit"
+              class="w-full flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-xl hover:bg-primary-700 transition">
+        <i data-lucide="search" class="w-5 h-5"></i>
+        {{ form.submit.label.text }}
+      </button>
+    </form>
+  </div>
+
+  <!-- Result -->
+  {% if result %}
+  <div class="bg-white rounded-2xl shadow-card overflow-hidden">
+    <!-- Status header -->
+    {% set status_colors = {
+      'masuk': 'bg-blue-50 border-blue-200 text-blue-800',
+      'proses': 'bg-yellow-50 border-yellow-200 text-yellow-800',
+      'selesai': 'bg-green-50 border-green-200 text-green-800',
+      'ditolak': 'bg-red-50 border-red-200 text-red-800',
+    } %}
+    {% set status_class = status_colors.get(result.status, 'bg-gray-50 border-gray-200 text-gray-800') %}
+    <div class="p-6 border-b border-gray-100">
+      <div class="flex items-center justify-between">
+        <h3 class="font-heading font-bold text-lg text-gray-900">Detail Pengaduan</h3>
+        <span class="px-3 py-1 rounded-full text-xs font-semibold border {{ status_class }} capitalize">
+          {{ result.status }}
+        </span>
+      </div>
+    </div>
+
+    <div class="p-6 space-y-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <div class="text-xs text-gray-400 mb-1">Nomor ID</div>
+          <div class="font-mono text-sm font-semibold text-gray-900">{{ result.id }}</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400 mb-1">Kategori</div>
+          <div class="text-sm font-medium text-gray-700 capitalize">{{ result.kategori or '-' }}</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400 mb-1">Nama Pelapor</div>
+          <div class="text-sm font-medium text-gray-700">{{ result.nama_pelapor }}</div>
+        </div>
+        <div>
+          <div class="text-xs text-gray-400 mb-1">Tanggal Dikirim</div>
+          <div class="text-sm font-medium text-gray-700">{{ result.created_at[:10] if result.created_at else '-' }}</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="text-xs text-gray-400 mb-1">Judul Pengaduan</div>
+        <div class="text-sm font-semibold text-gray-900">{{ result.judul }}</div>
+      </div>
+
+      <div>
+        <div class="text-xs text-gray-400 mb-1">Deskripsi</div>
+        <div class="text-sm text-gray-600 bg-gray-50 rounded-xl p-4">{{ result.deskripsi }}</div>
+      </div>
+
+      {% if result.tanggapan %}
+      <div class="bg-primary-50 rounded-xl p-4 border border-primary-100">
+        <div class="text-xs font-semibold text-primary mb-2 flex items-center gap-1.5">
+          <i data-lucide="message-square" class="w-3.5 h-3.5"></i> Tanggapan Pemerintah
+        </div>
+        <div class="text-sm text-gray-700">{{ result.tanggapan }}</div>
+      </div>
+      {% endif %}
+
+      <!-- Progress -->
+      <div>
+        <div class="text-xs text-gray-400 mb-3">Status Proses</div>
+        <div class="flex items-center gap-0">
+          {% set steps = [('masuk', 'Diterima'), ('proses', 'Diproses'), ('selesai', 'Selesai')] %}
+          {% for step_key, step_label in steps %}
+            {% set is_done = (result.status == step_key) or
+                             (result.status == 'selesai' and step_key in ['masuk', 'proses']) or
+                             (result.status == 'proses' and step_key == 'masuk') %}
+            <div class="flex items-center {% if not loop.last %}flex-1{% endif %}">
+              <div class="flex flex-col items-center">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold
+                            {{ 'bg-primary text-white' if is_done else 'bg-gray-200 text-gray-400' }}">
+                  {% if is_done %}<i data-lucide="check" class="w-4 h-4"></i>{% else %}{{ loop.index }}{% endif %}
+                </div>
+                <div class="text-xs text-gray-500 mt-1">{{ step_label }}</div>
+              </div>
+              {% if not loop.last %}
+                <div class="flex-1 h-0.5 mx-2 mb-4 {{ 'bg-primary' if is_done else 'bg-gray-200' }}"></div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

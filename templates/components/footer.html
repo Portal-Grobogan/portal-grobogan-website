@@ -1,0 +1,86 @@
+<footer class="bg-primary-600 text-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+      <!-- Brand -->
+      <div class="lg:col-span-2">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
+            <i data-lucide="shield-check" class="w-6 h-6 text-accent"></i>
+          </div>
+          <div>
+            <div class="font-heading font-bold text-lg leading-none">Kabupaten Grobogan</div>
+            <div class="text-primary-200 text-sm">Portal Informasi & Layanan</div>
+          </div>
+        </div>
+        <p class="text-primary-100 text-sm leading-relaxed mb-4 max-w-sm">
+          Portal resmi Pemerintah Kabupaten Grobogan untuk informasi, layanan publik, dan pengaduan masyarakat.
+        </p>
+        <div class="space-y-2 text-sm text-primary-100">
+          <div class="flex items-start gap-2">
+            <i data-lucide="map-pin" class="w-4 h-4 mt-0.5 shrink-0 text-accent"></i>
+            <span>Jl. Jend. Sudirman No.1, Purwodadi, Grobogan, Jawa Tengah 58111</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i data-lucide="phone" class="w-4 h-4 shrink-0 text-accent"></i>
+            <span>(0292) 421115</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i data-lucide="mail" class="w-4 h-4 shrink-0 text-accent"></i>
+            <span>info@grobogan.go.id</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h4 class="font-heading font-semibold text-base mb-4 text-accent">Tautan Cepat</h4>
+        <ul class="space-y-2 text-sm text-primary-100">
+          <li><a href="{{ url_for('public.index') }}" class="hover:text-white transition">Beranda</a></li>
+          <li><a href="{{ url_for('public.profil') }}" class="hover:text-white transition">Profil Daerah</a></li>
+          <li><a href="{{ url_for('public.layanan') }}" class="hover:text-white transition">Layanan Publik</a></li>
+          <li><a href="{{ url_for('public.berita') }}" class="hover:text-white transition">Berita & Info</a></li>
+          <li><a href="{{ url_for('public.pengaduan') }}" class="hover:text-white transition">Pengaduan</a></li>
+          <li><a href="{{ url_for('public.pengaduan_cek') }}" class="hover:text-white transition">Cek Status Pengaduan</a></li>
+        </ul>
+      </div>
+
+      <!-- Layanan -->
+      <div>
+        <h4 class="font-heading font-semibold text-base mb-4 text-accent">Layanan</h4>
+        <ul class="space-y-2 text-sm text-primary-100">
+          <li><a href="{{ url_for('public.layanan_kependudukan') }}" class="hover:text-white transition">Kependudukan</a></li>
+          <li><a href="{{ url_for('public.layanan_kesehatan') }}" class="hover:text-white transition">Kesehatan</a></li>
+          <li><a href="{{ url_for('public.layanan_kebencanaan') }}" class="hover:text-white transition">Kebencanaan</a></li>
+          <li><a href="{{ url_for('public.layanan_pariwisata') }}" class="hover:text-white transition">Pariwisata</a></li>
+        </ul>
+        <!-- Social Media -->
+        <div class="mt-6">
+          <h4 class="font-heading font-semibold text-sm mb-3 text-accent">Media Sosial</h4>
+          <div class="flex gap-3">
+            <a href="#" class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center hover:bg-white/20 transition" aria-label="Facebook">
+              <i data-lucide="facebook" class="w-4 h-4"></i>
+            </a>
+            <a href="#" class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center hover:bg-white/20 transition" aria-label="Instagram">
+              <i data-lucide="instagram" class="w-4 h-4"></i>
+            </a>
+            <a href="#" class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center hover:bg-white/20 transition" aria-label="YouTube">
+              <i data-lucide="youtube" class="w-4 h-4"></i>
+            </a>
+            <a href="#" class="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center hover:bg-white/20 transition" aria-label="Twitter">
+              <i data-lucide="twitter" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Copyright -->
+  <div class="border-t border-primary-700">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-primary-300">
+      <span>&copy; {{ 2024 }} Pemerintah Kabupaten Grobogan. Hak Cipta Dilindungi.</span>
+      <span>Dibangun dengan <span class="text-accent">♥</span> untuk masyarakat Grobogan</span>
+    </div>
+  </div>
+</footer>

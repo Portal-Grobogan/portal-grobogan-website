@@ -1,0 +1,68 @@
+{% extends "admin/base.html" %}
+{% block title %}Hero Slides{% endblock %}
+{% block page_title %}Hero Slides{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+  <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+    <h3 class="font-heading font-semibold text-gray-900">Daftar Hero Slides</h3>
+    <a href="{{ url_for('admin.hero_slide_new') }}"
+       class="inline-flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-semibold rounded-xl hover:bg-primary-700 transition">
+      <i data-lucide="plus" class="w-4 h-4"></i> Tambah Slide
+    </a>
+  </div>
+
+  {% if slides %}
+  <div class="divide-y divide-gray-50">
+    {% for slide in slides %}
+    <div class="flex items-center gap-4 px-6 py-4 hover:bg-gray-50 transition">
+      <!-- Preview -->
+      <div class="w-20 h-12 rounded-lg overflow-hidden bg-gray-100 shrink-0">
+        <img src="{{ slide.image_url }}" alt="{{ slide.judul }}"
+             class="w-full h-full object-cover"
+             onerror="this.parentElement.innerHTML='<div class=\'flex items-center justify-center h-full\'><i data-lucide=\'image\' class=\'w-5 h-5 text-gray-400\'></i></div>'" />
+      </div>
+      <!-- Info -->
+      <div class="flex-1 min-w-0">
+        <div class="font-medium text-gray-900 truncate">{{ slide.judul }}</div>
+        {% if slide.deskripsi %}
+          <div class="text-xs text-gray-400 truncate">{{ slide.deskripsi[:80] }}</div>
+        {% endif %}
+      </div>
+      <!-- Urutan -->
+      <div class="text-center shrink-0">
+        <div class="text-lg font-bold text-gray-300">#{{ slide.urutan }}</div>
+      </div>
+      <!-- Status -->
+      <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold {{ 'bg-green-100 text-green-700' if slide.aktif else 'bg-gray-100 text-gray-500' }} shrink-0">
+        {{ 'Aktif' if slide.aktif else 'Nonaktif' }}
+      </span>
+      <!-- Actions -->
+      <div class="flex items-center gap-2 shrink-0">
+        <a href="{{ url_for('admin.hero_slide_edit', slide_id=slide.id) }}"
+           class="p-1.5 text-gray-400 hover:text-amber-600 rounded-lg hover:bg-amber-50 transition">
+          <i data-lucide="pencil" class="w-4 h-4"></i>
+        </a>
+        <form method="POST" action="{{ url_for('admin.hero_slide_delete', slide_id=slide.id) }}"
+              onsubmit="return confirm('Hapus slide ini?')">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <button type="submit"
+                  class="p-1.5 text-gray-400 hover:text-red-600 rounded-lg hover:bg-red-50 transition">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="py-16 text-center text-gray-400">
+    <i data-lucide="image" class="w-12 h-12 mx-auto mb-3 opacity-40"></i>
+    <p class="text-sm">Belum ada hero slide.</p>
+    <a href="{{ url_for('admin.hero_slide_new') }}" class="inline-flex items-center gap-1.5 mt-3 text-primary text-sm hover:underline">
+      <i data-lucide="plus" class="w-4 h-4"></i> Tambah slide pertama
+    </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

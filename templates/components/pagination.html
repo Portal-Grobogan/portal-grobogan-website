@@ -1,0 +1,30 @@
+{% if total_pages > 1 %}
+<nav class="flex items-center justify-center gap-1 mt-8" aria-label="Pagination">
+  {% if page > 1 %}
+    <a href="?page={{ page - 1 }}{% if kategori %}&kategori={{ kategori }}{% endif %}"
+       class="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-600 bg-white rounded-lg border border-gray-200 hover:bg-primary-50 hover:text-primary hover:border-primary-300 transition">
+      <i data-lucide="chevron-left" class="w-4 h-4"></i> Sebelumnya
+    </a>
+  {% endif %}
+
+  {% for p in range(1, total_pages + 1) %}
+    {% if p == page %}
+      <span class="px-3 py-2 text-sm font-semibold text-white bg-primary rounded-lg">{{ p }}</span>
+    {% elif p == 1 or p == total_pages or (p >= page - 2 and p <= page + 2) %}
+      <a href="?page={{ p }}{% if kategori %}&kategori={{ kategori }}{% endif %}"
+         class="px-3 py-2 text-sm font-medium text-gray-600 bg-white rounded-lg border border-gray-200 hover:bg-primary-50 hover:text-primary hover:border-primary-300 transition">
+        {{ p }}
+      </a>
+    {% elif p == page - 3 or p == page + 3 %}
+      <span class="px-2 py-2 text-gray-400">…</span>
+    {% endif %}
+  {% endfor %}
+
+  {% if page < total_pages %}
+    <a href="?page={{ page + 1 }}{% if kategori %}&kategori={{ kategori }}{% endif %}"
+       class="flex items-center gap-1 px-3 py-2 text-sm font-medium text-gray-600 bg-white rounded-lg border border-gray-200 hover:bg-primary-50 hover:text-primary hover:border-primary-300 transition">
+      Berikutnya <i data-lucide="chevron-right" class="w-4 h-4"></i>
+    </a>
+  {% endif %}
+</nav>
+{% endif %}

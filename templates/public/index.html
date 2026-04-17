@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+{% from "components/card_berita.html" import card_berita %}
+
+{% block title %}Portal Kabupaten Grobogan – Beranda{% endblock %}
+
+{% block content %}
+
+{# ── Hero Slider ──────────────────────────────────────────────────────────── #}
+{% include "components/hero_slider.html" %}
+
+{# ── Statistics Strip ─────────────────────────────────────────────────────── #}
+<section class="bg-primary-600 text-white py-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+      <div class="flex flex-col items-center gap-2">
+        <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
+          <i data-lucide="map" class="w-6 h-6 text-accent"></i>
+        </div>
+        <div class="font-heading font-extrabold text-2xl">1.975 km²</div>
+        <div class="text-primary-200 text-sm">Luas Wilayah</div>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
+          <i data-lucide="users" class="w-6 h-6 text-accent"></i>
+        </div>
+        <div class="font-heading font-extrabold text-2xl">1,4 Juta</div>
+        <div class="text-primary-200 text-sm">Penduduk</div>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
+          <i data-lucide="building-2" class="w-6 h-6 text-accent"></i>
+        </div>
+        <div class="font-heading font-extrabold text-2xl">19</div>
+        <div class="text-primary-200 text-sm">Kecamatan</div>
+      </div>
+      <div class="flex flex-col items-center gap-2">
+        <div class="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
+          <i data-lucide="home" class="w-6 h-6 text-accent"></i>
+        </div>
+        <div class="font-heading font-extrabold text-2xl">280</div>
+        <div class="text-primary-200 text-sm">Desa/Kelurahan</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ── Layanan Unggulan ─────────────────────────────────────────────────────── #}
+<section class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <span class="inline-block px-3 py-1 bg-primary-50 text-primary text-xs font-semibold rounded-full mb-3">Layanan Publik</span>
+      <h2 class="font-heading font-bold text-3xl text-gray-900">Layanan Unggulan</h2>
+      <p class="text-gray-500 mt-2">Akses berbagai layanan pemerintah dengan mudah dan cepat</p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {% set static_layanan = [
+        {'nama': 'Kependudukan', 'deskripsi': 'KTP, KK, Akta Kelahiran, dan dokumen kependudukan lainnya', 'icon': 'id-card', 'link_url': url_for('public.layanan_kependudukan'), 'accent': 'red'},
+        {'nama': 'Kesehatan', 'deskripsi': 'Informasi fasilitas kesehatan, BPJS, dan layanan kesehatan masyarakat', 'icon': 'heart-pulse', 'link_url': url_for('public.layanan_kesehatan'), 'accent': 'yellow'},
+        {'nama': 'Kebencanaan', 'deskripsi': 'Info bencana, jalur evakuasi, dan kontak darurat BPBD', 'icon': 'alert-triangle', 'link_url': url_for('public.layanan_kebencanaan'), 'accent': 'green'},
+        {'nama': 'Pariwisata', 'deskripsi': 'Destinasi wisata unggulan dan budaya Kabupaten Grobogan', 'icon': 'map-pin', 'link_url': url_for('public.layanan_pariwisata'), 'accent': 'red'},
+        {'nama': 'Pengaduan', 'deskripsi': 'Sampaikan aspirasi dan pengaduan Anda kepada pemerintah daerah', 'icon': 'message-circle', 'link_url': url_for('public.pengaduan'), 'accent': 'yellow'},
+        {'nama': 'Transparansi', 'deskripsi': 'Informasi anggaran, pengadaan, dan keterbukaan informasi publik', 'icon': 'file-text', 'link_url': '#', 'accent': 'green'},
+      ] %}
+      {% for item in static_layanan %}
+      <a href="{{ item.link_url }}"
+         class="bg-white rounded-2xl shadow-card p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-colors
+                    {% if item.accent == 'green' %}bg-red-50 group-hover:bg-red-600
+                    {% elif item.accent == 'yellow' %}bg-yellow-50 group-hover:bg-yellow-600
+                    {% elif item.accent == 'red' %}bg-green-50 group-hover:bg-green-600{% endif %}">
+          <i data-lucide="{{ item.icon }}" class="w-6 h-6 transition-colors
+                    {% if item.accent == 'green' %}text-red group-hover:text-white
+                    {% elif item.accent == 'yellow' %}text-yellow-600 group-hover:text-white
+                    {% elif item.accent == 'red' %}text-green-600 group-hover:text-white{% endif %}"></i>
+        </div>
+        <h3 class="font-heading font-semibold text-gray-900 text-base mb-2">{{ item.nama }}</h3>
+        <p class="text-sm text-gray-500 leading-relaxed flex-1">{{ item.deskripsi }}</p>
+        <div class="mt-4 pt-3 border-t border-gray-100 flex items-center gap-1.5 text-sm font-medium text-primary group-hover:text-primary-700">
+          Selengkapnya <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{# ── Berita & Pengumuman ───────────────────────────────────────────────────── #}
+<section class="py-16 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div x-data="{ tab: 'berita' }">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+        <div>
+          <h2 class="font-heading font-bold text-3xl text-gray-900">Informasi Terkini</h2>
+          <p class="text-gray-500 mt-1">Berita dan pengumuman dari Pemerintah Kabupaten Grobogan</p>
+        </div>
+        <!-- Tabs -->
+        <div class="flex gap-2 bg-gray-100 p-1 rounded-xl self-start">
+          <button @click="tab='berita'"
+                  :class="tab==='berita' ? 'bg-white text-primary shadow-sm' : 'text-gray-500 hover:text-gray-700'"
+                  class="px-4 py-2 rounded-lg text-sm font-medium transition">
+            Berita
+          </button>
+          <button @click="tab='pengumuman'"
+                  :class="tab==='pengumuman' ? 'bg-white text-primary shadow-sm' : 'text-gray-500 hover:text-gray-700'"
+                  class="px-4 py-2 rounded-lg text-sm font-medium transition">
+            Pengumuman
+          </button>
+        </div>
+      </div>
+
+      <!-- Berita Tab -->
+      <div x-show="tab==='berita'">
+        {% if berita_list %}
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for item in berita_list %}
+              {{ card_berita(item) }}
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="text-center py-16 text-gray-400">
+            <i data-lucide="newspaper" class="w-12 h-12 mx-auto mb-3 opacity-50"></i>
+            <p>Belum ada berita tersedia.</p>
+          </div>
+        {% endif %}
+        <div class="text-center mt-8">
+          <a href="{{ url_for('public.berita') }}"
+             class="inline-flex items-center gap-2 px-6 py-3 border-2 border-primary text-primary font-semibold rounded-xl hover:bg-primary hover:text-white transition">
+            Lihat Semua Berita <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+        </div>
+      </div>
+
+      <!-- Pengumuman Tab -->
+      <div x-show="tab==='pengumuman'">
+        {% if pengumuman_list %}
+          <div class="space-y-4">
+            {% for item in pengumuman_list %}
+            <div class="flex gap-4 p-5 bg-white rounded-xl border border-gray-100 shadow-sm hover:shadow-md transition">
+              <div class="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center shrink-0">
+                <i data-lucide="bell" class="w-5 h-5 text-accent-500"></i>
+              </div>
+              <div>
+                <h4 class="font-semibold text-gray-900 text-sm">{{ item.judul }}</h4>
+                {% if item.created_at %}
+                  <p class="text-xs text-gray-400 mt-0.5">{{ item.created_at[:10] }}</p>
+                {% endif %}
+                <p class="text-sm text-gray-600 mt-1 line-clamp-2">{{ item.konten }}</p>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="text-center py-16 text-gray-400">
+            <i data-lucide="bell-off" class="w-12 h-12 mx-auto mb-3 opacity-50"></i>
+            <p>Belum ada pengumuman.</p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ── CTA Banner ───────────────────────────────────────────────────────────── #}
+<section class="py-16 bg-gradient-to-r from-primary-700 to-primary-600 relative overflow-hidden">
+  <div class="absolute inset-0 opacity-5" style="background-image: radial-gradient(circle at 20% 80%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px); background-size: 40px 40px;"></div>
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div class="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center mx-auto mb-6">
+      <i data-lucide="message-circle" class="w-8 h-8 text-accent"></i>
+    </div>
+    <h2 class="font-heading font-bold text-3xl sm:text-4xl text-white mb-4">
+      Sampaikan Aspirasi Anda
+    </h2>
+    <p class="text-primary-100 text-lg max-w-xl mx-auto mb-8">
+      Pemerintah Kabupaten Grobogan siap mendengar dan menindaklanjuti setiap pengaduan masyarakat.
+    </p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="{{ url_for('public.pengaduan') }}"
+         class="inline-flex items-center gap-2 px-8 py-3 bg-accent text-white font-semibold rounded-xl hover:bg-accent-500 transition shadow-lg">
+        Buat Pengaduan <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </a>
+      <a href="{{ url_for('public.pengaduan_cek') }}"
+         class="inline-flex items-center gap-2 px-8 py-3 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition border border-white/30">
+        Cek Status Pengaduan
+      </a>
+    </div>
+  </div>
+</section>
+
+{# ── Pariwisata Teaser ────────────────────────────────────────────────────── #}
+<section class="py-16 bg-gray-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+      <div>
+        <span class="inline-block px-3 py-1 bg-primary-50 text-primary text-xs font-semibold rounded-full mb-2">Pariwisata</span>
+        <h2 class="font-heading font-bold text-3xl text-gray-900">Wisata Grobogan</h2>
+        <p class="text-gray-500 mt-1">Jelajahi keindahan alam dan budaya Kabupaten Grobogan</p>
+      </div>
+      <a href="{{ url_for('public.layanan_pariwisata') }}"
+         class="inline-flex items-center gap-2 px-4 py-2 border border-primary text-primary rounded-xl text-sm font-semibold hover:bg-primary hover:text-white transition self-start">
+        Lihat Semua <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </a>
+    </div>
+    {% if pariwisata_list %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {% for item in pariwisata_list %}
+      <div class="bg-white rounded-2xl overflow-hidden shadow-card hover:shadow-lg hover:-translate-y-1 transition-all duration-300 group">
+        <div class="h-44 bg-gray-100 overflow-hidden">
+          {% if item.thumbnail %}
+            <img src="{{ item.thumbnail }}" alt="{{ item.nama }}"
+                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
+          {% else %}
+            <div class="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100">
+              <i data-lucide="map-pin" class="w-10 h-10 text-primary-300"></i>
+            </div>
+          {% endif %}
+        </div>
+        <div class="p-4">
+          <h3 class="font-heading font-semibold text-gray-900 text-sm line-clamp-1">{{ item.nama }}</h3>
+          {% if item.lokasi %}
+            <p class="text-xs text-gray-400 mt-1 flex items-center gap-1">
+              <i data-lucide="map-pin" class="w-3 h-3"></i> {{ item.lokasi }}
+            </p>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {% set wisata_default = [
+        {'nama': 'Waduk Kedungombo', 'lokasi': 'Geyer, Grobogan'},
+        {'nama': 'Bledug Kuwu', 'lokasi': 'Kradenan, Grobogan'},
+        {'nama': 'Kalibiru Grobogan', 'lokasi': 'Gabus, Grobogan'},
+        {'nama': 'Gua Urang', 'lokasi': 'Ngaringan, Grobogan'},
+      ] %}
+      {% for item in wisata_default %}
+      <div class="bg-white rounded-2xl overflow-hidden shadow-card">
+        <div class="h-44 bg-gray-100 overflow-hidden relative">
+          <img src="{{ url_for('static', filename='images/pariwisata/' ~ loop.index ~ '.jpg') }}"
+               alt="{{ item.nama }}"
+               class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+               loading="lazy"
+               onerror="this.src=`{{ url_for('static', filename='images/placeholder.svg') }}`;" />
+        </div>
+        <div class="p-4">
+          <h3 class="font-heading font-semibold text-gray-900 text-sm">{{ item.nama }}</h3>
+          <p class="text-xs text-gray-400 mt-1 flex items-center gap-1">
+            <i data-lucide="map-pin" class="w-3 h-3"></i> {{ item.lokasi }}
+          </p>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

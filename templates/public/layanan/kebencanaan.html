@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% block title %}Informasi Kebencanaan – Kabupaten Grobogan{% endblock %}
+{% block content %}
+
+<div class="bg-gradient-to-br from-orange-700 to-orange-600 text-white py-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center gap-2 text-orange-200 text-sm mb-4">
+      <a href="{{ url_for('public.index') }}" class="hover:text-white">Beranda</a>
+      <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      <a href="{{ url_for('public.layanan') }}" class="hover:text-white">Layanan</a>
+      <i data-lucide="chevron-right" class="w-4 h-4"></i>
+      <span>Kebencanaan</span>
+    </div>
+    <div class="flex items-center gap-4">
+      <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center">
+        <i data-lucide="alert-triangle" class="w-7 h-7 text-yellow-300"></i>
+      </div>
+      <div>
+        <h1 class="font-heading font-extrabold text-4xl">Kebencanaan</h1>
+        <p class="text-orange-100 mt-1">Informasi bencana dan penanggulangan Kabupaten Grobogan</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <div class="lg:col-span-2 space-y-6">
+
+      <!-- Bencana list from DB -->
+      {% if bencana_list %}
+        <h2 class="font-heading font-bold text-xl text-gray-900">Informasi Bencana Aktif</h2>
+        <div class="space-y-4">
+          {% for item in bencana_list %}
+          <div class="bg-white rounded-xl shadow-card p-5 border-l-4 border-orange-400 hover:shadow-md transition">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <span class="inline-block px-2 py-0.5 bg-orange-100 text-orange-700 text-xs font-semibold rounded-full mb-2">{{ item.jenis or 'Bencana' }}</span>
+                <h3 class="font-semibold text-gray-900">{{ item.judul }}</h3>
+                <p class="text-sm text-gray-500 mt-1">{{ item.lokasi }}</p>
+                {% if item.deskripsi %}<p class="text-sm text-gray-600 mt-2">{{ item.deskripsi }}</p>{% endif %}
+              </div>
+              {% if item.tanggal %}
+                <div class="text-xs text-gray-400 shrink-0">{{ item.tanggal[:10] }}</div>
+              {% endif %}
+            </div>
+            {% if item.kontak_darurat %}
+              <div class="mt-3 flex items-center gap-2 text-sm font-medium text-orange-700">
+                <i data-lucide="phone" class="w-4 h-4"></i> {{ item.kontak_darurat }}
+              </div>
+            {% endif %}
+          </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <div class="bg-green-50 border border-green-200 rounded-2xl p-6 flex items-center gap-4">
+          <div class="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center shrink-0">
+            <i data-lucide="check-circle" class="w-6 h-6 text-green-600"></i>
+          </div>
+          <div>
+            <h3 class="font-semibold text-green-800">Tidak Ada Bencana Aktif</h3>
+            <p class="text-sm text-green-700 mt-0.5">Saat ini tidak ada informasi bencana aktif di Kabupaten Grobogan.</p>
+          </div>
+        </div>
+      {% endif %}
+
+      <!-- Informasi Umum -->
+      <div class="bg-white rounded-2xl shadow-card p-8">
+        <h2 class="font-heading font-bold text-xl text-gray-900 mb-5">Prosedur Darurat</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {% set prosedur = [
+            ('Tetap Tenang', 'Jangan panik dan ikuti arahan petugas', 'shield'),
+            ('Hubungi BPBD', 'Laporkan kejadian bencana segera', 'phone'),
+            ('Evakuasi', 'Menuju titik kumpul terdekat', 'map-pin'),
+            ('Pertolongan Pertama', 'Berikan P3K jika aman dilakukan', 'heart-pulse'),
+          ] %}
+          {% for judul, desk, icon in prosedur %}
+          <div class="flex gap-3 p-4 bg-orange-50 rounded-xl">
+            <div class="w-9 h-9 rounded-lg bg-orange-100 flex items-center justify-center shrink-0">
+              <i data-lucide="{{ icon }}" class="w-4 h-4 text-orange-600"></i>
+            </div>
+            <div>
+              <div class="font-semibold text-gray-900 text-sm">{{ judul }}</div>
+              <div class="text-xs text-gray-500">{{ desk }}</div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="space-y-5">
+      <div class="bg-red-600 text-white rounded-2xl p-6">
+        <h3 class="font-heading font-bold mb-4">🚨 Kontak Darurat</h3>
+        <div class="space-y-3">
+          <div><div class="text-red-200 text-xs">BPBD Grobogan</div><div class="font-bold text-lg">(0292) 421119</div></div>
+          <div><div class="text-red-200 text-xs">Basarnas</div><div class="font-bold">115</div></div>
+          <div><div class="text-red-200 text-xs">Pemadam Kebakaran</div><div class="font-bold">113</div></div>
+          <div><div class="text-red-200 text-xs">Ambulans</div><div class="font-bold">119</div></div>
+          <div><div class="text-red-200 text-xs">Polisi</div><div class="font-bold">110</div></div>
+        </div>
+      </div>
+      <div class="bg-white rounded-2xl shadow-card p-6">
+        <h3 class="font-heading font-bold text-gray-900 mb-3">Jenis Bencana Umum</h3>
+        <ul class="space-y-2 text-sm text-gray-600">
+          <li class="flex items-center gap-2"><i data-lucide="droplets" class="w-4 h-4 text-blue-500"></i> Banjir</li>
+          <li class="flex items-center gap-2"><i data-lucide="mountain" class="w-4 h-4 text-brown-500"></i> Tanah Longsor</li>
+          <li class="flex items-center gap-2"><i data-lucide="wind" class="w-4 h-4 text-gray-500"></i> Angin Puting Beliung</li>
+          <li class="flex items-center gap-2"><i data-lucide="flame" class="w-4 h-4 text-red-500"></i> Kebakaran Lahan</li>
+          <li class="flex items-center gap-2"><i data-lucide="zap" class="w-4 h-4 text-yellow-500"></i> Kekeringan</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

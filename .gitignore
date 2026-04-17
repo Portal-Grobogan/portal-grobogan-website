@@ -4,3 +4,4 @@ __pycache__/
 *.pyc
 logs/
 node_modules/
+TASK_LIST.md

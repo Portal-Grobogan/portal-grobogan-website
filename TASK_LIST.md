@@ -101,7 +101,7 @@
 
 ## 🎨 FASE 3 — Flask Website (Halaman Publik) + Design Rules
 
-- [x] Pedoman Desain (Design System Rules) Terimplementasi
+### 3.0 Pedoman Desain (Design System Rules) Terimplementasi
  Aturan ini wajib diimplementasikan di seluruh halaman untuk menjaga konsistensi gaya "Modern SaaS/Government".
 
 - Filosofi: "Clean & Functional". Fokus pada hierarki informasi, bukan dekorasi berlebihan.
@@ -120,7 +120,7 @@
   - Radius konsisten: rounded-xl (12px) untuk kartu, rounded-lg (8px) untuk tombol/input.
 - Spacing: Gunakan kelipatan 4px/8px (Tailwind default). Hindari nilai ganjil.
 
-## 3.1 Template Global
+### 3.1 Template Global
  - [x] base.html — struktur HTML, pasang Google Fonts (Inter), Tailwind CDN, Lucide, Alpine.js.
  - [x] components/navbar.html — Styling: bg-white/80 backdrop-blur-lg border-b border-slate-100 sticky top-0 z-50. Hamburger Alpine dengan transisi mulus.
  - [x] components/footer.html — Styling: bg-slate-900 text-slate-300. 4 kolom grid. Hindari gambar background berat, gunakan warna solid.
@@ -129,7 +129,7 @@
  - [x] components/pagination.html — navigasi dengan style button: px-4 py-2 rounded-lg text-sm font-medium. Aktif: bg-primary text-white.
  - [x] components/hero_slider.html — slider Alpine.js. Styling: Gunakan overlay bg-gradient-to-t from-black/60 to-transparent (hanya gradien hitam transparan untuk keterbacaan teks, bukan warna cerah).
 
-## 3.2 Halaman Beranda (/)
+### 3.2 Halaman Beranda (/)
  - [x] Route GET / — fetch data.
  - [x] Hero Section: relative h-[520px], teks judul text-white text-4xl md:text-6xl font-bold drop-shadow-md. Tombol CTA bg-accent hover:bg-accent-dark text-white px-8 py-3 rounded-lg shadow-lg.
  - [x] Layanan Section: py-20 bg-site-bg. Judul section text-center mb-12. Grid grid-cols-2 lg:grid-cols-5 gap-6.
@@ -137,66 +137,82 @@
  - [x] CTA Banner: bg-primary text-white py-16. Gunakan pattern SVG samar (subtle pattern) jika perlu, hindari gradien warna.
  - [x] Validasi: Semua card harus memiliki efek hover yang halus: hover:-translate-y-1 dan hover:shadow-xl.
 
-## 3.3 Halaman Profil (/profil)
+### 3.3 Halaman Profil (/profil)
  - [x] Route GET /profil
  - [x] Layout: max-w-4xl mx-auto (update: max-w-6xl untuk sidebar), px-6 py-16.
  - [x] Styling Konten: Gunakan Tailwind Typography (prose) untuk body teks agar rapi. Judul text-3xl font-bold text-slate-900 border-b pb-4 mb-8. Foto pimpinan gunakan rounded-xl shadow-sm.
 
-## 3.4 Halaman Layanan (/layanan dan sub-halaman)
+### 3.4 Halaman Layanan (/layanan dan sub-halaman)
  - [x] Route GET /layanan — Layout: Grid dengan filter sidebar. Card layanan gaya "Dashboard App".
  - [x] Route GET /layanan/kependudukan — List persyaratan menggunakan divide-y divide-slate-100 agar rapi tanpa border penuh.
  - [x] Route GET /layanan/kesehatan — Tabel table-auto w-full bg-white rounded-xl overflow-hidden. Header bg-slate-50 text-slate-600 uppercase text-xs. Baris hover:bg-slate-50.
  - [x] Route GET /layanan/kebencanaan — Kartu status: Gunakan badge warna solid (tanpa gradien). Contoh: bg-red-100 text-red-700 (Bahaya), bg-yellow-100 text-yellow-700 (Waspada).
  - [x] Route GET /layanan/pariwisata — Galeri grid-cols-2 md:grid-cols-3 gap-4. Gambar rounded-xl. Modal Alpine dengan latar bg-black/50 backdrop-blur-sm.
 
-## 3.5 Halaman Berita
+### 3.5 Halaman Berita
  - [x] Route GET /berita — Layout: Sidebar filter kiri (desktop), list kanan. Card berita tampilan list (horizontal) untuk mobile, grid untuk desktop.
  - [x] Route GET /berita/<slug> — Artikel detail. Styling: prose prose-slate max-w-3xl mx-auto. Breadcrumb text-sm text-slate-500 mb-6. Gambar utama rounded-xl.
 
-## 3.6 Halaman Pengaduan
+### 3.6 Halaman Pengaduan
  - [x] Route GET /pengaduan — Layout: Form centered max-w-xl mx-auto. Label text-sm font-medium text-slate-700. Input mt-1 block w-full px-4 py-3 bg-white border border-slate-200 rounded-lg shadow-sm focus:ring-primary focus:border-primary.
  - [x] Route POST /pengaduan — validasi error: text-red-500 text-xs mt-1.
  - [x] Route GET /pengaduan/sukses/<id> — Konfirmasi: Ikon ceklis besar hijau, ID dengan font font-mono bg-slate-100 px-2 py-1 rounded.
  - [x] Route GET+POST /pengaduan/cek — Hasil: Tampilan card status yang jelas. Badge status: px-3 py-1 rounded-full text-sm font-medium.
 
-## 3.7 Halaman Error
+### 3.7 Halaman Error
  - [x] 404.html & 500.html — Layout: Flexbox centered full height. Ikon Lucide w-24 h-24 text-slate-300. Teks text-slate-600. Tombol btn-primary untuk kembali. Hindari ilustrasi yang terlalu ramai.
 
 ---
 
-## 🔧 FASE 4 — Dashboard Admin Flask
+## 🛠️ FASE 4 — Dashboard Admin Flask + Design Rules
 
+### 4.0 Pedoman Desain Admin (Admin UI Design System)
+ - [ ] Tujuan: Menciptakan antarmuka yang fokus pada produktivitas, kepadatan data yang nyaman, dan navigasi yang jelas.
+ - [ ] Filosofi: "Data-Density & Clarity". Admin panel harus bersih, tidak mencolok, dan fokus pada konten.
+ - [ ] Warna (Admin Palette):
+ - [ ] Sidebar: bg-slate-900 (Gelap netral) atau bg-primary-900 (Gelap branded). Teks text-slate-300.
+ - [ ] Background Konten: bg-slate-100 (Abu-abu terang) untuk memisahkan area kerja.
+ - [ ] Card/Box: bg-white dengan shadow sangat lembut.
+ - [ ] Status Badge:
+ - [ ] Success: bg-green-100 text-green-800
+ - [ ] Warning: bg-yellow-100 text-yellow-800
+ - [ ] Danger: bg-red-100 text-red-800
+ - [ ] Info: bg-blue-100 text-blue-800
+ - [ ] Navigasi:
+ - [ ] Menu Aktif: bg-slate-800 text-white (Indikator kuat).
+ - [ ] Menu Hover: bg-slate-800/50 text-white.
+ - [ ] Tabel Data: Header bg-slate-50 text-slate-500 uppercase text-xs. Border border-slate-200. Hover baris hover:bg-slate-50.
+ - [ ] Form: Label di atas input (block). Konsisten menggunakan rounded-lg.
 ### 4.1 Autentikasi
-- [ ] Route `GET/POST /admin/login` — form Tailwind, auth via Supabase
-- [ ] Route `GET /admin/logout`
-- [ ] Decorator `@login_required` semua route `/admin/*`
-
+ - [ ] Route GET/POST /admin/login — Layout: Centered card max-w-md mx-auto mt-20. Styling: Card bg-white p-8 rounded-xl shadow-xl. Input w-full.
+ - [ ] Route GET /admin/logout — Flash message "Anda telah logout" dengan kategori info.
+ - [ ] Decorator @login_required — Redirect ke login dengan next parameter.
 ### 4.2 Layout Admin
-- [ ] `admin/base.html` — sidebar `w-64 bg-primary text-white`, main content area
-- [ ] Sidebar: logo + menu navigasi dengan ikon Lucide putih
-- [ ] Header: nama halaman + nama user login
-- [ ] Breadcrumb tiap halaman
-
+ - [ ] admin/base.html — Layout: Flexbox flex min-h-screen.
+ - [ ] Sidebar: w-64 bg-slate-900 text-white flex-col. Logo area p-6 border-b border-slate-700.
+ - [ ] Menu Navigasi: Ikon Lucide w-5 h-5 mr-3. Link block px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors rounded-md mx-2. Active state: bg-slate-700 text-white.
+ - [ ] Main Content: Area kerja flex-1 bg-slate-100.
+ - [ ] Header: bg-white h-16 border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-10. Info user text-sm text-slate-600.
+ - [ ] Breadcrumb: flex items-center gap-2 text-sm text-slate-500 mb-6.
 ### 4.3 Dashboard
-- [ ] Route `GET /admin` — kartu statistik: total pengaduan per status (warna badge berbeda)
-
+ - [ ] Route GET /admin — Layout: Grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6.
+ - [ ] Kartu Statistik: bg-white p-6 rounded-xl shadow-sm border-l-4 border-primary. Angka text-3xl font-bold text-slate-800. Label text-sm text-slate-500. Gunakan warna border berbeda per kategori (misal: Hijau untuk Selesai, Merah untuk Baru).
 ### 4.4 CRUD Berita
-- [ ] `GET /admin/berita` — tabel `table-auto w-full`, pagination, badge status
-- [ ] `GET/POST /admin/berita/tambah` — form: judul, slug (auto-generate), konten (textarea), kategori, status, upload thumbnail
-- [ ] `GET/POST /admin/berita/<id>/edit` — form edit pre-filled
-- [ ] `POST /admin/berita/<id>/hapus` — soft delete
-
+ - [ ] GET /admin/berita — Layout: Card bg-white rounded-xl shadow-sm overflow-hidden. Tabel min-w-full divide-y divide-slate-200.
+ - [ ] Tabel: Kolol aksi text-right. Tombol aksi text-sm text-primary hover:underline.
+ - [ ] GET/POST /admin/berita/tambah — Form: max-w-3xl mx-auto bg-white p-8 rounded-xl shadow. Input slug bg-slate-50 (readonly/auto).
+ - [ ] GET/POST /admin/berita/<id>/edit — Pre-filled value.
+ - [ ] POST /admin/berita/<id>/hapus — Konfirmasi dengan Alpine.js x-on:click atau modal sederhana.
 ### 4.5 CRUD Hero Slides
-- [ ] CRUD dengan form upload gambar ke Supabase Storage
-- [ ] Input urutan tampil (number field)
-
+ - [ ] List: Tabel sederhana dengan thumbnail kecil w-20 h-12 object-cover rounded.
+ - [ ] Form: Upload gambar dengan preview w-full aspect-video bg-slate-100 rounded-lg flex items-center justify-center border-2 border-dashed. Input urutan w-24.
 ### 4.6 Manajemen Pengaduan
-- [ ] Tabel pengaduan dengan filter status dan search nama
-- [ ] Halaman detail: lihat lampiran, ubah status, tambah catatan admin
-
+ - [ ] List: Tabel dengan fitur search px-4 py-2 border rounded-lg di atas tabel. Filter dropdown.
+ - [ ] Halaman Detail: grid grid-cols-3 gap-8. Area info pengadu (col-1), area isi pengaduan (col-2), area aksi admin (col-1 sidebar).
+ - [ ] Area Aksi Admin: Card bg-slate-50 p-6 rounded-xl. Select status w-full, Textarea catatan. Tombol btn-primary.
 ### 4.7 CRUD Layanan, Kebencanaan, Pariwisata
-- [ ] Masing-masing CRUD standar: list tabel + form tambah/edit + hapus
-- [ ] Multi-upload foto untuk pariwisata
+ - [ ] CRUD Standar: Gunakan template tabel yang sama seperti modul Berita untuk konsistensi.
+ - [ ] Multi-upload Foto (Pariwisata): Area drag-and-drop atau tombol upload multiple. Tampilkan preview gambar dalam grid kecil di bawah input dengan tombol hapus (X) di pojok gambar.
 
 ---
 

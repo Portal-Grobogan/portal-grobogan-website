@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}Beranda | Portal Grobogan{% endblock %}
+
+{% block content %}
+<section x-data="heroSlider()" x-init="init()" class="relative bg-primary text-white">
+  <div class="max-w-7xl mx-auto px-4 py-16">
+    <template x-for="(slide, idx) in slides" :key="idx">
+      <div x-show="current === idx" x-transition>
+        <p class="text-sm uppercase tracking-wide text-accent">Program Unggulan</p>
+        <h1 class="text-4xl font-display font-extrabold mt-3" x-text="slide.title"></h1>
+        <p class="mt-3 max-w-2xl text-white/90" x-text="slide.desc"></p>
+      </div>
+    </template>
+    <div class="mt-6 flex gap-2">
+      <template x-for="(slide, idx) in slides" :key="'dot-'+idx">
+        <button class="h-2.5 rounded-full transition-all"
+                :class="current === idx ? 'w-8 bg-accent' : 'w-2.5 bg-white/40'"
+                @click="current = idx"
+                type="button"></button>
+      </template>
+    </div>
+  </div>
+</section>
+
+<section class="max-w-7xl mx-auto px-4 py-12" x-data="{ tab: 'berita' }">
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-2xl font-display font-bold">Informasi Terkini</h2>
+    <div class="flex gap-2 p-1 bg-gray-100 rounded-lg">
+      <button @click="tab = 'berita'" type="button" class="px-4 py-1.5 rounded-md text-sm"
+              :class="tab === 'berita' ? 'bg-white text-primary' : 'text-gray-600'">Berita</button>
+      <button @click="tab = 'pengumuman'" type="button" class="px-4 py-1.5 rounded-md text-sm"
+              :class="tab === 'pengumuman' ? 'bg-white text-primary' : 'text-gray-600'">Pengumuman</button>
+    </div>
+  </div>
+
+  <div x-show="tab === 'berita'" class="grid gap-4 md:grid-cols-2">
+    <div class="rounded-xl border border-gray-200 p-4 flex items-center gap-3">
+      <i data-lucide="newspaper" class="w-5 h-5 text-primary"></i>
+      <p>Contoh berita terbaru dari pemerintah daerah.</p>
+    </div>
+  </div>
+  <div x-show="tab === 'pengumuman'" style="display: none;" class="grid gap-4 md:grid-cols-2">
+    <div class="rounded-xl border border-gray-200 p-4 flex items-center gap-3">
+      <i data-lucide="bell" class="w-5 h-5 text-accent"></i>
+      <p>Contoh pengumuman resmi untuk warga Grobogan.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function heroSlider() {
+  return {
+    current: 0,
+    slides: [
+      { title: "Portal Layanan Publik Terpadu", desc: "Akses layanan pemerintah dari satu tempat." },
+      { title: "Informasi Kebencanaan Realtime", desc: "Pantau update situasi penting untuk keselamatan warga." },
+      { title: "Pengaduan Warga Cepat Tanggap", desc: "Sampaikan aspirasi dan keluhan dengan mudah." },
+    ],
+    init() {
+      setInterval(() => {
+        this.current = (this.current + 1) % this.slides.length;
+      }, 5000);
+    },
+  };
+}
+</script>
+{% endblock %}

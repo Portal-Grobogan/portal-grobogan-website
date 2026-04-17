@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Laporan Terkirim | Portal Grobogan{% endblock %}
+
+{% block content %}
+<section class="bg-slate-50 min-h-[80vh] flex items-center py-20 px-4">
+    <div class="max-w-xl mx-auto w-full text-center">
+        
+        <div class="relative mb-12">
+            <div class="w-32 h-32 bg-emerald-100 rounded-full mx-auto flex items-center justify-center animate-pulse">
+                <i data-lucide="check-circle" class="w-16 h-16 text-emerald-600"></i>
+            </div>
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div class="w-32 h-32 border-4 border-emerald-500 rounded-full animate-ping opacity-20"></div>
+            </div>
+        </div>
+
+        <h1 class="text-4xl font-black text-slate-900 mb-6 tracking-tight">Laporan Anda Berhasil Terkirim!</h1>
+        <p class="text-slate-500 text-lg mb-10 leading-relaxed">
+            Terima kasih atas kepedulian Anda. Laporan Anda telah kami terima dan akan segera diproses oleh instansi terkait.
+        </p>
+
+        <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 mb-12">
+            <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Kode Tiket Anda</span>
+            <div class="flex items-center justify-center space-x-4">
+                <span class="text-3xl font-mono font-black text-primary tracking-tighter bg-slate-50 px-6 py-3 rounded-2xl border border-slate-100">
+                    {{ id }}
+                </span>
+                <button class="p-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl transition-all" title="Salin Kode">
+                    <i data-lucide="copy" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <p class="mt-6 text-sm text-slate-400 italic">Simpan kode tiket ini untuk mengecek status tindak lanjut secara berkala.</p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="{{ url_for('public.index') }}" class="w-full sm:w-auto px-10 py-4 bg-slate-900 text-white font-black rounded-2xl shadow-lg hover:bg-slate-800 transition-all">
+                Kembali ke Beranda
+            </a>
+            <a href="{{ url_for('public.pengaduan_cek') }}" class="w-full sm:w-auto px-10 py-4 bg-white text-slate-900 border-2 border-slate-200 font-black rounded-2xl hover:bg-slate-50 transition-all">
+                Cek Status Sekarang
+            </a>
+        </div>
+
+    </div>
+</section>
+{% endblock %}

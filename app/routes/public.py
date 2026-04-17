@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, request, redirect, url_for
 
 
 public_bp = Blueprint("public", __name__)
@@ -75,3 +75,30 @@ def layanan_kebencanaan():
 @public_bp.route("/layanan/pariwisata")
 def layanan_pariwisata():
     return render_template("layanan/pariwisata.html")
+
+
+@public_bp.route("/pengaduan", methods=["GET", "POST"])
+def pengaduan():
+    if request.method == "POST":
+        # Placeholder logic for submission
+        return redirect(url_for('public.pengaduan_sukses', id="GRB-2026-001"))
+    return render_template("pengaduan/index.html")
+
+
+@public_bp.route("/pengaduan/sukses/<id>")
+def pengaduan_sukses(id):
+    return render_template("pengaduan/sukses.html", id=id)
+
+
+@public_bp.route("/pengaduan/cek", methods=["GET", "POST"])
+def pengaduan_cek():
+    hasil = None
+    if request.method == "POST":
+        # Placeholder result
+        hasil = {
+            'id': request.form.get('ticket_id'),
+            'status': 'Proses',
+            'tanggal': '17 April 2026',
+            'perihal': 'Perbaikan lampu jalan di Purwodadi'
+        }
+    return render_template("pengaduan/cek.html", hasil=hasil)

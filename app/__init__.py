@@ -29,4 +29,12 @@ def create_app() -> Flask:
     login_manager.init_app(app)
     app.register_blueprint(public_bp)
 
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template("errors/404.html"), 404
+
+    @app.errorhandler(500)
+    def internal_server_error(e):
+        return render_template("errors/500.html"), 500
+
     return app

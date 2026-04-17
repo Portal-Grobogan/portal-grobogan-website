@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block title %}{{ item.judul }} | Portal Grobogan{% endblock %}
+
+{% block content %}
+<section class="bg-white py-12 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Breadcrumb -->
+        <nav class="flex mb-8 text-slate-400 text-sm font-medium" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-2">
+                <li><a href="{{ url_for('public.index') }}" class="hover:text-primary transition-colors text-slate-500">Beranda</a></li>
+                <li class="flex items-center space-x-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    <a href="{{ url_for('public.berita_list') }}" class="hover:text-primary transition-colors text-slate-500">Berita</a>
+                </li>
+                <li class="flex items-center space-x-2">
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    <span class="text-slate-900 border-b-2 border-primary/20">Artikel Detail</span>
+                </li>
+            </ol>
+        </nav>
+
+        <!-- Article Header -->
+        <header class="mb-12">
+            <div class="flex items-center gap-4 mb-6">
+                <span class="px-3 py-1 bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-[0.2em] rounded">
+                    {{ item.kategori }}
+                </span>
+                <span class="text-slate-400 text-xs font-medium flex items-center">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5 mr-1.5"></i>
+                    {{ item.created_at.strftime('%d %b %Y') if item.created_at and item.created_at.strftime else '17 April 2026' }}
+                </span>
+                <span class="text-slate-400 text-xs font-medium flex items-center">
+                    <i data-lucide="user" class="w-3.5 h-3.5 mr-1.5"></i>
+                    Diskominfo Grobogan
+                </span>
+            </div>
+            <h1 class="text-3xl md:text-5xl font-black text-slate-900 leading-tight tracking-tight mb-8">
+                {{ item.judul }}
+            </h1>
+            <div class="aspect-[21/9] w-full rounded-3xl overflow-hidden shadow-2xl shadow-slate-200">
+                <img src="https://images.unsplash.com/photo-1542359649-31e03ec4e92c?auto=format&fit=crop&q=80&w=1600" 
+                     class="w-full h-full object-cover">
+            </div>
+            <p class="mt-4 text-xs text-slate-400 italic text-center">Foto: Dokumentasi Humas Setda Kabupaten Grobogan</p>
+        </header>
+
+        <!-- Article Body -->
+        <div class="prose prose-slate prose-lg max-w-none text-slate-700 leading-relaxed">
+            {{ item.konten | safe }}
+            
+            <p>
+                Grobogan (17/04) — Terus konsisten dalam melakukan inovasi pelayanan publik, Pemerintah Kabupaten Grobogan kembali menegaskan komitmennya untuk menghadirkan kemudahan bagi warga. Melalui penguatan infrastruktur digital seperti portal ini, diharapkan transparansi dan kecepatan layanan dapat dirasakan langsung oleh masyarakat hingga pelosok desa.
+            </p>
+            
+            <h3 class="font-bold text-slate-900">Transformasi Digital untuk Kesejahteraan</h3>
+            <p>
+                Langkah strategis ini mencakup integrasi berbagai layanan kependudukan, kesehatan, hingga informasi kebencanaan yang dapat diakses secara *real-time*. Pimpinan daerah menekankan bahwa digitalisasi bukan hanya soal teknologi, melainkan tentang bagaimana menghidupkan semangat melayani dengan lebih cepat dan akurat.
+            </p>
+
+            <blockquote>
+                "Kita ingin memastikan bahwa setiap warga Grobogan memiliki akses yang sama terhadap informasi dan layanan tanpa terkendala jarak dan waktu."
+            </blockquote>
+            
+            <p>
+                Rencana ke depan, platform ini akan terus dikembangkan dengan penambahan fitur interaktif dan integrasi dengan sistem pengaduan yang lebih responsif.
+            </p>
+        </div>
+
+        <!-- Share & Footer -->
+        <footer class="mt-16 pt-8 border-t border-slate-100">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-6">
+                <div class="flex items-center gap-4">
+                    <span class="text-sm font-bold text-slate-400 uppercase tracking-widest">Bagikan:</span>
+                    <div class="flex gap-2">
+                        <button class="p-2 bg-slate-100 hover:bg-primary hover:text-white rounded-full transition-all">
+                            <i data-lucide="facebook" class="w-4 h-4"></i>
+                        </button>
+                        <button class="p-2 bg-slate-100 hover:bg-primary hover:text-white rounded-full transition-all">
+                            <i data-lucide="twitter" class="w-4 h-4"></i>
+                        </button>
+                        <button class="p-2 bg-slate-100 hover:bg-slate-900 hover:text-white rounded-full transition-all text-slate-600">
+                            <i data-lucide="link" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+                <a href="{{ url_for('public.berita_list') }}" class="text-sm font-bold text-primary hover:underline flex items-center">
+                    <i data-lucide="arrow-left" class="w-4 h-4 mr-2"></i>
+                    Kembali ke Berita
+                </a>
+            </div>
+        </footer>
+
+    </div>
+</section>
+{% endblock %}

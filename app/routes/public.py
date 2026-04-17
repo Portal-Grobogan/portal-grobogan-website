@@ -30,10 +30,21 @@ def index():
     return render_template("index.html", slides=slides)
 
 
+@public_bp.route("/berita")
+def berita_list():
+    return render_template("berita/index.html")
+
+
 @public_bp.route("/berita/<slug>")
 def berita_detail(slug):
-    # Placeholder for news detail
-    return f"Halaman berita: {slug}"
+    # For now, using shared placeholder data
+    item = {
+        'judul': slug.replace('-', ' ').title(),
+        'kategori': 'Informasi',
+        'created_at': None,
+        'konten': '<p>Ini adalah konten berita placeholder untuk simulasi layout Fase 3.5. Kabupaten Grobogan terus berbenah dalam meningkatkan kualitas layanan publik bagi seluruh warga masyarakat.</p>'
+    }
+    return render_template("berita/detail.html", item=item)
 
 
 @public_bp.route("/profil")

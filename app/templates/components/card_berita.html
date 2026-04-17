@@ -1,5 +1,6 @@
-{% macro render_berita(item) %}
-<article class="flex flex-col bg-white rounded-2xl border border-slate-100 overflow-hidden hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 group">
+{% macro render_berita(item, mode='grid') %}
+{% if mode == 'grid' %}
+<article class="flex flex-col bg-white rounded-2xl border border-slate-100 overflow-hidden hover:shadow-22 hover:-translate-y-1 transition-all duration-500 group">
   <div class="relative h-48 overflow-hidden bg-slate-100">
     <img src="{{ item.thumbnail_url or 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=800' }}" 
          alt="{{ item.judul }}"
@@ -14,7 +15,7 @@
     <div class="flex items-center text-[11px] font-semibold text-slate-400 mb-3 space-x-3 uppercase tracking-tight">
       <span class="flex items-center">
         <i data-lucide="calendar" class="w-3 h-3 mr-1.5 text-primary/60"></i>
-        {{ item.created_at.strftime('%d %b %Y') if item.created_at else 'Baru' }}
+        {{ item.created_at.strftime('%d %b %Y') if item.created_at and item.created_at.strftime else 'Baru' }}
       </span>
       <span class="flex items-center">
         <i data-lucide="clock" class="w-3 h-3 mr-1.5 text-primary/60"></i>
@@ -38,4 +39,36 @@
     </div>
   </div>
 </article>
+{% else %}
+<article class="flex flex-col md:flex-row bg-white rounded-2xl border border-slate-100 overflow-hidden hover:shadow-xl transition-all duration-300 group">
+  <div class="md:w-64 h-48 md:h-auto overflow-hidden bg-slate-100 shrink-0">
+    <img src="{{ item.thumbnail_url or 'https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&q=80&w=800' }}" 
+         alt="{{ item.judul }}"
+         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+  </div>
+  <div class="p-6 flex flex-col justify-center">
+    <div class="flex items-center gap-3 mb-3">
+        <span class="px-2 py-0.5 bg-primary/5 text-primary text-[10px] font-bold uppercase tracking-widest rounded">
+            {{ item.kategori }}
+        </span>
+        <span class="text-[11px] font-medium text-slate-400">
+            {{ item.created_at.strftime('%d %b %Y') if item.created_at and item.created_at.strftime else 'Baru' }}
+        </span>
+    </div>
+    <h3 class="text-xl font-bold text-slate-900 group-hover:text-primary transition-colors mb-3 leading-snug">
+      <a href="{{ url_for('public.berita_detail', slug=item.slug) }}">
+        {{ item.judul }}
+      </a>
+    </h3>
+    <p class="text-sm text-slate-500 line-clamp-2 mb-4 leading-relaxed max-w-2xl">
+      {{ item.ringkasan or item.konten|striptags|truncate(120) }}
+    </p>
+    <a href="{{ url_for('public.berita_detail', slug=item.slug) }}" 
+       class="inline-flex items-center text-sm font-bold text-primary">
+      Baca Selengkapnya
+      <i data-lucide="arrow-right" class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"></i>
+    </a>
+  </div>
+</article>
+{% endif %}
 {% endmacro %}

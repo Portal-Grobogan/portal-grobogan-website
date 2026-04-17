@@ -14,7 +14,8 @@
   {% endif %}
 
   {# Page Numbers #}
-  {% for page in pagination.iter_pages() %}
+  {% set pages = pagination.iter_pages() if pagination.iter_pages is callable else pagination.iter_pages %}
+  {% for page in pages %}
     {% if page %}
       {% if page != pagination.page %}
       <a href="{{ url_for(endpoint, page=page, **kwargs) }}" 

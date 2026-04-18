@@ -15,7 +15,7 @@
     <div class="flex items-center text-[11px] font-semibold text-slate-400 mb-3 space-x-3 uppercase tracking-tight">
       <span class="flex items-center">
         <i data-lucide="calendar" class="w-3 h-3 mr-1.5 text-primary/60"></i>
-        {{ item.created_at.strftime('%d %b %Y') if item.created_at and item.created_at.strftime else 'Baru' }}
+        {{ item.created_at[:10] if item.created_at else 'Baru' }}
       </span>
       <span class="flex items-center">
         <i data-lucide="clock" class="w-3 h-3 mr-1.5 text-primary/60"></i>
@@ -23,15 +23,15 @@
       </span>
     </div>
     <h3 class="text-lg font-bold text-slate-900 group-hover:text-primary transition-colors line-clamp-2 mb-3 leading-snug">
-      <a href="{{ url_for('public.berita_detail', slug=item.slug) }}">
+      <a href="{{ url_for('public.berita_detail', id_or_slug=item.slug) }}">
         {{ item.judul }}
       </a>
     </h3>
     <p class="text-sm text-slate-500 line-clamp-2 mb-6 leading-relaxed">
-      {{ item.ringkasan or item.konten|striptags|truncate(100) }}
+      {{ item.ringkasan or item.content|striptags|truncate(100) }}
     </p>
     <div class="mt-auto">
-      <a href="{{ url_for('public.berita_detail', slug=item.slug) }}" 
+      <a href="{{ url_for('public.berita_detail', id_or_slug=item.slug) }}" 
          class="inline-flex items-center text-sm font-bold text-primary group-hover:gap-2 transition-all">
         Baca Selengkapnya
         <i data-lucide="chevron-right" class="w-4 h-4 mt-0.5"></i>
@@ -52,18 +52,18 @@
             {{ item.kategori }}
         </span>
         <span class="text-[11px] font-medium text-slate-400">
-            {{ item.created_at.strftime('%d %b %Y') if item.created_at and item.created_at.strftime else 'Baru' }}
+            {{ item.created_at[:10] if item.created_at else 'Baru' }}
         </span>
     </div>
     <h3 class="text-xl font-bold text-slate-900 group-hover:text-primary transition-colors mb-3 leading-snug">
-      <a href="{{ url_for('public.berita_detail', slug=item.slug) }}">
+      <a href="{{ url_for('public.berita_detail', id_or_slug=item.slug) }}">
         {{ item.judul }}
       </a>
     </h3>
     <p class="text-sm text-slate-500 line-clamp-2 mb-4 leading-relaxed max-w-2xl">
-      {{ item.ringkasan or item.konten|striptags|truncate(120) }}
+      {{ item.ringkasan or item.content|striptags|truncate(120) }}
     </p>
-    <a href="{{ url_for('public.berita_detail', slug=item.slug) }}" 
+    <a href="{{ url_for('public.berita_detail', id_or_slug=item.slug) }}" 
        class="inline-flex items-center text-sm font-bold text-primary">
       Baca Selengkapnya
       <i data-lucide="arrow-right" class="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform"></i>

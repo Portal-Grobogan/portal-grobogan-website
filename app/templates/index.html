@@ -16,11 +16,13 @@
             <div class="w-20 h-1.5 bg-primary mx-auto mt-4 rounded-full"></div>
         </div>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
-            {{ render_layanan({'nama': 'Kependudukan', 'deskripsi': 'Urus KTP, KK, Akta', 'icon_name': 'users', 'url_path': '#'}) }}
-            {{ render_layanan({'nama': 'Kesehatan', 'deskripsi': 'Info RS & Vaksin', 'icon_name': 'heart-pulse', 'url_path': '#'}) }}
-            {{ render_layanan({'nama': 'Pendidikan', 'deskripsi': 'Sekolah & Beasiswa', 'icon_name': 'graduation-cap', 'url_path': '#'}) }}
-            {{ render_layanan({'nama': 'Kebencanaan', 'deskripsi': 'Berita Darurat Realtime', 'icon_name': 'alert-triangle', 'url_path': '#'}) }}
-            {{ render_layanan({'nama': 'Pariwisata', 'deskripsi': 'Jelajah Wisata Alam', 'icon_name': 'map', 'url_path': '#'}) }}
+            {% for item in layanan_list %}
+                {{ render_layanan(item) }}
+            {% else %}
+                <!-- Fallback jika kosong -->
+                {{ render_layanan({'nama': 'Kependudukan', 'deskripsi': 'Urus KTP, KK, Akta', 'icon_name': 'users', 'url_path': '#'}) }}
+                {{ render_layanan({'nama': 'Kebencanaan', 'deskripsi': 'Berita Darurat Realtime', 'icon_name': 'alert-triangle', 'url_path': '#'}) }}
+            {% endfor %}
         </div>
     </div>
 </section>
@@ -52,9 +54,11 @@
              x-transition:enter-start="opacity-0 translate-y-8"
              x-transition:enter-end="opacity-100 translate-y-0"
              class="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-             {{ render_berita({'judul': 'Pemerintah Kabupaten Grobogan Meraih Penghargaan...', 'slug': 'berita-1', 'kategori': 'Prestasi', 'ringkasan': 'Grobogan berhasil mempertahankan predikat WTP untuk yang ke-10 kalinya secara berturut-turut.'}) }}
-             {{ render_berita({'judul': 'Pembangunan Infrastruktur Jalan di Purwodadi...', 'slug': 'berita-2', 'kategori': 'Infrastruktur', 'ringkasan': 'Proyek perbaikan jalan di jalur utama Purwodadi ditargetkan selesai sebelum lebaran.'}) }}
-             {{ render_berita({'judul': 'Festival Kuliner Tradisional Grobogan 2026...', 'slug': 'berita-3', 'kategori': 'Budaya', 'ringkasan': 'Mari rayakan kekayaan kuliner asli Grobogan di alun-alun Purwodadi akhir pekan ini.'}) }}
+             {% for item in berita_list %}
+                {{ render_berita(item) }}
+             {% else %}
+                <p class="text-slate-400 text-center col-span-full py-12 font-bold">Belum ada berita terbaru.</p>
+             {% endfor %}
         </div>
 
         <div x-show="tab === 'pengumuman'" 

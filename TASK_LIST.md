@@ -167,52 +167,52 @@
 ## 🛠️ FASE 4 — Dashboard Admin Flask + Design Rules
 
 ### 4.0 Pedoman Desain Admin (Admin UI Design System)
- - [ ] Tujuan: Menciptakan antarmuka yang fokus pada produktivitas, kepadatan data yang nyaman, dan navigasi yang jelas.
- - [ ] Filosofi: "Data-Density & Clarity". Admin panel harus bersih, tidak mencolok, dan fokus pada konten.
- - [ ] Warna (Admin Palette):
- - [ ] Sidebar: bg-slate-900 (Gelap netral) atau bg-primary-900 (Gelap branded). Teks text-slate-300.
- - [ ] Background Konten: bg-slate-100 (Abu-abu terang) untuk memisahkan area kerja.
- - [ ] Card/Box: bg-white dengan shadow sangat lembut.
- - [ ] Status Badge:
- - [ ] Success: bg-green-100 text-green-800
- - [ ] Warning: bg-yellow-100 text-yellow-800
- - [ ] Danger: bg-red-100 text-red-800
- - [ ] Info: bg-blue-100 text-blue-800
- - [ ] Navigasi:
- - [ ] Menu Aktif: bg-slate-800 text-white (Indikator kuat).
- - [ ] Menu Hover: bg-slate-800/50 text-white.
- - [ ] Tabel Data: Header bg-slate-50 text-slate-500 uppercase text-xs. Border border-slate-200. Hover baris hover:bg-slate-50.
- - [ ] Form: Label di atas input (block). Konsisten menggunakan rounded-lg.
+ - [x] Tujuan: Menciptakan antarmuka yang fokus pada produktivitas, kepadatan data yang nyaman, dan navigasi yang jelas.
+ - [x] Filosofi: "Data-Density & Clarity". Admin panel harus bersih, tidak mencolok, dan fokus pada konten.
+ - [x] Warna (Admin Palette):
+ - [x] Sidebar: bg-slate-900 (Gelap netral) atau bg-primary-900 (Gelap branded). Teks text-slate-300.
+ - [x] Background Konten: bg-slate-100 (Abu-abu terang) untuk memisahkan area kerja.
+ - [x] Card/Box: bg-white dengan shadow sangat lembut.
+ - [x] Status Badge:
+ - [x] Success: bg-green-100 text-green-800
+ - [x] Warning: bg-yellow-100 text-yellow-800
+ - [x] Danger: bg-red-100 text-red-800
+ - [x] Info: bg-blue-100 text-blue-800
+ - [x] Navigasi:
+ - [x] Menu Aktif: bg-slate-800 text-white (Indikator kuat).
+ - [x] Menu Hover: bg-slate-800/50 text-white.
+ - [x] Tabel Data: Header bg-slate-50 text-slate-500 uppercase text-xs. Border border-slate-200. Hover baris hover:bg-slate-50.
+ - [x] Form: Label di atas input (block). Konsisten menggunakan rounded-lg.
 ### 4.1 Autentikasi
- - [ ] Route GET/POST /admin/login — Layout: Centered card max-w-md mx-auto mt-20. Styling: Card bg-white p-8 rounded-xl shadow-xl. Input w-full.
- - [ ] Route GET /admin/logout — Flash message "Anda telah logout" dengan kategori info.
- - [ ] Decorator @login_required — Redirect ke login dengan next parameter.
+ - [x] Route GET/POST /admin/login — Layout: Centered card max-w-md mx-auto mt-20. Styling: Card bg-white p-8 rounded-xl shadow-xl. Input w-full.
+ - [x] Route GET /admin/logout — Flash message "Anda telah logout" dengan kategori info.
+ - [x] Decorator @login_required — Redirect ke login dengan next parameter.
 ### 4.2 Layout Admin
- - [ ] admin/base.html — Layout: Flexbox flex min-h-screen.
- - [ ] Sidebar: w-64 bg-slate-900 text-white flex-col. Logo area p-6 border-b border-slate-700.
- - [ ] Menu Navigasi: Ikon Lucide w-5 h-5 mr-3. Link block px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors rounded-md mx-2. Active state: bg-slate-700 text-white.
- - [ ] Main Content: Area kerja flex-1 bg-slate-100.
- - [ ] Header: bg-white h-16 border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-10. Info user text-sm text-slate-600.
- - [ ] Breadcrumb: flex items-center gap-2 text-sm text-slate-500 mb-6.
+ - [x] admin/base.html — Layout: Flexbox flex min-h-screen.
+ - [x] Sidebar: w-64 bg-slate-900 text-white flex-col. Logo area p-6 border-b border-slate-700.
+ - [x] Menu Navigasi: Ikon Lucide w-5 h-5 mr-3. Link block px-4 py-3 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors rounded-md mx-2. Active state: bg-slate-700 text-white.
+ - [x] Main Content: Area kerja flex-1 bg-slate-100.
+ - [x] Header: bg-white h-16 border-b border-slate-200 flex items-center justify-between px-8 sticky top-0 z-10. Info user text-sm text-slate-600.
+ - [x] Breadcrumb: flex items-center gap-2 text-sm text-slate-500 mb-6.
 ### 4.3 Dashboard
- - [ ] Route GET /admin — Layout: Grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6.
- - [ ] Kartu Statistik: bg-white p-6 rounded-xl shadow-sm border-l-4 border-primary. Angka text-3xl font-bold text-slate-800. Label text-sm text-slate-500. Gunakan warna border berbeda per kategori (misal: Hijau untuk Selesai, Merah untuk Baru).
+ - [x] Route GET /admin — Layout: Grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6.
+ - [x] Kartu Statistik: bg-white p-6 rounded-xl shadow-sm border-l-4 border-primary. Angka text-3xl font-bold text-slate-800. Label text-sm text-slate-500. Gunakan warna border berbeda per kategori (misal: Hijau untuk Selesai, Merah untuk Baru).
 ### 4.4 CRUD Berita
- - [ ] GET /admin/berita — Layout: Card bg-white rounded-xl shadow-sm overflow-hidden. Tabel min-w-full divide-y divide-slate-200.
- - [ ] Tabel: Kolol aksi text-right. Tombol aksi text-sm text-primary hover:underline.
- - [ ] GET/POST /admin/berita/tambah — Form: max-w-3xl mx-auto bg-white p-8 rounded-xl shadow. Input slug bg-slate-50 (readonly/auto).
- - [ ] GET/POST /admin/berita/<id>/edit — Pre-filled value.
- - [ ] POST /admin/berita/<id>/hapus — Konfirmasi dengan Alpine.js x-on:click atau modal sederhana.
+ - [x] GET /admin/berita — Layout: Card bg-white rounded-xl shadow-sm overflow-hidden. Tabel min-w-full divide-y divide-slate-200.
+ - [x] Tabel: Kolol aksi text-right. Tombol aksi text-sm text-primary hover:underline.
+ - [x] GET/POST /admin/berita/tambah — Form: max-w-3xl mx-auto bg-white p-8 rounded-xl shadow. Input slug bg-slate-50 (readonly/auto).
+ - [x] GET/POST /admin/berita/<id>/edit — Pre-filled value.
+ - [x] POST /admin/berita/<id>/hapus — Konfirmasi dengan Alpine.js x-on:click atau modal sederhana.
 ### 4.5 CRUD Hero Slides
- - [ ] List: Tabel sederhana dengan thumbnail kecil w-20 h-12 object-cover rounded.
- - [ ] Form: Upload gambar dengan preview w-full aspect-video bg-slate-100 rounded-lg flex items-center justify-center border-2 border-dashed. Input urutan w-24.
+ - [x] List: Tabel sederhana dengan thumbnail kecil w-20 h-12 object-cover rounded.
+ - [x] Form: Upload gambar dengan preview w-full aspect-video bg-slate-100 rounded-lg flex items-center justify-center border-2 border-dashed. Input urutan w-24.
 ### 4.6 Manajemen Pengaduan
- - [ ] List: Tabel dengan fitur search px-4 py-2 border rounded-lg di atas tabel. Filter dropdown.
- - [ ] Halaman Detail: grid grid-cols-3 gap-8. Area info pengadu (col-1), area isi pengaduan (col-2), area aksi admin (col-1 sidebar).
- - [ ] Area Aksi Admin: Card bg-slate-50 p-6 rounded-xl. Select status w-full, Textarea catatan. Tombol btn-primary.
+ - [x] List: Tabel dengan fitur search px-4 py-2 border rounded-lg di atas tabel. Filter dropdown.
+ - [x] Halaman Detail: grid grid-cols-3 gap-8. Area info pengadu (col-1), area isi pengaduan (col-2), area aksi admin (col-1 sidebar).
+ - [x] Area Aksi Admin: Card bg-slate-50 p-6 rounded-xl. Select status w-full, Textarea catatan. Tombol btn-primary.
 ### 4.7 CRUD Layanan, Kebencanaan, Pariwisata
- - [ ] CRUD Standar: Gunakan template tabel yang sama seperti modul Berita untuk konsistensi.
- - [ ] Multi-upload Foto (Pariwisata): Area drag-and-drop atau tombol upload multiple. Tampilkan preview gambar dalam grid kecil di bawah input dengan tombol hapus (X) di pojok gambar.
+ - [x] CRUD Standar: Gunakan template tabel yang sama seperti modul Berita untuk konsistensi.
+ - [x] Multi-upload Foto (Pariwisata): Area drag-and-drop atau tombol upload multiple. Tampilkan preview gambar dalam grid kecil di bawah input dengan tombol hapus (X) di pojok gambar.
 
 ---
 

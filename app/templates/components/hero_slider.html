@@ -1,15 +1,16 @@
 <section class="relative h-[520px] overflow-hidden bg-slate-900" 
-         x-data="{ 
+         x-data='{ 
             activeSlide: 0, 
             slides: [], 
             next() { this.activeSlide = (this.activeSlide + 1) % this.slides.length },
             prev() { this.activeSlide = (this.activeSlide - 1 + this.slides.length) % this.slides.length },
             init() {
-                // Initialize slides data from the HTML if needed, or static for now
-                this.slides = {{ slides|tojson if slides else '[{}]' }};
-                setInterval(() => this.next(), 6000);
+                this.slides = {{ slides|tojson if slides else "[]" }};
+                if (this.slides.length > 0) {
+                    setInterval(() => this.next(), 6000);
+                }
             }
-         }">
+         }'>
     
     {% if slides %}
         {% for slide in slides %}

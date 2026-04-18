@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from flask_login import LoginManager, UserMixin
 
 from app.config import Config
@@ -6,7 +6,7 @@ from app.routes.public import public_bp
 
 
 login_manager = LoginManager()
-login_manager.login_view = "public.index"
+login_manager.login_view = "admin.login"
 
 
 class AdminUser(UserMixin):
@@ -26,8 +26,11 @@ def create_app() -> Flask:
     app = Flask(__name__)
     app.config.from_object(Config)
 
+    from app.routes.admin import admin_bp
+
     login_manager.init_app(app)
     app.register_blueprint(public_bp)
+    app.register_blueprint(admin_bp)
 
     @app.errorhandler(404)
     def page_not_found(e):

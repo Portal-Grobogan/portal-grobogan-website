@@ -39,7 +39,7 @@
                 {{ item.judul }}
             </h1>
             <div class="aspect-[21/9] w-full rounded-3xl overflow-hidden shadow-2xl shadow-slate-200">
-                <img src="https://images.unsplash.com/photo-1542359649-31e03ec4e92c?auto=format&fit=crop&q=80&w=1600" 
+                <img src="{{ item.thumbnail_url or 'https://images.unsplash.com/photo-1542359649-31e03ec4e92c?auto=format&fit=crop&q=80&w=1600' }}" 
                      class="w-full h-full object-cover">
             </div>
             <p class="mt-4 text-xs text-slate-400 italic text-center">Foto: Dokumentasi Humas Setda Kabupaten Grobogan</p>
@@ -47,24 +47,7 @@
 
         <!-- Article Body -->
         <div class="prose prose-slate prose-lg max-w-none text-slate-700 leading-relaxed">
-            {{ item.konten | safe }}
-            
-            <p>
-                Grobogan (17/04) — Terus konsisten dalam melakukan inovasi pelayanan publik, Pemerintah Kabupaten Grobogan kembali menegaskan komitmennya untuk menghadirkan kemudahan bagi warga. Melalui penguatan infrastruktur digital seperti portal ini, diharapkan transparansi dan kecepatan layanan dapat dirasakan langsung oleh masyarakat hingga pelosok desa.
-            </p>
-            
-            <h3 class="font-bold text-slate-900">Transformasi Digital untuk Kesejahteraan</h3>
-            <p>
-                Langkah strategis ini mencakup integrasi berbagai layanan kependudukan, kesehatan, hingga informasi kebencanaan yang dapat diakses secara *real-time*. Pimpinan daerah menekankan bahwa digitalisasi bukan hanya soal teknologi, melainkan tentang bagaimana menghidupkan semangat melayani dengan lebih cepat dan akurat.
-            </p>
-
-            <blockquote>
-                "Kita ingin memastikan bahwa setiap warga Grobogan memiliki akses yang sama terhadap informasi dan layanan tanpa terkendala jarak dan waktu."
-            </blockquote>
-            
-            <p>
-                Rencana ke depan, platform ini akan terus dikembangkan dengan penambahan fitur interaktif dan integrasi dengan sistem pengaduan yang lebih responsif.
-            </p>
+            {{ item.content | safe }}
         </div>
 
         <!-- Share & Footer -->

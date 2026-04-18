@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin{% endblock %} - Portal Grobogan</title>
+    
+    <!-- Fonts: Inter for UI clarity -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
+    {% block head %}{% endblock %}
+    <style>
+        [x-cloak] { display: none !important; }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        .sidebar-item-active { 
+            background: linear-gradient(to right, rgba(99, 102, 241, 0.15), transparent);
+            color: white !important;
+            border-left: 3px solid #6366f1;
+        }
+    </style>
+</head>
+<body class="font-sans text-slate-900 antialiased bg-slate-50 min-h-screen">
+    <!-- Main Wrapper (Flex Desktop) -->
+    <div class="flex h-screen overflow-hidden bg-slate-100" x-data="{ mobileOpen: false }">
+        
+        <!-- Mobile Sidebar (Fixed Overlay) -->
+        <div x-show="mobileOpen" x-cloak class="md:hidden relative z-50">
+            <div @click="mobileOpen = false" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+            <div class="fixed inset-y-0 left-0 w-72 bg-slate-900 flex flex-col shadow-2xl">
+                <div class="h-16 flex items-center px-6 border-b border-slate-800 shrink-0">
+                    <span class="text-white font-bold tracking-widest uppercase">Grobogan <span class="text-indigo-400">Admin</span></span>
+                    <button @click="mobileOpen = false" class="ml-auto text-slate-400 p-2"><i data-lucide="x" class="w-6 h-6"></i></button>
+                </div>
+                <!-- Mobile Nav Content -->
+                <nav class="flex-1 p-6 space-y-4 overflow-y-auto">
+                    <a href="{{ url_for('admin.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {% if request.endpoint == 'admin.dashboard' %}bg-indigo-600 text-white{% else %}text-slate-400{% endif %}">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                        <span class="font-bold">Dashboard</span>
+                    </a>
+                    <a href="{{ url_for('admin.list_berita') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {% if 'berita' in request.endpoint %}bg-indigo-600 text-white{% else %}text-slate-400{% endif %}">
+                        <i data-lucide="newspaper" class="w-5 h-5"></i>
+                        <span class="font-bold">Berita</span>
+                    </a>
+                    <a href="{{ url_for('admin.list_layanan') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {% if 'layanan' in request.endpoint %}bg-indigo-600 text-white{% else %}text-slate-400{% endif %}">
+                        <i data-lucide="briefcase" class="w-5 h-5"></i>
+                        <span class="font-bold">Layanan</span>
+                    </a>
+                    <a href="{{ url_for('admin.list_bencana') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {% if 'bencana' in request.endpoint %}bg-indigo-600 text-white{% else %}text-slate-400{% endif %}">
+                        <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                        <span class="font-bold">Kebencanaan</span>
+                    </a>
+                    <a href="{{ url_for('admin.list_pariwisata') }}" class="flex items-center gap-3 px-4 py-3 rounded-xl {% if 'pariwisata' in request.endpoint %}bg-indigo-600 text-white{% else %}text-slate-400{% endif %}">
+                        <i data-lucide="palmtree" class="w-5 h-5"></i>
+                        <span class="font-bold">Pariwisata</span>
+                    </a>
+                    <div class="pt-4 border-t border-slate-800">
+                        <a href="{{ url_for('admin.logout') }}" class="flex items-center gap-3 px-4 py-3 text-rose-400">
+                            <i data-lucide="log-out" class="w-5 h-5"></i>
+                            <span class="font-bold">Logout</span>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Desktop Sidebar (Static Flex Column - No Overlap) -->
+        <aside class="hidden md:flex flex-col w-72 bg-slate-900 text-white shrink-0 border-r border-slate-800">
+            <div class="h-16 flex items-center px-6 border-b border-slate-800 shrink-0 bg-slate-900">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-indigo-600 rounded flex items-center justify-center">
+                        <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <span class="text-lg font-bold tracking-tight text-white uppercase">Admin<span class="text-slate-400">Portal</span></span>
+                </div>
+            </div>
+            
+            <nav class="flex-1 py-6 space-y-1 overflow-y-auto custom-scrollbar">
+                <div class="px-4 mb-4">
+                    <p class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none mb-3">Utama</p>
+                    <a href="{{ url_for('admin.dashboard') }}" 
+                       class="flex items-center px-4 py-3 rounded-xl transition-all duration-200 group {% if request.endpoint == 'admin.dashboard' %}sidebar-item-active{% else %}text-slate-400 hover:bg-white/5 hover:text-white{% endif %}">
+                        <i data-lucide="layout-dashboard" class="w-4 h-4 mr-3"></i>
+                        <span class="text-[13px] font-bold">Dashboard Overview</span>
+                    </a>
+                </div>
+                
+                <div class="px-4 mb-4">
+                    <p class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none mb-3">Konten & Publikasi</p>
+                    <div class="space-y-1">
+                        <a href="{{ url_for('admin.list_berita') }}" 
+                           class="flex items-center px-4 py-3 rounded-xl transition-all duration-200 group {% if 'berita' in request.endpoint %}sidebar-item-active{% else %}text-slate-400 hover:bg-white/5 hover:text-white{% endif %}">
+                            <i data-lucide="newspaper" class="w-4 h-4 mr-3"></i>
+                            <span class="text-[13px] font-bold">Daftar Berita</span>
+                        </a>
+                        <a href="{{ url_for('admin.list_hero') }}" 
+                           class="flex items-center px-4 py-3 rounded-xl transition-all duration-200 group {% if 'hero' in request.endpoint %}sidebar-item-active{% else %}text-slate-400 hover:bg-white/5 hover:text-white{% endif %}">
+                            <i data-lucide="image" class="w-4 h-4 mr-3"></i>
+                            <span class="text-[13px] font-bold">Hero Slideshow</span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="px-4">
+                    <p class="px-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest leading-none mb-3">Layanan & Interaksi</p>
+                    <div class="space-y-1">
+                        <a href="{{ url_for('admin.list_pengaduan') }}" 
+                           class="flex items-center px-4 py-3 rounded-xl transition-all duration-200 group {% if 'pengaduan' in request.endpoint %}sidebar-item-active{% else %}text-slate-400 hover:bg-white/5 hover:text-white{% endif %}">
+                            <i data-lucide="messages-square" class="w-4 h-4 mr-3"></i>
+                            <span class="text-[13px] font-bold">Laporan Pengaduan</span>
+                        </a>
+                        <a href="{{ url_for('admin.list_layanan') }}" 
+                           class="flex items-center px-4 py-3 rounded-xl transition-all duration-200 group {% if 'layanan' in request.endpoint %}sidebar-item-active{% else %}text-slate-400 hover:bg-white/5 hover:text-white{% endif %}">
+                            <i data-lucide="briefcase" class="w-4 h-4 mr-3"></i>
+                            <span class="text-[13px] font-bold">Master Layanan</span>
+                        </a>
+                        <a href="{{ url_for('admin.list_bencana') }}" 
+                           class="flex items-center px-4 py-3 rounded-xl transition-all duration-200 group {% if 'bencana' in request.endpoint %}sidebar-item-active{% else %}text-slate-400 hover:bg-white/5 hover:text-white{% endif %}">
+                            <i data-lucide="alert-triangle" class="w-4 h-4 mr-3"></i>
+                            <span class="text-[13px] font-bold">Manajemen Bencana</span>
+                        </a>
+                        <a href="{{ url_for('admin.list_pariwisata') }}" 
+                           class="flex items-center px-4 py-3 rounded-xl transition-all duration-200 group {% if 'pariwisata' in request.endpoint %}sidebar-item-active{% else %}text-slate-400 hover:bg-white/5 hover:text-white{% endif %}">
+                            <i data-lucide="palmtree" class="w-4 h-4 mr-3"></i>
+                            <span class="text-[13px] font-bold">Galeri Pariwisata</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+            
+            <div class="p-6 border-t border-slate-800 mt-auto">
+                <a href="{{ url_for('admin.logout') }}" 
+                   class="flex items-center px-4 py-3 text-slate-400 hover:bg-rose-500/10 hover:text-rose-400 rounded-xl transition-all group">
+                    <i data-lucide="log-out" class="w-5 h-5 mr-3"></i>
+                    <span class="text-[13px] font-bold">Keluar System</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content (Full Display) -->
+        <div class="flex-1 flex flex-col w-full min-w-0 bg-slate-100 h-screen overflow-hidden">
+            <!-- Header (Full width within content area) -->
+            <header class="bg-white h-16 border-b border-slate-200 flex items-center justify-between px-4 md:px-6 shrink-0 shadow-sm z-10 w-full">
+                <div class="flex items-center gap-4">
+                    <button @click="mobileOpen = true" class="md:hidden text-slate-600 p-2 hover:bg-slate-100 rounded-lg">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                    <div class="flex flex-col">
+                        <h2 class="text-xl font-black text-slate-800 tracking-tight leading-none mb-1">{% block page_title %}Dashboard{% endblock %}</h2>
+                        <div class="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                            <span class="text-indigo-600">Admin Panel</span>
+                            <span>/</span>
+                            <span>{% block breadcrumb_mini %}{% endblock %}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-3">
+                    <div class="flex flex-col items-end hidden sm:flex">
+                        <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Status</span>
+                        <span class="text-xs font-bold text-emerald-500 flex items-center gap-1.5">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                            Online
+                        </span>
+                    </div>
+                    <div class="h-8 w-px bg-slate-100 mx-2"></div>
+                    <div class="flex items-center gap-3 pl-2">
+                        <div class="w-9 h-9 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-center font-bold text-indigo-600 shadow-sm text-sm">
+                            AD
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Scrollable Body (No max-width restriction for Full Display) -->
+            <main class="flex-1 overflow-y-auto p-4 md:p-8 xl:px-16 xl:py-10 custom-scrollbar w-full">
+                <!-- Large Breadcrumb/Title Info -->
+                <div class="mb-10 px-2 flex flex-col md:flex-row md:items-end justify-between gap-4">
+                    <div>
+                        <nav class="flex items-center gap-3 text-sm font-bold text-slate-400 mb-3">
+                            <a href="{{ url_for('admin.dashboard') }}" class="hover:text-indigo-600 transition-colors">Workspace</a>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300"></i>
+                            <span class="text-slate-900 font-black text-base tracking-tight">{% block breadcrumb %}Dashboard{% endblock %}</span>
+                        </nav>
+                        <p class="text-slate-500 text-sm max-w-2xl">Kelola data dan pantau seluruh aktivitas sistem secara real-time di area kerja Anda.</p>
+                    </div>
+                </div>
+
+                <!-- Flash Messages Area -->
+                <div class="space-y-4 px-2 mb-8">
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                      {% if messages %}
+                        {% for category, message in messages %}
+                          <div class="p-4 rounded-xl flex items-center gap-4 animate-in fade-in slide-in-from-top-4 duration-500
+                               {% if category == 'success' %}bg-emerald-50 text-emerald-800 border border-emerald-100 shadow-sm
+                               {% elif category == 'error' %}bg-rose-50 text-rose-800 border border-rose-100 shadow-sm
+                               {% else %}bg-indigo-50 text-indigo-800 border border-indigo-100 shadow-sm{% endif %}"
+                               x-data="{ show: true }" x-show="show">
+                            <i data-lucide="info" class="w-5 h-5 opacity-60"></i>
+                            <span class="text-[13px] font-bold flex-1">{{ message }}</span>
+                            <button @click="show = false" class="opacity-40 hover:opacity-100 transition-opacity"><i data-lucide="x" class="w-4 h-4"></i></button>
+                          </div>
+                        {% endfor %}
+                      {% endif %}
+                    {% endwith %}
+                </div>
+
+                <!-- Block Content - Full Width Display -->
+                <div class="w-full">
+                    {% block content %}{% endblock %}
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Scripting for Icons and UI Logic -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+        document.addEventListener('alpine:initialized', () => {
+            lucide.createIcons();
+        });
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

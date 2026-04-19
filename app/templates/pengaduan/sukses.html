@@ -21,12 +21,17 @@
 
         <div class="bg-white p-8 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100 mb-12">
             <span class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Kode Tiket Anda</span>
-            <div class="flex items-center justify-center space-x-4">
-                <span class="text-3xl font-mono font-black text-primary tracking-tighter bg-slate-50 px-6 py-3 rounded-2xl border border-slate-100">
+            <div class="flex items-center justify-center space-x-4" x-data="{ copied: false }">
+                <span x-ref="ticketId" class="text-3xl font-mono font-black text-primary tracking-tighter bg-slate-50 px-6 py-3 rounded-2xl border border-slate-100">
                     {{ id }}
                 </span>
-                <button class="p-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl transition-all" title="Salin Kode">
-                    <i data-lucide="copy" class="w-5 h-5"></i>
+                <button 
+                    @click="navigator.clipboard.writeText($refs.ticketId.innerText.trim()); copied = true; setTimeout(() => copied = false, 2000)"
+                    class="p-3 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl transition-all" 
+                    :class="copied ? 'bg-emerald-50 text-emerald-600' : ''"
+                    title="Salin Kode">
+                    <i data-lucide="copy" class="w-5 h-5" x-show="!copied"></i>
+                    <i data-lucide="check" class="w-5 h-5" x-show="copied" style="display: none;"></i>
                 </button>
             </div>
             <p class="mt-6 text-sm text-slate-400 italic">Simpan kode tiket ini untuk mengecek status tindak lanjut secara berkala.</p>

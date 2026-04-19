@@ -130,19 +130,25 @@ def pengaduan():
         # Handle file upload if present
         if lampiran_file and lampiran_file.filename != '':
             try:
-                # Use a safe filename
-                safe_name = "".join([c if c.isalnum() else "_" for c in nama]).lower()
-                file_path = f"pengaduan/{safe_name}_{lampiran_file.filename}"
+                import uuid
+                # Use UUID for unique, safe filenames
+                ext = lampiran_file.filename.split('.')[-1]
+                file_path = f"pengaduan/{uuid.uuid4()}.{ext}"
                 file_content = lampiran_file.read()
                 
+                print(f"DEBUG: Uploading to storage bucket 'pengaduan-lampiran' at path: {file_path}")
                 supabase.storage.from_("pengaduan-lampiran").upload(
                     path=file_path,
                     file=file_content,
                     file_options={"content-type": lampiran_file.content_type}
                 )
-                lampiran_url = supabase.storage.from_("pengaduan-lampiran").get_public_url(file_path)
+                # For private buckets, get_public_url still gives the base URL
+                public_res = supabase.storage.from_("pengaduan-lampiran").get_public_url(file_path)
+                lampiran_url = public_res
+                print(f"DEBUG: Upload success! URL: {lampiran_url}")
             except Exception as e:
-                print(f"Attachment upload failed: {str(e)}")
+                print(f"DEBUG: Attachment upload failed: {str(e)}")
+                # We still continue even if upload fails, but lampiran_url will be None
 
         try:
             res = supabase.table("pengaduan").insert({

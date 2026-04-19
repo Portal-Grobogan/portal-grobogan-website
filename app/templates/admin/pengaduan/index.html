@@ -24,7 +24,7 @@
             </div>
             <div>
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Butuh Respon</p>
-                {% set pending = pengaduan_list|selectattr('status', 'equalto', 'Baru')|list %}
+                {% set pending = pengaduan_list|selectattr('status', 'equalto', 'baru')|list %}
                 <p class="text-xl font-bold text-slate-900">{{ pending|length }}</p>
             </div>
         </div>
@@ -34,7 +34,7 @@
             </div>
             <div>
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Sedang Proses</p>
-                {% set proses = pengaduan_list|selectattr('status', 'equalto', 'Proses')|list %}
+                {% set proses = pengaduan_list|selectattr('status', 'equalto', 'diproses')|list %}
                 <p class="text-xl font-bold text-slate-900">{{ proses|length }}</p>
             </div>
         </div>
@@ -44,7 +44,7 @@
             </div>
             <div>
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Selesai</p>
-                {% set selesai = pengaduan_list|selectattr('status', 'equalto', 'Selesai')|list %}
+                {% set selesai = pengaduan_list|selectattr('status', 'equalto', 'selesai')|list %}
                 <p class="text-xl font-bold text-slate-900">{{ selesai|length }}</p>
             </div>
         </div>
@@ -63,7 +63,7 @@
                 <select name="status" class="w-full pl-4 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold outline-none focus:ring-4 focus:ring-indigo-500/5 focus:border-indigo-500 transition-all appearance-none cursor-pointer">
                     <option value="">Semua Status</option>
                     <option value="baru" {% if status_filter == 'baru' %}selected{% endif %}>🟢 Baru</option>
-                    <option value="proses" {% if status_filter == 'proses' %}selected{% endif %}>🟡 Proses</option>
+                    <option value="diproses" {% if status_filter == 'diproses' %}selected{% endif %}>🟡 Proses</option>
                     <option value="selesai" {% if status_filter == 'selesai' %}selected{% endif %}>🔵 Selesai</option>
                     <option value="ditolak" {% if status_filter == 'ditolak' %}selected{% endif %}>🔴 Ditolak</option>
                 </select>
@@ -120,7 +120,7 @@
                                 <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-rose-50 text-rose-700 border border-rose-100">
                                     <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span> Baru
                                 </span>
-                            {% elif p.status == 'proses' %}
+                            {% elif p.status == 'diproses' %}
                                 <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wide bg-amber-50 text-amber-700 border border-amber-100">
                                     <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Proses
                                 </span>

@@ -7,45 +7,56 @@
 
 {% block content %}
 <div class="space-y-6">
-    <!-- Quick Stats Bar -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-            <div class="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center text-indigo-600">
-                <i data-lucide="inbox" class="w-6 h-6"></i>
-            </div>
+    <!-- Quick Stats Bar (Matches Dashboard Overview) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Total Laporan -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-indigo-600 flex items-center justify-between transition-all hover:shadow-md">
             <div>
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Total Laporan</p>
-                <p class="text-xl font-bold text-slate-900">{{ pengaduan_list|length }}</p>
+                <p class="text-sm font-medium text-slate-500 mb-1">Total Laporan</p>
+                <h3 class="text-3xl font-bold text-slate-800">{{ pengaduan_list|length }}</h3>
+                <p class="text-[11px] text-indigo-600 font-bold mt-1 uppercase tracking-tight">Semua Laporan</p>
+            </div>
+            <div class="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center">
+                <i data-lucide="inbox" class="w-6 h-6 text-indigo-600"></i>
             </div>
         </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-            <div class="w-12 h-12 bg-rose-50 rounded-xl flex items-center justify-center text-rose-600">
-                <i data-lucide="alert-circle" class="w-6 h-6"></i>
-            </div>
+
+        <!-- Butuh Respon -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-rose-500 flex items-center justify-between transition-all hover:shadow-md">
             <div>
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Butuh Respon</p>
+                <p class="text-sm font-medium text-slate-500 mb-1">Butuh Respon</p>
                 {% set pending = pengaduan_list|selectattr('status', 'equalto', 'baru')|list %}
-                <p class="text-xl font-bold text-slate-900">{{ pending|length }}</p>
+                <h3 class="text-3xl font-bold text-slate-800">{{ pending|length }}</h3>
+                <p class="text-[11px] text-rose-600 font-bold mt-1 uppercase tracking-tight">Status Baru</p>
+            </div>
+            <div class="w-12 h-12 bg-rose-50 rounded-lg flex items-center justify-center">
+                <i data-lucide="alert-circle" class="w-6 h-6 text-rose-600"></i>
             </div>
         </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-            <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center text-amber-600">
-                <i data-lucide="clock" class="w-6 h-6"></i>
-            </div>
+
+        <!-- Sedang Proses -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-amber-500 flex items-center justify-between transition-all hover:shadow-md">
             <div>
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Sedang Proses</p>
+                <p class="text-sm font-medium text-slate-500 mb-1">Sedang Proses</p>
                 {% set proses = pengaduan_list|selectattr('status', 'equalto', 'diproses')|list %}
-                <p class="text-xl font-bold text-slate-900">{{ proses|length }}</p>
+                <h3 class="text-3xl font-bold text-slate-800">{{ proses|length }}</h3>
+                <p class="text-[11px] text-amber-600 font-bold mt-1 uppercase tracking-tight">Dalam Penanganan</p>
+            </div>
+            <div class="w-12 h-12 bg-amber-50 rounded-lg flex items-center justify-center">
+                <i data-lucide="clock" class="w-6 h-6 text-amber-600"></i>
             </div>
         </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
-            <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600">
-                <i data-lucide="check-circle" class="w-6 h-6"></i>
-            </div>
+
+        <!-- Selesai -->
+        <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-emerald-500 flex items-center justify-between transition-all hover:shadow-md">
             <div>
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Selesai</p>
+                <p class="text-sm font-medium text-slate-500 mb-1">Selesai</p>
                 {% set selesai = pengaduan_list|selectattr('status', 'equalto', 'selesai')|list %}
-                <p class="text-xl font-bold text-slate-900">{{ selesai|length }}</p>
+                <h3 class="text-3xl font-bold text-slate-800">{{ selesai|length }}</h3>
+                <p class="text-[11px] text-emerald-600 font-bold mt-1 uppercase tracking-tight">Tuntas Ditangani</p>
+            </div>
+            <div class="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center text-emerald-600">
+                <i data-lucide="check-circle" class="w-6 h-6 text-emerald-600"></i>
             </div>
         </div>
     </div>

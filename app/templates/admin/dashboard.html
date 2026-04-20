@@ -12,8 +12,8 @@
     <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-indigo-600 flex items-center justify-between transition-all hover:shadow-md">
         <div>
             <p class="text-sm font-medium text-slate-500 mb-1">Total Berita</p>
-            <h3 class="text-3xl font-bold text-slate-800">12</h3>
-            <p class="text-[11px] text-indigo-600 font-bold mt-1 uppercase tracking-tight">+4 Hari ini</p>
+            <h3 class="text-3xl font-bold text-slate-800">{{ stats.total_berita }}</h3>
+            <p class="text-[11px] text-indigo-600 font-bold mt-1 uppercase tracking-tight">Terpublikasi</p>
         </div>
         <div class="w-12 h-12 bg-indigo-50 rounded-lg flex items-center justify-center">
             <i data-lucide="newspaper" class="w-6 h-6 text-indigo-600"></i>
@@ -24,8 +24,8 @@
     <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-emerald-500 flex items-center justify-between transition-all hover:shadow-md">
         <div>
             <p class="text-sm font-medium text-slate-500 mb-1">Aduan Selesai</p>
-            <h3 class="text-3xl font-bold text-slate-800">48</h3>
-            <p class="text-[11px] text-emerald-600 font-bold mt-1 uppercase tracking-tight">88% Efisiensi</p>
+            <h3 class="text-3xl font-bold text-slate-800">{{ stats.aduan_selesai }}</h3>
+            <p class="text-[11px] text-emerald-600 font-bold mt-1 uppercase tracking-tight">Tuntas Ditangani</p>
         </div>
         <div class="w-12 h-12 bg-emerald-50 rounded-lg flex items-center justify-center">
             <i data-lucide="check-circle" class="w-6 h-6 text-emerald-600"></i>
@@ -36,7 +36,7 @@
     <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-rose-500 flex items-center justify-between transition-all hover:shadow-md">
         <div>
             <p class="text-sm font-medium text-slate-500 mb-1">Aduan Baru</p>
-            <h3 class="text-3xl font-bold text-slate-800">5</h3>
+            <h3 class="text-3xl font-bold text-slate-800">{{ stats.aduan_baru }}</h3>
             <p class="text-[11px] text-rose-600 font-bold mt-1 uppercase tracking-tight">Perlu Segera</p>
         </div>
         <div class="w-12 h-12 bg-rose-50 rounded-lg flex items-center justify-center">
@@ -48,8 +48,8 @@
     <div class="bg-white p-6 rounded-xl shadow-sm border-l-4 border-amber-500 flex items-center justify-between transition-all hover:shadow-md">
         <div>
             <p class="text-sm font-medium text-slate-500 mb-1">Layanan Publik</p>
-            <h3 class="text-3xl font-bold text-slate-800">15</h3>
-            <p class="text-[11px] text-amber-600 font-bold mt-1 uppercase tracking-tight">Semua Aktif</p>
+            <h3 class="text-3xl font-bold text-slate-800">{{ stats.total_layanan }}</h3>
+            <p class="text-[11px] text-amber-600 font-bold mt-1 uppercase tracking-tight">Aktif Tersedia</p>
         </div>
         <div class="w-12 h-12 bg-amber-50 rounded-lg flex items-center justify-center">
             <i data-lucide="briefcase" class="w-6 h-6 text-amber-600"></i>
@@ -65,8 +65,8 @@
             <h4 class="text-base font-bold text-slate-900">Aktivitas Sistem Terakhir</h4>
             <p class="text-[13px] text-slate-500">Daftar interaksi publik terbaru di portal</p>
         </div>
-        <a href="#" class="text-sm font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1.5 transition-colors">
-            Lihat Semua Log
+        <a href="{{ url_for('admin.list_pengaduan') }}" class="text-sm font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1.5 transition-colors">
+            Lihat Semua Pengaduan
             <i data-lucide="arrow-right" class="w-4 h-4"></i>
         </a>
     </div>
@@ -75,60 +75,60 @@
         <table class="w-full text-left border-collapse">
             <thead>
                 <tr class="bg-slate-50">
-                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest border-b border-slate-200">Aktivitas</th>
+                    <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest border-b border-slate-200">Jenis Aktivitas</th>
                     <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest border-b border-slate-200">Detail Konten</th>
                     <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest border-b border-slate-200">Status</th>
                     <th class="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-widest border-b border-slate-200">Waktu</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-100 text-sm">
+                {% for item in recent_activity %}
                 <tr class="hover:bg-slate-50/50 transition-colors">
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 bg-indigo-50 border border-indigo-100/50 rounded-xl flex items-center justify-center text-indigo-600">
-                                <i data-lucide="newspaper" class="w-5 h-5"></i>
-                            </div>
+                            {% if item.status == 'selesai' %}
                             <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
                                 <i data-lucide="check-circle" class="w-5 h-5"></i>
                             </div>
-                            <div>
-                                <p class="text-[13px] font-bold text-slate-900 leading-tight">Penyelesaian Aduan</p>
-                                <p class="text-[11px] text-slate-500">ID: #GRB-2026-001</p>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="px-6 py-5">
-                        <p class="text-sm text-slate-600 font-medium">Laporan kerusakan lampu jalan di Geyer telah diperbaiki.</p>
-                    </td>
-                    <td class="px-6 py-5">
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200">Selesai</span>
-                    </td>
-                    <td class="px-6 py-5">
-                        <p class="text-xs text-slate-400 font-medium">5 jam yang lalu</p>
-                    </td>
-                </tr>
-                <tr class="hover:bg-slate-50/50 transition-colors">
-                    <td class="px-6 py-5">
-                        <div class="flex items-center gap-3">
+                            {% elif item.status == 'baru' %}
                             <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
-                                <i data-lucide="phone-call" class="w-5 h-5"></i>
+                                <i data-lucide="message-square" class="w-5 h-5"></i>
                             </div>
+                            {% else %}
+                            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                                <i data-lucide="clock" class="w-5 h-5"></i>
+                            </div>
+                            {% endif %}
                             <div>
-                                <p class="text-[13px] font-bold text-slate-900 leading-tight">Aduan Baru Masuk</p>
-                                <p class="text-[11px] text-slate-500">ID: #GRB-2026-042</p>
+                                <p class="text-[13px] font-bold text-slate-900 leading-tight">Pengaduan Masyarakat</p>
+                                <p class="text-[11px] text-slate-500">ID: #{{ item.id[:8] }}</p>
                             </div>
                         </div>
                     </td>
                     <td class="px-6 py-5">
-                        <p class="text-sm text-slate-600 font-medium">Laporan penumpukan sampah liar di pasar.</p>
+                        <p class="text-sm text-slate-600 font-medium line-clamp-1">{{ item.judul }}</p>
+                        <p class="text-[11px] text-slate-400 mt-0.5">Oleh: {{ item.nama_pelapor }}</p>
                     </td>
                     <td class="px-6 py-5">
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200">Menunggu</span>
+                        {% if item.status == 'baru' %}
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-amber-100 text-amber-700 border border-amber-200">Baru</span>
+                        {% elif item.status == 'diproses' %}
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-blue-100 text-blue-700 border border-blue-200">Diproses</span>
+                        {% elif item.status == 'selesai' %}
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-100 text-emerald-700 border border-emerald-200">Selesai</span>
+                        {% else %}
+                            <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold bg-slate-100 text-slate-700 border border-slate-200">{{ item.status }}</span>
+                        {% endif %}
                     </td>
                     <td class="px-6 py-5">
-                        <p class="text-xs text-slate-400 font-medium">Baru saja</p>
+                        <p class="text-xs text-slate-400 font-medium">{{ item.created_at[:16] }}</p>
                     </td>
                 </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="px-6 py-10 text-center text-slate-400 italic">Belum ada aktivitas terbaru.</td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

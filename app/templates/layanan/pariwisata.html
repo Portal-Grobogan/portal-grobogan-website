@@ -92,30 +92,27 @@
                     <i data-lucide="x" class="w-10 h-10"></i>
                 </button>
 
-                <!-- Navigation -->
-                <template x-if="activeImages.length > 1">
-                    <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-4 sm:px-10 z-[110] pointer-events-none">
-                        <button @click.stop="prev()" class="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md flex items-center justify-center transition-all pointer-events-auto border border-white/10">
-                            <i data-lucide="chevron-left" class="w-8 h-8"></i>
-                        </button>
-                        <button @click.stop="next()" class="w-14 h-14 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-md flex items-center justify-center transition-all pointer-events-auto border border-white/10">
-                            <i data-lucide="chevron-right" class="w-8 h-8"></i>
-                        </button>
-                    </div>
-                </template>
+                <!-- Navigation Buttons (Improved Visibility & Logic) -->
+                <div x-show="activeImages.length > 1" class="absolute inset-x-0 top-1/2 -translate-y-1/2 flex justify-between px-4 sm:px-10 z-[110] pointer-events-none">
+                    <button @click.stop="prev()" 
+                            class="w-16 h-16 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-lg flex items-center justify-center transition-all pointer-events-auto border border-white/20 hover:scale-110 active:scale-95 group">
+                        <i data-lucide="chevron-left" class="w-10 h-10 group-hover:-translate-x-1 transition-transform"></i>
+                    </button>
+                    <button @click.stop="next()" 
+                            class="w-16 h-16 rounded-full bg-white/10 hover:bg-white/20 text-white backdrop-blur-lg flex items-center justify-center transition-all pointer-events-auto border border-white/20 hover:scale-110 active:scale-95 group">
+                        <i data-lucide="chevron-right" class="w-10 h-10 group-hover:translate-x-1 transition-transform"></i>
+                    </button>
+                </div>
 
                 <!-- Image Display -->
                 <div class="w-full h-full flex flex-col items-center justify-center p-4">
                     <div class="relative w-full h-full flex items-center justify-center rounded-3xl overflow-hidden bg-black shadow-2xl">
                         <img :src="activeImages[currentIndex]" 
                              x-transition:enter="transition ease-out duration-300"
+                             x-transition:enter-start="opacity-0 scale-95"
+                             x-transition:enter-end="opacity-100 scale-100"
                              :key="currentIndex"
-                             class="max-w-full max-h-full object-contain">
-                        
-                        <!-- Counter Badge -->
-                        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 px-4 py-2 bg-black/50 backdrop-blur-md rounded-full text-white text-xs font-bold border border-white/10">
-                            <span x-text="currentIndex + 1"></span> / <span x-text="activeImages.length"></span>
-                        </div>
+                             class="max-w-full max-h-full object-contain shadow-2xl">
                     </div>
                 </div>
             </div>

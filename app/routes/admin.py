@@ -16,7 +16,36 @@ def slugify(s):
 @admin_bp.route("/")
 @login_required
 def dashboard():
-    return render_template("admin/dashboard.html")
+    supabase = get_supabase_client()
+    stats = {}
+    
+    try:
+        # 1. Total Berita
+        res_berita = supabase.table("berita").select("id", count="exact").execute()
+        stats['total_berita'] = res_berita.count if res_berita.count is not None else 0
+        
+        # 2. Aduan Selesai
+        res_aduan_selesai = supabase.table("pengaduan").select("id", count="exact").eq("status", "selesai").execute()
+        stats['aduan_selesai'] = res_aduan_selesai.count if res_aduan_selesai.count is not None else 0
+        
+        # 3. Aduan Baru
+        res_aduan_baru = supabase.table("pengaduan").select("id", count="exact").eq("status", "baru").execute()
+        stats['aduan_baru'] = res_aduan_baru.count if res_aduan_baru.count is not None else 0
+        
+        # 4. Layanan Publik
+        res_layanan = supabase.table("layanan").select("id", count="exact").execute()
+        stats['total_layanan'] = res_layanan.count if res_layanan.count is not None else 0
+        
+        # 5. Recent Activity (Latest 5 Complaints)
+        res_activity = supabase.table("pengaduan").select("*").order("created_at", desc=True).limit(5).execute()
+        recent_activity = res_activity.data
+        
+    except Exception as e:
+        print(f"Error fetching dashboard stats: {str(e)}")
+        stats = {'total_berita': 0, 'aduan_selesai': 0, 'aduan_baru': 0, 'total_layanan': 0}
+        recent_activity = []
+
+    return render_template("admin/dashboard.html", stats=stats, recent_activity=recent_activity)
 
 # --- LOGIN / LOGOUT ---
 @admin_bp.route("/login", methods=["GET", "POST"])
@@ -61,11 +90,20 @@ def list_berita():
     try:
         res = supabase.table("berita").select("*").order("created_at", desc=True).execute()
         berita_list = res.data
+        
+        # Calculate Stats
+        stats = {
+            'total': len(berita_list),
+            'terbit': len([b for b in berita_list if b.get('status') != 'draft']),
+            'draft': len([b for b in berita_list if b.get('status') == 'draft']),
+            'pembaca': sum([b.get('views', 0) for b in berita_list])
+        }
     except Exception as e:
         flash(f"Gagal mengambil data berita: {str(e)}", "error")
         berita_list = []
+        stats = {'total': 0, 'terbit': 0, 'draft': 0, 'pembaca': 0}
     
-    return render_template("admin/berita/index.html", berita_list=berita_list)
+    return render_template("admin/berita/index.html", berita_list=berita_list, stats=stats)
 
 @admin_bp.route("/berita/tambah", methods=["GET", "POST"])
 @login_required
@@ -362,14 +400,19 @@ def update_pengaduan(id):
 @admin_bp.route("/layanan")
 @login_required
 def list_layanan():
+    search = request.args.get("search", "")
     supabase = get_supabase_client()
     try:
-        res = supabase.table("layanan").select("*").order("urutan").execute()
+        query = supabase.table("layanan").select("*")
+        if search:
+            query = query.ilike("nama", f"%{search}%")
+        
+        res = query.order("urutan").execute()
         layanan_list = res.data
     except Exception as e:
         flash(f"Gagal mengambil data layanan: {str(e)}", "error")
         layanan_list = []
-    return render_template("admin/layanan/index.html", layanan_list=layanan_list)
+    return render_template("admin/layanan/index.html", layanan_list=layanan_list, search=search)
 
 @admin_bp.route("/layanan/tambah", methods=["GET", "POST"])
 @login_required
@@ -437,14 +480,20 @@ def hapus_layanan(id):
 @admin_bp.route("/bencana")
 @login_required
 def list_bencana():
+    search = request.args.get("search", "")
     supabase = get_supabase_client()
     try:
-        res = supabase.table("bencana").select("*").order("created_at", desc=True).execute()
+        query = supabase.table("bencana").select("*")
+        if search:
+            # Search in title or location
+            query = query.or_(f"judul.ilike.%{search}%,lokasi.ilike.%{search}%")
+            
+        res = query.order("created_at", desc=True).execute()
         bencana_list = res.data
     except Exception as e:
         flash(f"Gagal mengambil data bencana: {str(e)}", "error")
         bencana_list = []
-    return render_template("admin/bencana/index.html", bencana_list=bencana_list)
+    return render_template("admin/bencana/index.html", bencana_list=bencana_list, search=search)
 
 @admin_bp.route("/bencana/tambah", methods=["GET", "POST"])
 @login_required
@@ -518,14 +567,19 @@ def hapus_bencana(id):
 @admin_bp.route("/pariwisata")
 @login_required
 def list_pariwisata():
+    search = request.args.get("search", "")
     supabase = get_supabase_client()
     try:
-        res = supabase.table("pariwisata").select("*").order("created_at", desc=True).execute()
+        query = supabase.table("pariwisata").select("*")
+        if search:
+            query = query.or_(f"nama.ilike.%{search}%,alamat.ilike.%{search}%")
+            
+        res = query.order("created_at", desc=True).execute()
         wisata_list = res.data
     except Exception as e:
         flash(f"Gagal mengambil data pariwisata: {str(e)}", "error")
         wisata_list = []
-    return render_template("admin/pariwisata/index.html", wisata_list=wisata_list)
+    return render_template("admin/pariwisata/index.html", wisata_list=wisata_list, search=search)
 
 @admin_bp.route("/pariwisata/tambah", methods=["GET", "POST"])
 @login_required

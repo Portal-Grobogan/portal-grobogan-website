@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 from app.config import get_supabase_client
+from datetime import datetime
+from collections import Counter
 
 
 public_bp = Blueprint("public", __name__)
@@ -22,6 +24,16 @@ def index():
     try:
         berita_res = supabase.table("berita").select("*").order("created_at", desc=True).limit(6).execute()
         berita_list = berita_res.data
+        
+        # Convert created_at strings to datetime objects
+        for item in berita_list:
+            if item.get('created_at'):
+                try:
+                    dt_str = item['created_at'].replace('Z', '+00:00')
+                    item['created_at'] = datetime.fromisoformat(dt_str)
+                except Exception:
+                    pass
+                    
         print(f"DEBUG: Found {len(berita_list)} berita")
     except Exception as e:
         print(f"DEBUG: Error fetching berita: {str(e)}")
@@ -40,9 +52,84 @@ def index():
                            layanan_list=layanan_list)
 
 
+class Pagination:
+    def __init__(self, items, page, per_page, total_count):
+        self.items = items
+        self.page = page
+        self.per_page = per_page
+        self.total_count = total_count
+        self.pages = (total_count + per_page - 1) // per_page
+        self.has_prev = page > 1
+        self.has_next = page < self.pages
+        self.prev_num = page - 1
+        self.next_num = page + 1
+
+    def iter_pages(self, left_edge=2, left_current=2, right_current=5, right_edge=2):
+        last = 0
+        for num in range(1, self.pages + 1):
+            if num <= left_edge or \
+               (num > self.page - left_current - 1 and \
+                num < self.page + right_current) or \
+               num > self.pages - right_edge:
+                if last + 1 != num:
+                    yield None
+                yield num
+                last = num
+
 @public_bp.route("/berita")
 def berita_list():
-    return render_template("berita/index.html")
+    page = request.args.get('page', 1, type=int)
+    search = request.args.get('search', '')
+    category = request.args.get('category', '')
+    per_page = 6
+    
+    supabase = get_supabase_client()
+    
+    try:
+        # Build query
+        query = supabase.table("berita").select("*", count="exact").order("created_at", desc=True)
+        
+        if search:
+            query = query.ilike("judul", f"%{search}%")
+        if category:
+            query = query.eq("kategori", category)
+            
+        # Get total count and data with pagination
+        start = (page - 1) * per_page
+        end = start + per_page - 1
+        
+        res = query.range(start, end).execute()
+        
+        total_count = res.count if res.count is not None else 0
+        berita_data = res.data
+        
+        # Convert created_at strings to datetime objects
+        for item in berita_data:
+            if item.get('created_at'):
+                try:
+                    dt_str = item['created_at'].replace('Z', '+00:00')
+                    item['created_at'] = datetime.fromisoformat(dt_str)
+                except Exception:
+                    pass
+        
+        pagination = Pagination(berita_data, page, per_page, total_count)
+        
+        # Fetch categories and counts for the sidebar
+        # This is a bit tricky with Supabase to do in one go, but we can do a simple select
+        cat_res = supabase.table("berita").select("kategori").execute()
+        categories_raw = [item['kategori'] for item in cat_res.data]
+        cat_counts = Counter(categories_raw)
+        
+    except Exception as e:
+        print(f"DEBUG: Error fetching berita list: {str(e)}")
+        pagination = Pagination([], 1, per_page, 0)
+        cat_counts = {}
+
+    return render_template("berita/index.html", 
+                           pagination=pagination, 
+                           cat_counts=cat_counts,
+                           current_category=category,
+                           search_query=search)
 
 
 @public_bp.route("/berita/<id_or_slug>")
@@ -56,6 +143,22 @@ def berita_detail(id_or_slug):
             
         if res.data:
             item = res.data[0]
+            
+            # Increment views count using RPC (Atomic increment)
+            try:
+                supabase.rpc('increment_berita_views', {'row_id': item['id']}).execute()
+            except Exception as e:
+                print(f"DEBUG: Failed to increment views: {str(e)}")
+
+            # Convert created_at string to datetime object if possible for better formatting in templates
+            if item.get('created_at'):
+                try:
+                    # Handle Supabase format: '2026-04-20T14:15:26.123456+00:00'
+                    # We can use fromisoformat, but need to handle potential '+' or 'Z'
+                    dt_str = item['created_at'].replace('Z', '+00:00')
+                    item['created_at'] = datetime.fromisoformat(dt_str)
+                except Exception:
+                    pass
         else:
             return "Berita tidak ditemukan", 404
     except Exception:

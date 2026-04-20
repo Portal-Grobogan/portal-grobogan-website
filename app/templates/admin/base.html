@@ -18,7 +18,10 @@
     
     {% block head %}{% endblock %}
     <style>
+        html, body { height: auto; min-height: 100%; margin: 0; }
         [x-cloak] { display: none !important; }
+
+
         .custom-scrollbar::-webkit-scrollbar {
             width: 4px;
         }
@@ -38,7 +41,7 @@
 </head>
 <body class="font-sans text-slate-900 antialiased bg-slate-50 min-h-screen">
     <!-- Main Wrapper (Flex Desktop) -->
-    <div class="flex h-screen overflow-hidden bg-slate-100" x-data="{ mobileOpen: false }">
+    <div class="flex min-h-screen bg-slate-100 w-full" x-data="{ mobileOpen: false }">
         
         <!-- Mobile Sidebar (Fixed Overlay) -->
         <div x-show="mobileOpen" x-cloak class="md:hidden relative z-50">
@@ -81,7 +84,7 @@
         </div>
 
         <!-- Desktop Sidebar (Static Flex Column - No Overlap) -->
-        <aside class="hidden md:flex flex-col w-72 bg-slate-900 text-white shrink-0 border-r border-slate-800">
+        <aside class="hidden md:flex flex-col w-72 bg-slate-900 text-white shrink-0 border-r border-slate-800 sticky top-0 h-screen">
             <div class="h-16 flex items-center px-6 border-b border-slate-800 shrink-0 bg-slate-900">
                 <div class="flex items-center gap-2">
                     <div class="w-8 h-8 bg-indigo-600 rounded flex items-center justify-center">
@@ -154,9 +157,9 @@
         </aside>
 
         <!-- Main Content (Full Display) -->
-        <div class="flex-1 flex flex-col w-full min-w-0 bg-slate-100 h-screen overflow-hidden">
+        <div class="flex-1 flex flex-col w-full min-w-0 bg-slate-100">
             <!-- Header (Full width within content area) -->
-            <header class="bg-white h-16 border-b border-slate-200 flex items-center justify-between px-4 md:px-6 shrink-0 shadow-sm z-10 w-full">
+            <header class="bg-white h-16 border-b border-slate-200 flex items-center justify-between px-4 md:px-6 shrink-0 shadow-sm z-20 w-full sticky top-0">
                 <div class="flex items-center gap-4">
                     <button @click="mobileOpen = true" class="md:hidden text-slate-600 p-2 hover:bg-slate-100 rounded-lg">
                         <i data-lucide="menu" class="w-6 h-6"></i>
@@ -189,7 +192,7 @@
             </header>
 
             <!-- Scrollable Body (No max-width restriction for Full Display) -->
-            <main class="flex-1 overflow-y-auto p-4 md:p-8 xl:px-16 xl:py-10 custom-scrollbar w-full">
+            <main class="flex-1 p-4 md:p-8 xl:px-16 xl:py-10 w-full">
                 <!-- Large Breadcrumb/Title Info -->
                 <div class="mb-10 px-2 flex flex-col md:flex-row md:items-end justify-between gap-4">
                     <div>

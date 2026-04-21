@@ -9,23 +9,24 @@ public_bp = Blueprint("public", __name__)
 
 @public_bp.route("/")
 def index():
+    """ Halaman utama portal informasi. """
     supabase = get_supabase_client()
     
-    # 1. Fetch Active Hero Slides
+    # 1. Ambil Slide Hero yang Aktif
     try:
         slides_res = supabase.table("hero_slides").select("*").eq("aktif", True).order("urutan").execute()
         slides = slides_res.data
-        print(f"DEBUG: Found {len(slides)} active slides")
+        print(f"DEBUG: Menemukan {len(slides)} slide aktif")
     except Exception as e:
-        print(f"DEBUG: Error fetching slides: {str(e)}")
+        print(f"DEBUG: Error saat mengambil slide: {str(e)}")
         slides = []
 
-    # 2. Fetch Latest Berita (Limit 6)
+    # 2. Ambil Berita Terbaru (Limit 6)
     try:
         berita_res = supabase.table("berita").select("*").order("created_at", desc=True).limit(6).execute()
         berita_list = berita_res.data
         
-        # Convert created_at strings to datetime objects
+        # Konversi string created_at menjadi objek datetime
         for item in berita_list:
             if item.get('created_at'):
                 try:
@@ -34,12 +35,12 @@ def index():
                 except Exception:
                     pass
                     
-        print(f"DEBUG: Found {len(berita_list)} berita")
+        print(f"DEBUG: Menemukan {len(berita_list)} berita")
     except Exception as e:
-        print(f"DEBUG: Error fetching berita: {str(e)}")
+        print(f"DEBUG: Error saat mengambil berita: {str(e)}")
         berita_list = []
 
-    # 3. Fetch Active Layanan (Limit 5)
+    # 3. Ambil Layanan yang Aktif (Limit 5)
     try:
         layanan_res = supabase.table("layanan").select("*").eq("aktif", True).order("urutan").limit(5).execute()
         layanan_list = layanan_res.data
@@ -53,6 +54,7 @@ def index():
 
 
 class Pagination:
+    """ Kelas pembantu untuk menangani logika pagination. """
     def __init__(self, items, page, per_page, total_count):
         self.items = items
         self.page = page
@@ -65,6 +67,7 @@ class Pagination:
         self.next_num = page + 1
 
     def iter_pages(self, left_edge=2, left_current=2, right_current=5, right_edge=2):
+        """ Generator untuk iterasi nomor halaman di UI. """
         last = 0
         for num in range(1, self.pages + 1):
             if num <= left_edge or \
@@ -78,6 +81,7 @@ class Pagination:
 
 @public_bp.route("/berita")
 def berita_list():
+    """ Halaman daftar berita dengan pencarian dan filter kategori. """
     page = request.args.get('page', 1, type=int)
     search = request.args.get('search', '')
     category = request.args.get('category', '')
@@ -86,15 +90,18 @@ def berita_list():
     supabase = get_supabase_client()
     
     try:
-        # Build query
+        # Membangun query dasar
         query = supabase.table("berita").select("*", count="exact").order("created_at", desc=True)
         
+        # Tambahkan filter jika ada input pencarian
         if search:
             query = query.ilike("judul", f"%{search}%")
+        
+        # Tambahkan filter kategori jika dipilih
         if category:
             query = query.eq("kategori", category)
             
-        # Get total count and data with pagination
+        # Tentukan rentang data untuk pagination
         start = (page - 1) * per_page
         end = start + per_page - 1
         
@@ -103,7 +110,7 @@ def berita_list():
         total_count = res.count if res.count is not None else 0
         berita_data = res.data
         
-        # Convert created_at strings to datetime objects
+        # Konversi created_at menjadi objek datetime
         for item in berita_data:
             if item.get('created_at'):
                 try:
@@ -114,14 +121,13 @@ def berita_list():
         
         pagination = Pagination(berita_data, page, per_page, total_count)
         
-        # Fetch categories and counts for the sidebar
-        # This is a bit tricky with Supabase to do in one go, but we can do a simple select
+        # Ambil data kategori unik untuk sidebar dengan menghitung jumlahnya
         cat_res = supabase.table("berita").select("kategori").execute()
         categories_raw = [item['kategori'] for item in cat_res.data]
         cat_counts = Counter(categories_raw)
         
     except Exception as e:
-        print(f"DEBUG: Error fetching berita list: {str(e)}")
+        print(f"DEBUG: Error saat mengambil daftar berita: {str(e)}")
         pagination = Pagination([], 1, per_page, 0)
         cat_counts = {}
 
@@ -134,27 +140,27 @@ def berita_list():
 
 @public_bp.route("/berita/<id_or_slug>")
 def berita_detail(id_or_slug):
+    """ Halaman detail berita berdasarkan ID atau Slug. """
     supabase = get_supabase_client()
     try:
-        # Try finding by slug first, then by id
+        # Coba cari berdasarkan slug terlebih dahulu
         res = supabase.table("berita").select("*").eq("slug", id_or_slug).execute()
         if not res.data:
+            # Jika tidak ketemu, coba cari berdasarkan ID
             res = supabase.table("berita").select("*").eq("id", id_or_slug).execute()
             
         if res.data:
             item = res.data[0]
             
-            # Increment views count using RPC (Atomic increment)
+            # Tambahkan jumlah tayangan (views) secara otomatis di backend
             try:
                 supabase.rpc('increment_berita_views', {'row_id': item['id']}).execute()
             except Exception as e:
-                print(f"DEBUG: Failed to increment views: {str(e)}")
+                print(f"DEBUG: Gagal menambahkan jumlah tayangan: {str(e)}")
 
-            # Convert created_at string to datetime object if possible for better formatting in templates
+            # Konversi tanggal untuk tampilan template
             if item.get('created_at'):
                 try:
-                    # Handle Supabase format: '2026-04-20T14:15:26.123456+00:00'
-                    # We can use fromisoformat, but need to handle potential '+' or 'Z'
                     dt_str = item['created_at'].replace('Z', '+00:00')
                     item['created_at'] = datetime.fromisoformat(dt_str)
                 except Exception:
@@ -169,28 +175,34 @@ def berita_detail(id_or_slug):
 
 @public_bp.route("/profil")
 def profil():
+    """ Halaman Profil Wilayah. """
     return render_template("profil.html")
 
 
 @public_bp.route("/layanan")
 def layanan():
+    """ Halaman Daftar Layanan Publik. """
     return render_template("layanan/index.html")
 
 
 @public_bp.route("/layanan/kependudukan")
 def layanan_kependudukan():
+    """ Halaman Layanan Kependudukan. """
     return render_template("layanan/kependudukan.html")
 
 
 @public_bp.route("/layanan/kesehatan")
 def layanan_kesehatan():
+    """ Halaman Layanan Kesehatan. """
     return render_template("layanan/kesehatan.html")
 
 
 @public_bp.route("/layanan/kebencanaan")
 def layanan_kebencanaan():
+    """ Halaman Monitoring Informasi Kebencanaan. """
     supabase = get_supabase_client()
     try:
+        # Ambil data bencana yang masih aktif
         res = supabase.table("bencana").select("*").eq("aktif", True).order("created_at", desc=True).execute()
         bencana_list = res.data
     except Exception:
@@ -200,8 +212,10 @@ def layanan_kebencanaan():
 
 @public_bp.route("/layanan/pariwisata")
 def layanan_pariwisata():
+    """ Halaman Katalog Pariwisata Unggulan. """
     supabase = get_supabase_client()
     try:
+        # Ambil semua data objek wisata
         res = supabase.table("pariwisata").select("*").order("created_at", desc=True).execute()
         wisata_list = res.data
     except Exception:
@@ -211,6 +225,7 @@ def layanan_pariwisata():
 
 @public_bp.route("/pengaduan", methods=["GET", "POST"])
 def pengaduan():
+    """ Halaman formulir pengaduan masyarakat. """
     if request.method == "POST":
         nama = request.form.get("nama")
         nik = request.form.get("nik")
@@ -220,40 +235,41 @@ def pengaduan():
         pesan = request.form.get("pesan")
         lampiran_file = request.files.get("lampiran")
         
-        # Determine email/phone but provide a '-' default for NOT NULL columns
+        # Identifikasi tipe kontak (email atau telepon)
         email = contact if "@" in contact else "-"
         nomor_hp = contact if "@" not in contact else "-"
         
-        # Merge NIK into description since the table doesn't have a NIK column
+        # Menggabungkan NIK ke dalam deskripsi karena skema tabel tidak memiliki kolom NIK khusus
         full_description = f"[NIK: {nik}]\n\n{pesan}"
         
         lampiran_url = None
         supabase = get_supabase_client()
         
-        # Handle file upload if present
+        # Memproses unggahan lampiran jika ada
         if lampiran_file and lampiran_file.filename != '':
             try:
                 import uuid
-                # Use UUID for unique, safe filenames
+                # Menggunakan UUID untuk menjamin nama file yang unik dan aman
                 ext = lampiran_file.filename.split('.')[-1]
                 file_path = f"pengaduan/{uuid.uuid4()}.{ext}"
                 file_content = lampiran_file.read()
                 
-                print(f"DEBUG: Uploading to storage bucket 'pengaduan-lampiran' at path: {file_path}")
+                print(f"DEBUG: Mengunggah lampiran ke 'pengaduan-lampiran' path: {file_path}")
                 supabase.storage.from_("pengaduan-lampiran").upload(
                     path=file_path,
                     file=file_content,
                     file_options={"content-type": lampiran_file.content_type}
                 )
-                # For private buckets, get_public_url still gives the base URL
+                # Mendapatkan URL publik untuk file yang diunggah
                 public_res = supabase.storage.from_("pengaduan-lampiran").get_public_url(file_path)
                 lampiran_url = public_res
-                print(f"DEBUG: Upload success! URL: {lampiran_url}")
+                print(f"DEBUG: Unggah berhasil! URL: {lampiran_url}")
             except Exception as e:
-                print(f"DEBUG: Attachment upload failed: {str(e)}")
-                # We still continue even if upload fails, but lampiran_url will be None
+                print(f"DEBUG: Gagal mengunggah lampiran: {str(e)}")
+                # Proses tetap dilanjutkan meskipun unggahan gagal, hanya lampiran yang kosong
 
         try:
+            # Menyimpan data pengaduan ke database Supabase
             res = supabase.table("pengaduan").insert({
                 "nama_pelapor": nama,
                 "email": email,
@@ -266,11 +282,11 @@ def pengaduan():
             }).execute()
             
             if res.data:
-                # Use the generated UUID as ticket ID
+                # Ambil UUID aduan yang dihasilkan untuk dijadikan nomor tiket
                 ticket_id = res.data[0]['id']
                 return redirect(url_for('public.pengaduan_sukses', id=ticket_id))
         except Exception as e:
-            print(f"Error submitting report: {str(e)}")
+            print(f"Error saat menyimpan pengaduan: {str(e)}")
             return f"Terjadi kesalahan saat menyimpan data: {str(e)}", 500
 
     return render_template("pengaduan/index.html")
@@ -278,11 +294,13 @@ def pengaduan():
 
 @public_bp.route("/pengaduan/sukses/<id>")
 def pengaduan_sukses(id):
+    """ Halaman konfirmasi setelah berhasil mengirim pengaduan. """
     return render_template("pengaduan/sukses.html", id=id)
 
 
 @public_bp.route("/pengaduan/cek", methods=["GET", "POST"])
 def pengaduan_cek():
+    """ Halaman pelacakan status pengaduan berdasarkan ID Tiket. """
     hasil = None
     error = None
     if request.method == "POST":
@@ -290,6 +308,7 @@ def pengaduan_cek():
         if ticket_id:
             supabase = get_supabase_client()
             try:
+                # Cari aduan berdasarkan ID tiket (UUID)
                 res = supabase.table("pengaduan").select("*").eq("id", ticket_id).execute()
                 if res.data:
                     hasil = res.data[0]

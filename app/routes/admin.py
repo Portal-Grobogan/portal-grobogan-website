@@ -4,9 +4,11 @@ from flask_login import login_user, logout_user, login_required, current_user
 from app.config import get_supabase_client
 from app import AdminUser
 
+# Mendefinisikan Blueprint untuk area admin dengan prefix /admin
 admin_bp = Blueprint("admin", __name__, url_prefix="/admin")
 
 def slugify(s):
+    """ Mengubah string menjadi format slug (URL-friendly). """
     s = s.lower().strip()
     s = re.sub(r'[^\w\s-]', '', s)
     s = re.sub(r'[\s_-]+', '-', s)
@@ -16,27 +18,28 @@ def slugify(s):
 @admin_bp.route("/")
 @login_required
 def dashboard():
+    """ Halaman ringkasan statistik (Dashboard Admin). """
     supabase = get_supabase_client()
     stats = {}
     
     try:
-        # 1. Total Berita
+        # 1. Hitung Total Berita
         res_berita = supabase.table("berita").select("id", count="exact").execute()
         stats['total_berita'] = res_berita.count if res_berita.count is not None else 0
         
-        # 2. Aduan Selesai
+        # 2. Hitung Aduan yang Selesai
         res_aduan_selesai = supabase.table("pengaduan").select("id", count="exact").eq("status", "selesai").execute()
         stats['aduan_selesai'] = res_aduan_selesai.count if res_aduan_selesai.count is not None else 0
         
-        # 3. Aduan Baru
+        # 3. Hitung Aduan Baru
         res_aduan_baru = supabase.table("pengaduan").select("id", count="exact").eq("status", "baru").execute()
         stats['aduan_baru'] = res_aduan_baru.count if res_aduan_baru.count is not None else 0
         
-        # 4. Layanan Publik
+        # 4. Hitung Total Layanan Publik
         res_layanan = supabase.table("layanan").select("id", count="exact").execute()
         stats['total_layanan'] = res_layanan.count if res_layanan.count is not None else 0
         
-        # 5. Recent Activity (Latest 5 Complaints)
+        # 5. Aktivitas Terbaru (5 aduan terakhir)
         res_activity = supabase.table("pengaduan").select("*").order("created_at", desc=True).limit(5).execute()
         recent_activity = res_activity.data
         
@@ -50,6 +53,7 @@ def dashboard():
 # --- LOGIN / LOGOUT ---
 @admin_bp.route("/login", methods=["GET", "POST"])
 def login():
+    """ Halaman login administrator. """
     if current_user.is_authenticated:
         return redirect(url_for('admin.dashboard'))
         
@@ -59,6 +63,7 @@ def login():
         
         supabase = get_supabase_client()
         try:
+            # Autentikasi menggunakan Supabase Auth
             res = supabase.auth.sign_in_with_password({
                 "email": email,
                 "password": password
@@ -78,20 +83,22 @@ def login():
 @admin_bp.route("/logout")
 @login_required
 def logout():
+    """ Proses logout administrator. """
     logout_user()
     flash("Anda telah logout.", "info")
     return redirect(url_for('admin.login'))
 
-# --- BERITA CRUD (Phase 4.4) ---
+# --- BERITA CRUD ---
 @admin_bp.route("/berita")
 @login_required
 def list_berita():
+    """ Menampilkan daftar semua berita. """
     supabase = get_supabase_client()
     try:
         res = supabase.table("berita").select("*").order("created_at", desc=True).execute()
         berita_list = res.data
         
-        # Calculate Stats
+        # Hitung statistik sederhana untuk berita
         stats = {
             'total': len(berita_list),
             'terbit': len([b for b in berita_list if b.get('status') != 'draft']),
@@ -108,6 +115,7 @@ def list_berita():
 @admin_bp.route("/berita/tambah", methods=["GET", "POST"])
 @login_required
 def tambah_berita():
+    """ Menambah berita baru. """
     if request.method == "POST":
         judul = request.form.get("judul")
         content = request.form.get("content")
@@ -118,6 +126,7 @@ def tambah_berita():
         
         supabase = get_supabase_client()
         
+        # Proses unggah gambar thumbnail jika ada
         if image_file and image_file.filename != '':
             try:
                 file_path = f"{slug}_{image_file.filename}"
@@ -132,6 +141,7 @@ def tambah_berita():
                 flash(f"Gagal upload thumbnail: {str(e)}", "error")
 
         try:
+            # Simpan berita ke database
             supabase.table("berita").insert({
                 "judul": judul,
                 "slug": slug,
@@ -149,6 +159,7 @@ def tambah_berita():
 @admin_bp.route("/berita/edit/<id>", methods=["GET", "POST"])
 @login_required
 def edit_berita(id):
+    """ Memperbarui data berita yang sudah ada. """
     supabase = get_supabase_client()
     
     if request.method == "POST":
@@ -159,6 +170,7 @@ def edit_berita(id):
         thumbnail_url = request.form.get("thumbnail_url")
         slug = slugify(judul)
         
+        # Jika administrator mengunggah thumbnail baru
         if image_file and image_file.filename != '':
             try:
                 file_path = f"{slug}_{image_file.filename}"
@@ -173,6 +185,7 @@ def edit_berita(id):
                 flash(f"Gagal upload thumbnail baru: {str(e)}", "error")
 
         try:
+            # Update data berita di Supabase
             supabase.table("berita").update({
                 "judul": judul,
                 "slug": slug,
@@ -185,7 +198,7 @@ def edit_berita(id):
         except Exception as e:
             flash(f"Gagal memperbarui berita: {str(e)}", "error")
             
-    # GET: Fetch existing data
+    # GET: Ambil data lama untuk ditampilkan di form
     try:
         res = supabase.table("berita").select("*").eq("id", id).single().execute()
         berita = res.data
@@ -198,6 +211,7 @@ def edit_berita(id):
 @admin_bp.route("/berita/hapus/<id>", methods=["POST"])
 @login_required
 def hapus_berita(id):
+    """ Menghapus berita secara permanen. """
     supabase = get_supabase_client()
     try:
         supabase.table("berita").delete().eq("id", id).execute()
@@ -206,10 +220,11 @@ def hapus_berita(id):
         flash(f"Gagal menghapus berita: {str(e)}", "error")
     return redirect(url_for('admin.list_berita'))
 
-# --- HERO SLIDES CRUD (Phase 4.5) ---
+# --- HERO SLIDES CRUD ---
 @admin_bp.route("/hero")
 @login_required
 def list_hero():
+    """ Menampilkan daftar slide hero pada halaman utama. """
     supabase = get_supabase_client()
     try:
         res = supabase.table("hero_slides").select("*").order("urutan").execute()
@@ -223,6 +238,7 @@ def list_hero():
 @admin_bp.route("/hero/tambah", methods=["GET", "POST"])
 @login_required
 def tambah_hero():
+    """ Menambah slide hero baru. """
     if request.method == "POST":
         judul = request.form.get("judul")
         deskripsi = request.form.get("deskripsi")
@@ -231,26 +247,21 @@ def tambah_hero():
         aktif = "aktif" in request.form
         
         image_file = request.files.get("image_file")
-        image_url = request.form.get("image_url") # Fallback to URL if no file
+        image_url = request.form.get("image_url") 
         
         supabase = get_supabase_client()
         
+        # Proses unggah gambar slide
         if image_file and image_file.filename != '':
             try:
-                # Upload to Supabase Storage
                 file_path = f"{slugify(judul)}_{image_file.filename}"
                 file_content = image_file.read()
-                
-                # Check if bucket exists/accessible - though we assume it's there per Phase 1.4
                 supabase.storage.from_("hero-images").upload(
                     path=file_path,
                     file=file_content,
                     file_options={"content-type": image_file.content_type}
                 )
-                
-                # Get public URL
-                public_res = supabase.storage.from_("hero-images").get_public_url(file_path)
-                image_url = public_res
+                image_url = supabase.storage.from_("hero-images").get_public_url(file_path)
             except Exception as e:
                 flash(f"Gagal upload gambar: {str(e)}", "error")
                 return render_template("admin/hero/form.html", hero=None)
@@ -274,6 +285,7 @@ def tambah_hero():
 @admin_bp.route("/hero/edit/<id>", methods=["GET", "POST"])
 @login_required
 def edit_hero(id):
+    """ Memperbarui data slide hero. """
     supabase = get_supabase_client()
     
     if request.method == "POST":
@@ -284,21 +296,18 @@ def edit_hero(id):
         aktif = "aktif" in request.form
         
         image_file = request.files.get("image_file")
-        image_url = request.form.get("image_url") # Current URL
+        image_url = request.form.get("image_url")
         
         if image_file and image_file.filename != '':
             try:
                 file_path = f"{slugify(judul)}_{image_file.filename}"
                 file_content = image_file.read()
-                
                 supabase.storage.from_("hero-images").upload(
                     path=file_path,
                     file=file_content,
                     file_options={"content-type": image_file.content_type}
                 )
-                
-                public_res = supabase.storage.from_("hero-images").get_public_url(file_path)
-                image_url = public_res
+                image_url = supabase.storage.from_("hero-images").get_public_url(file_path)
             except Exception as e:
                 flash(f"Gagal upload gambar baru: {str(e)}", "error")
 
@@ -316,7 +325,6 @@ def edit_hero(id):
         except Exception as e:
             flash(f"Gagal memperbarui hero slide: {str(e)}", "error")
             
-    # GET: Fetch existing data
     try:
         res = supabase.table("hero_slides").select("*").eq("id", id).single().execute()
         hero = res.data
@@ -329,6 +337,7 @@ def edit_hero(id):
 @admin_bp.route("/hero/hapus/<id>", methods=["POST"])
 @login_required
 def hapus_hero(id):
+    """ Menghapus slide hero. """
     supabase = get_supabase_client()
     try:
         supabase.table("hero_slides").delete().eq("id", id).execute()
@@ -337,10 +346,11 @@ def hapus_hero(id):
         flash(f"Gagal menghapus hero slide: {str(e)}", "error")
     return redirect(url_for('admin.list_hero'))
 
-# --- PENGADUAN MANAGEMENT (Phase 4.6) ---
+# --- PENGADUAN MANAGEMENT ---
 @admin_bp.route("/pengaduan")
 @login_required
 def list_pengaduan():
+    """ Menampilkan daftar pengaduan masyarakat dengan filter. """
     supabase = get_supabase_client()
     search = request.args.get("search", "")
     status_filter = request.args.get("status", "")
@@ -364,6 +374,7 @@ def list_pengaduan():
 @admin_bp.route("/pengaduan/<id>")
 @login_required
 def detail_pengaduan(id):
+    """ Menampilkan detail pengaduan untuk diproses oleh admin. """
     supabase = get_supabase_client()
     try:
         res = supabase.table("pengaduan").select("*").eq("id", id).single().execute()
@@ -380,6 +391,7 @@ def detail_pengaduan(id):
 @admin_bp.route("/pengaduan/<id>/update", methods=["POST"])
 @login_required
 def update_pengaduan(id):
+    """ Memperbarui status dan catatan admin untuk pengaduan tertentu. """
     status = request.form.get("status")
     admin_notes = request.form.get("admin_notes")
     
@@ -396,10 +408,11 @@ def update_pengaduan(id):
         
     return redirect(url_for('admin.detail_pengaduan', id=id))
 
-# --- MASTER LAYANAN CRUD (Phase 4.7) ---
+# --- MASTER LAYANAN CRUD ---
 @admin_bp.route("/layanan")
 @login_required
 def list_layanan():
+    """ Menampilkan daftar layanan publik yang tersedia. """
     search = request.args.get("search", "")
     supabase = get_supabase_client()
     try:
@@ -417,6 +430,7 @@ def list_layanan():
 @admin_bp.route("/layanan/tambah", methods=["GET", "POST"])
 @login_required
 def tambah_layanan():
+    """ Menambah data layanan publik baru. """
     if request.method == "POST":
         data = {
             "nama": request.form.get("nama"),
@@ -439,6 +453,7 @@ def tambah_layanan():
 @admin_bp.route("/layanan/edit/<id>", methods=["GET", "POST"])
 @login_required
 def edit_layanan(id):
+    """ Memperbarui data layanan publik. """
     supabase = get_supabase_client()
     if request.method == "POST":
         data = {
@@ -468,6 +483,7 @@ def edit_layanan(id):
 @admin_bp.route("/layanan/hapus/<id>", methods=["POST"])
 @login_required
 def hapus_layanan(id):
+    """ Menghapus data layanan. """
     supabase = get_supabase_client()
     try:
         supabase.table("layanan").delete().eq("id", id).execute()
@@ -476,16 +492,16 @@ def hapus_layanan(id):
         flash(f"Gagal menghapus layanan: {str(e)}", "error")
     return redirect(url_for('admin.list_layanan'))
 
-# --- MANAJEMEN KEBENCANAAN CRUD (Phase 4.7) ---
+# --- MANAJEMEN KEBENCANAAN CRUD ---
 @admin_bp.route("/bencana")
 @login_required
 def list_bencana():
+    """ Menampilkan daftar informasi bencana. """
     search = request.args.get("search", "")
     supabase = get_supabase_client()
     try:
         query = supabase.table("bencana").select("*")
         if search:
-            # Search in title or location
             query = query.or_(f"judul.ilike.%{search}%,lokasi.ilike.%{search}%")
             
         res = query.order("created_at", desc=True).execute()
@@ -498,6 +514,7 @@ def list_bencana():
 @admin_bp.route("/bencana/tambah", methods=["GET", "POST"])
 @login_required
 def tambah_bencana():
+    """ Menambah informasi bencana baru. """
     if request.method == "POST":
         lat = request.form.get("lat")
         lng = request.form.get("lng")
@@ -523,6 +540,7 @@ def tambah_bencana():
 @admin_bp.route("/bencana/edit/<id>", methods=["GET", "POST"])
 @login_required
 def edit_bencana(id):
+    """ Memperbarui informasi bencana. """
     supabase = get_supabase_client()
     if request.method == "POST":
         lat = request.form.get("lat")
@@ -555,6 +573,7 @@ def edit_bencana(id):
 @admin_bp.route("/bencana/hapus/<id>", methods=["POST"])
 @login_required
 def hapus_bencana(id):
+    """ Menghapus data bencana. """
     supabase = get_supabase_client()
     try:
         supabase.table("bencana").delete().eq("id", id).execute()
@@ -563,10 +582,11 @@ def hapus_bencana(id):
         flash(f"Gagal menghapus laporan bencana: {str(e)}", "error")
     return redirect(url_for('admin.list_bencana'))
 
-# --- MANAJEMEN PARIWISATA CRUD (Phase 4.7) ---
+# --- MANAJEMEN PARIWISATA CRUD ---
 @admin_bp.route("/pariwisata")
 @login_required
 def list_pariwisata():
+    """ Menampilkan daftar objek pariwisata. """
     search = request.args.get("search", "")
     supabase = get_supabase_client()
     try:
@@ -584,12 +604,13 @@ def list_pariwisata():
 @admin_bp.route("/pariwisata/tambah", methods=["GET", "POST"])
 @login_required
 def tambah_pariwisata():
+    """ Menambah data pariwisata baru beserta unggahan foto. """
     if request.method == "POST":
-        # Handle multiple photo uploads
         files = request.files.getlist("foto_files")
         foto_urls = []
         supabase = get_supabase_client()
         
+        # Proses unggah beberapa foto sekaligus
         for file in files:
             if file and file.filename != '':
                 try:
@@ -630,12 +651,12 @@ def tambah_pariwisata():
 @admin_bp.route("/pariwisata/edit/<id>", methods=["GET", "POST"])
 @login_required
 def edit_pariwisata(id):
+    """ Memperbarui data pariwisata. """
     supabase = get_supabase_client()
     
     if request.method == "POST":
-        # Handle multiple photo uploads (append or replace? replacement is simpler for MVP)
         files = request.files.getlist("foto_files")
-        foto_urls = request.form.getlist("existing_foto_urls") # Keep existing ones if any
+        foto_urls = request.form.getlist("existing_foto_urls") 
         
         for file in files:
             if file and file.filename != '':
@@ -684,6 +705,7 @@ def edit_pariwisata(id):
 @admin_bp.route("/pariwisata/hapus/<id>", methods=["POST"])
 @login_required
 def hapus_pariwisata(id):
+    """ Menghapus data pariwisata. """
     supabase = get_supabase_client()
     try:
         supabase.table("pariwisata").delete().eq("id", id).execute()
@@ -691,3 +713,4 @@ def hapus_pariwisata(id):
     except Exception as e:
         flash(f"Gagal menghapus data pariwisata: {str(e)}", "error")
     return redirect(url_for('admin.list_pariwisata'))
+

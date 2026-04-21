@@ -346,6 +346,24 @@ def hapus_hero(id):
         flash(f"Gagal menghapus hero slide: {str(e)}", "error")
     return redirect(url_for('admin.list_hero'))
 
+@admin_bp.route("/hero/toggle/<id>", methods=["POST"])
+@login_required
+def toggle_hero(id):
+    """ Mengubah status aktif/non-aktif slide hero secara cepat. """
+    supabase = get_supabase_client()
+    try:
+        # Ambil status saat ini
+        res = supabase.table("hero_slides").select("aktif").eq("id", id).single().execute()
+        if res.data:
+            new_status = not res.data['aktif']
+            supabase.table("hero_slides").update({"aktif": new_status}).eq("id", id).execute()
+            status_msg = "diaktifkan" if new_status else "dinonaktifkan"
+            flash(f"Slide berhasil {status_msg}.", "success")
+    except Exception as e:
+        flash(f"Gagal mengubah status slide: {str(e)}", "error")
+    return redirect(url_for('admin.list_hero'))
+
+
 # --- PENGADUAN MANAGEMENT ---
 @admin_bp.route("/pengaduan")
 @login_required

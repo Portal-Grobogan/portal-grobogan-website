@@ -102,13 +102,23 @@
                             </div>
                         </div>
 
-                        <div class="pt-2">
-                            <label class="relative inline-flex items-center cursor-pointer group">
-                                <input type="checkbox" name="aktif" class="sr-only peer" {{ "checked" if not hero or hero.aktif else "" }}>
-                                <div class="w-14 h-7 bg-slate-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-500/10 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[4px] after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
-                                <span class="ml-3 text-sm font-bold text-slate-700 group-hover:text-slate-900 transition-colors">Tampilkan Slide Ini (Aktif)</span>
-                            </label>
+                        <div class="pt-6 border-t border-slate-100">
+                            <div class="flex items-center">
+                                <div class="relative flex items-center h-5">
+                                    <input id="aktif" name="aktif" type="checkbox" 
+                                           class="w-5 h-5 text-indigo-600 border-slate-300 rounded focus:ring-indigo-500 cursor-pointer"
+                                           {{ 'checked' if not hero or hero.aktif else '' }}>
+                                </div>
+                                <div class="ml-3 text-sm">
+                                    <label for="aktif" class="font-bold text-slate-700 cursor-pointer select-none">
+                                        Tampilkan Slide Ini (Status Aktif)
+                                    </label>
+                                    <p class="text-[11px] text-slate-500">Centang untuk mempublikasikan slide ini ke halaman beranda.</p>
+                                </div>
+                            </div>
                         </div>
+
+
                     </div>
                 </div>
             </div>

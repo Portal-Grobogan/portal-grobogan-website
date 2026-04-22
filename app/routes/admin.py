@@ -646,6 +646,11 @@ def tambah_pariwisata():
 
         lat = request.form.get("lat")
         lng = request.form.get("lng")
+        external_urls = request.form.getlist("foto_urls_external")
+        
+        for url in external_urls:
+            if url.strip():
+                foto_urls.append(url.strip())
 
         data = {
             "nama": request.form.get("nama"),
@@ -693,6 +698,11 @@ def edit_pariwisata(id):
 
         lat = request.form.get("lat")
         lng = request.form.get("lng")
+        external_urls = request.form.getlist("foto_urls_external")
+
+        for url in external_urls:
+            if url.strip():
+                foto_urls.append(url.strip())
 
         data = {
             "nama": request.form.get("nama"),

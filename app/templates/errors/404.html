@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}404 - Halaman Tidak Ditemukan{% endblock %}
+
+{% block content %}
+<section class="min-h-[70vh] flex flex-col items-center justify-center p-8 bg-white">
+    <div class="text-center animate-in fade-in slide-in-from-bottom-8 duration-700">
+        <div class="relative inline-block mb-10">
+            <i data-lucide="unlink-2" class="w-32 h-32 text-slate-100/50"></i>
+            <span class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-8xl font-black text-slate-200/40 tracking-tighter">404</span>
+        </div>
+        
+        <h1 class="text-4xl font-black text-slate-900 mb-4">Waduh, Halamannya Hilang!</h1>
+        <p class="text-slate-500 text-lg max-w-md mx-auto mb-10 leading-relaxed">
+            Sepertinya halaman yang Anda cari telah dipindahkan atau memang tidak pernah ada di sini.
+        </p>
+        
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <a href="{{ url_for('public.index') }}" class="w-full sm:w-auto px-10 py-4 bg-primary text-white font-black rounded-2xl shadow-xl shadow-primary/20 hover:bg-primary-dark transition-all hover:-translate-y-1">
+                Kembali ke Beranda
+            </a>
+            <button onclick="history.back()" class="w-full sm:w-auto px-10 py-4 bg-white text-slate-600 border border-slate-200 font-bold rounded-2xl hover:bg-slate-50 transition-all">
+                Halaman Sebelumnya
+            </button>
+        </div>
+    </div>
+</section>
+{% endblock %}

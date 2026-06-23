@@ -1,0 +1,92 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}{{ 'Edit' if layanan else 'Tambah' }} Layanan{% endblock %}
+{% block page_title %}Master Layanan{% endblock %}
+{% block breadcrumb %}{{ 'Edit' if layanan else 'Tambah' }} Layanan{% endblock %}
+{% block breadcrumb_mini %}Layanan / {{ 'Edit' if layanan else 'Tambah' }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl">
+    <div class="mb-8">
+        <a href="{{ url_for('admin.list_layanan') }}" class="inline-flex items-center gap-2 text-slate-400 hover:text-indigo-600 transition-colors mb-4 text-sm font-bold">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+            Kembali ke Daftar
+        </a>
+        <h3 class="text-2xl font-black text-slate-800">{{ 'Edit Data' if layanan else 'Tambah Layanan Baru' }}</h3>
+        <p class="text-slate-500 text-sm">Lengkapi informasi layanan publik di bawah ini.</p>
+    </div>
+
+    <form method="POST" class="space-y-6">
+        <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Nama Layanan -->
+                <div class="space-y-2">
+                    <label class="text-sm font-bold text-slate-700">Nama Layanan <span class="text-rose-500">*</span></label>
+                    <input type="text" name="nama" value="{{ layanan.nama if layanan else '' }}" required
+                           class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-indigo-600/10 outline-none">
+                </div>
+
+                <!-- Kategori -->
+                <div class="space-y-2">
+                    <label class="text-sm font-bold text-slate-700">Kategori</label>
+                    <select name="kategori" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-indigo-600/10 outline-none">
+                        <option value="Kependudukan" {% if layanan and layanan.kategori == 'Kependudukan' %}selected{% endif %}>Kependudukan</option>
+                        <option value="Kesehatan" {% if layanan and layanan.kategori == 'Kesehatan' %}selected{% endif %}>Kesehatan</option>
+                        <option value="Pendidikan" {% if layanan and layanan.kategori == 'Pendidikan' %}selected{% endif %}>Pendidikan</option>
+                        <option value="Sosial" {% if layanan and layanan.kategori == 'Sosial' %}selected{% endif %}>Sosial</option>
+                        <option value="Umum" {% if layanan and layanan.kategori == 'Umum' %}selected{% endif %}>Umum/Lainnya</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Deskripsi -->
+            <div class="space-y-2">
+                <label class="text-sm font-bold text-slate-700">Deskripsi Singkat</label>
+                <textarea name="deskripsi" rows="3" 
+                          class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-indigo-600/10 outline-none resize-none">{{ layanan.deskripsi if layanan else '' }}</textarea>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Icon (Lucide Name) -->
+                <div class="space-y-2">
+                    <label class="text-sm font-bold text-slate-700 flex items-center gap-2">
+                        Icon Name (Lucide)
+                        <a href="https://lucide.dev/icons" target="_blank" class="text-[10px] bg-slate-100 px-2 py-0.5 rounded hover:bg-indigo-100 hover:text-indigo-600 transition-colors">Cek Icons</a>
+                    </label>
+                    <input type="text" name="icon_name" value="{{ layanan.icon_name if layanan else 'external-link' }}" placeholder="misal: users, heart, book"
+                           class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-indigo-600/10 outline-none">
+                </div>
+
+                <!-- URL Path -->
+                <div class="space-y-2">
+                    <label class="text-sm font-bold text-slate-700">URL Path / Link Luar</label>
+                    <input type="text" name="url_path" value="{{ layanan.url_path if layanan else '#' }}"
+                           class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-indigo-600/10 outline-none font-mono">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+                <!-- Urutan -->
+                <div class="space-y-2">
+                    <label class="text-sm font-bold text-slate-700">Urutan Tampil</label>
+                    <input type="number" name="urutan" value="{{ layanan.urutan if layanan else '0' }}"
+                           class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-4 focus:ring-indigo-600/10 outline-none">
+                </div>
+
+                <!-- Status Aktif -->
+                <div class="flex items-center gap-3 p-4 bg-slate-50 border border-slate-100 rounded-xl">
+                    <input type="checkbox" name="aktif" id="aktif" {% if not layanan or layanan.aktif %}checked{% endif %}
+                           class="w-5 h-5 rounded border-slate-300 text-indigo-600 focus:ring-indigo-600/20">
+                    <label for="aktif" class="text-sm font-bold text-slate-700 cursor-pointer text-slate-600">Layanan Aktif (Diterbitkan)</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-end gap-4">
+            <button type="submit" class="px-10 py-4 bg-indigo-600 text-white font-black rounded-2xl hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-600/30 active:scale-95">
+                {{ 'Simpan Perubahan' if layanan else 'Tambah Layanan' }}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

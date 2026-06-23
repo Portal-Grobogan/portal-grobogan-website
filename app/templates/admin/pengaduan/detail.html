@@ -1,0 +1,172 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Detail Pengaduan #{{ item.id[:8] if item.id else '...' }}{% endblock %}
+{% block page_title %}Detail Pengaduan{% endblock %}
+{% block breadcrumb %}
+    <a href="{{ url_for('admin.list_pengaduan') }}" class="hover:text-indigo-600 transition-colors">Semua Pengaduan</a>
+    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-300"></i>
+    <span>Detail #{{ item.id[:8] if item.id else '...' }}</span>
+{% endblock %}
+
+{% block content %}
+<div class="flex flex-col xl:flex-row gap-8 items-start">
+    
+    <!-- Left: Info Pelapor (Col-1) -->
+    <div class="w-full xl:w-80 shrink-0 space-y-6">
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+             <div class="flex items-center gap-4 mb-8">
+                 <div class="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600">
+                     <i data-lucide="user" class="w-6 h-6"></i>
+                 </div>
+                 <div>
+                     <h3 class="font-bold text-slate-900 leading-tight">Data Pelapor</h3>
+                     <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-1">Identitas Laporan</p>
+                 </div>
+             </div>
+             
+             <div class="space-y-6">
+                 <div>
+                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Nama Lengkap</label>
+                     <p class="text-sm font-bold text-slate-800">{{ item.nama_pelapor }}</p>
+                 </div>
+                 <div>
+                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Informasi Kontak</label>
+                     {% if item.email %}
+                        <p class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                            <i data-lucide="mail" class="w-3.5 h-3.5 text-slate-300"></i>
+                            {{ item.email }}
+                        </p>
+                     {% endif %}
+                     {% if item.nomor_hp %}
+                        <p class="text-[11px] font-bold text-slate-500 mt-1 flex items-center gap-2">
+                            <i data-lucide="phone" class="w-3.5 h-3.5 text-slate-300"></i>
+                            {{ item.nomor_hp }}
+                        </p>
+                     {% endif %}
+                     {% if not item.email and not item.nomor_hp %}
+                        <p class="text-xs text-slate-400 italic">Kontak tidak tersedia</p>
+                     {% endif %}
+                 </div>
+                 <div>
+                     <label class="block text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Waktu Pengiriman</label>
+                     <p class="text-sm font-bold text-slate-800">{{ item.created_at[:16] if item.created_at else '-' }}</p>
+                 </div>
+             </div>
+        </div>
+        
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+             <h3 class="font-bold text-slate-900 mb-5 flex items-center gap-2 text-sm">
+                 <i data-lucide="paperclip" class="w-4 h-4 text-indigo-500"></i>
+                 File Lampiran
+             </h3>
+             {% if item.lampiran_url %}
+                 <a href="{{ item.lampiran_url }}" target="_blank" class="block p-4 border border-slate-100 rounded-xl bg-slate-50 hover:bg-indigo-50 hover:border-indigo-100 transition-all text-center group">
+                     <div class="w-10 h-10 bg-white rounded-lg flex items-center justify-center mx-auto mb-3 shadow-sm group-hover:text-indigo-600 transition-colors text-slate-400">
+                         <i data-lucide="file-text" class="w-5 h-5"></i>
+                     </div>
+                     <span class="text-xs font-bold text-slate-700 block mb-1">lampiran_laporan</span>
+                     <span class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest">Detail Dokumen</span>
+                 </a>
+                 
+                 {% if item.lampiran_url.lower().endswith(('.jpg', '.jpeg', '.png', '.webp')) %}
+                    <div class="mt-4 rounded-xl overflow-hidden border border-slate-100 shadow-sm">
+                        <img src="{{ item.lampiran_url }}" alt="Preview Lampiran" class="w-full h-auto object-cover max-h-60">
+                    </div>
+                 {% endif %}
+             {% else %}
+                 <div class="py-6 border-2 border-dashed border-slate-100 rounded-xl text-center">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Tidak ada lampiran</p>
+                 </div>
+             {% endif %}
+        </div>
+    </div>
+
+    <!-- Center: Isi Laporan (Col-2) - Expand to fill space -->
+    <div class="flex-1 min-w-0 space-y-6">
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="p-8 md:p-12">
+                <div class="flex flex-wrap items-center gap-4 mb-8">
+                    <span class="px-3 py-1 bg-indigo-600 text-white text-[10px] font-bold uppercase tracking-widest rounded-lg shadow-sm shadow-indigo-600/20">{{ item.kategori }}</span>
+                    <div class="h-4 w-px bg-slate-200"></div>
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-widest">Registrasi #{{ item.id[:12] if item.id else '...' }}</span>
+                </div>
+                
+                <h1 class="text-3xl font-bold text-slate-900 mb-8 leading-tight">{{ item.judul }}</h1>
+                
+                <div class="prose prose-slate max-w-none">
+                    <p class="text-slate-600 text-base leading-loose whitespace-pre-wrap">{{ item.deskripsi }}</p>
+                </div>
+                
+                <div class="mt-16 pt-10 border-t border-slate-100">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center text-slate-500">
+                            <i data-lucide="message-square" class="w-4 h-4"></i>
+                        </div>
+                        <h3 class="font-bold text-slate-900">Riwayat Penanganan</h3>
+                    </div>
+                    
+                    <div class="p-6 bg-slate-50 rounded-2xl border border-slate-200">
+                        {% if item.admin_notes %}
+                            <div class="flex gap-4">
+                                <div class="shrink-0 w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center font-bold text-xs text-slate-400">AD</div>
+                                <div>
+                                    <p class="text-sm text-slate-700 font-medium leading-relaxed leading-relaxed italic">"{{ item.admin_notes }}"</p>
+                                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2">Ditetapkan oleh Administrator</p>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="text-center py-4">
+                                <p class="text-sm text-slate-400 italic font-medium">Belum ada progres/catatan yang dicatat oleh petugas.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right: Update Status Bar (Col-3) -->
+    <div class="w-full xl:w-80 shrink-0">
+        <div class="bg-white rounded-2xl p-1 border border-slate-200 shadow-xl shadow-slate-200/50 sticky top-24">
+            <div class="bg-slate-900 rounded-[1.25rem] p-8 text-white">
+                <div class="flex items-center gap-4 mb-10">
+                    <div class="w-11 h-11 bg-indigo-500/20 border border-indigo-500/20 rounded-2xl flex items-center justify-center text-indigo-400">
+                        <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-white text-sm">Status Laporan</h3>
+                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-0.5">Kontrol Operasional</p>
+                    </div>
+                </div>
+                
+                <form action="{{ url_for('admin.update_pengaduan', id=item.id) }}" method="POST" class="space-y-8">
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Tentukan Status</label>
+                        <select name="status" class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl px-4 py-3.5 text-sm font-bold focus:ring-2 focus:ring-indigo-500 outline-none transition-all appearance-none cursor-pointer">
+                            <option value="baru" {% if item.status == 'baru' %}selected{% endif %}>🟢 Baru Masuk</option>
+                            <option value="diproses" {% if item.status == 'diproses' %}selected{% endif %}>🟡 Sedang Proses</option>
+                            <option value="selesai" {% if item.status == 'selesai' %}selected{% endif %}>🔵 Selesai Ditangani</option>
+                            <option value="ditolak" {% if item.status == 'ditolak' %}selected{% endif %}>🔴 Ditolak / Spam</option>
+                        </select>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest ml-1">Catatan Admin</label>
+                        <textarea name="admin_notes" rows="6" class="w-full bg-slate-800 border border-slate-700 text-white rounded-2xl px-4 py-4 text-sm font-medium focus:ring-2 focus:ring-indigo-500 outline-none transition-all resize-none" placeholder="Tuliskan respon atau catatan pengerjaan di sini...">{{ item.admin_notes or '' }}</textarea>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-white text-slate-900 py-4 rounded-2xl font-bold text-sm shadow-lg hover:shadow-white/10 transition-all active:scale-95 flex items-center justify-center gap-2 group">
+                        <i data-lucide="check" class="w-4 h-4 text-indigo-600 group-hover:scale-125 transition-transform"></i>
+                        Simpan Pembaruan
+                    </button>
+                    
+                    <div class="pt-4 flex flex-col items-center gap-1">
+                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Update Terakhir</p>
+                        <p class="text-[10px] text-slate-400 font-medium">{{ item.updated_at[:16] if item.updated_at else 'Belum pernah diperbarui' }}</p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
